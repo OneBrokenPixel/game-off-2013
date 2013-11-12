@@ -1,7 +1,5 @@
 package com.me.corruption.ui;
 
-import sun.org.mozilla.javascript.internal.ast.ParenthesizedExpression;
-
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Pixmap.Format;

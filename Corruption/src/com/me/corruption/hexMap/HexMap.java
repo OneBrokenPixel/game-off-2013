@@ -8,6 +8,7 @@ import com.badlogic.gdx.math.GridPoint2;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.Disposable;
 
+import com.me.corruption.hexMap.HexMapSpriteObject;
 /**
  * Main map class
  * 

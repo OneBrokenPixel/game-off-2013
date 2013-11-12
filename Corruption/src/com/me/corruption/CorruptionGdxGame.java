@@ -16,13 +16,6 @@ import com.me.corruption.hexMap.HexMapGenerator;
 import com.me.corruption.hexMap.HexMapRenderer;
 import com.me.corruption.ui.GameUI;
 
-/* add to game screen!
-
-	
-
-	
-
- */
 
 /**
  * 

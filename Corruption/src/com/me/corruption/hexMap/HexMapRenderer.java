@@ -25,6 +25,7 @@ import java.util.HashSet;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Matrix4;
@@ -39,6 +40,7 @@ public class HexMapRenderer {
 
 	private HexMap map;
 	private SpriteBatch batch;
+	private BitmapFont font;
 	
 	private Rectangle viewBounds = new Rectangle();
 	private float unitScale = 1.0f;
@@ -53,7 +55,7 @@ public class HexMapRenderer {
 	 */
 	
 	private static final Vector2[] IconLookup = new Vector2[HexMap.RESOURCE_MAX];
-	
+	private static final Vector2 energyLookup = new Vector2(0.15f, 0.25f);
 	static {
 		IconLookup[HexMap.RESOURCE_WIND] = new Vector2(0.65f, 0.35f);
 		IconLookup[HexMap.RESOURCE_SOLAR] = new Vector2(0.35f, 0.35f);
@@ -76,6 +78,8 @@ public class HexMapRenderer {
 	public HexMapRenderer(SpriteBatch batch, HexMap map) {
 		setMap(map);
 		this.batch = batch;
+		this.font = new BitmapFont();
+		this.font.setColor(1, 1, 1, 1);
 	}
 
 	public HexMap getMap() {
@@ -346,6 +350,28 @@ public class HexMapRenderer {
 			}
 		}
 	}
+	
+	private void renderEnergy(final int rowFrom, final int rowTo, final int colFrom, final int colTo,
+			 final float layerTileWidth, final float layerTileHeight, final float color){
+		
+		for (int row = rowFrom; row < rowTo; row++) {
+			for (int col = colFrom; col < colTo; col++) {
+				
+				float x = (layerTileWidth*0.5f) * 3/2 * col;// + (layerTileWidth*energyLookup.x);
+				float y = (float) ((layerTileWidth*0.5f) * sqrt3 * (row + 0.5 * (col&1))+ (layerTileHeight*energyLookup.y));
+				
+				final Cell cell = map.getCell(col, row);
+				//System.out.println(cell.point.x + "-" + cell.point.y + " " + col + "-" + row);
+				if(cell == null) {
+					//x += layerTileWidth * width_offset;
+					continue;
+				}
+				System.out.println(cell.energy.unit);
+				font.draw(batch, ""+((int)cell.energy.unit), x, y);
+			}
+		}
+	}
+	
 	public void render() {
 
 		final Color batchColor = this.batch.getColor();
@@ -367,6 +393,7 @@ public class HexMapRenderer {
 		this.renderTiles(rowFrom, rowTo, colFrom, colTo, layerTileWidth, layerTileHeight, color);
 		this.renderBuildings(rowFrom, rowTo, colFrom, colTo, layerTileWidth, layerTileHeight, color);
 		this.renderResourceIcons(rowFrom, rowTo, colFrom, colTo, layerTileWidth, layerTileHeight, color);
+		this.renderEnergy(rowFrom, rowTo, colFrom, colTo, layerTileWidth, layerTileHeight, color);
 		this.batch.end();
 	}
 	/*

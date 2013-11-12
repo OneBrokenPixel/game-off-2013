@@ -2,7 +2,6 @@ package com.me.corruption.hexMap;
 
 import com.badlogic.gdx.math.MathUtils;
 import com.me.corruption.hexMap.HexMap.Cell;
-import com.me.corruption.hexMap.HexMap.Owner;
 
 public class HexMapGenerator {
 
