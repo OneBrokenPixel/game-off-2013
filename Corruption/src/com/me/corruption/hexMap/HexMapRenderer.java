@@ -366,7 +366,7 @@ public class HexMapRenderer {
 					//x += layerTileWidth * width_offset;
 					continue;
 				}
-				System.out.println(cell.energy.unit);
+				//System.out.println(cell.energy.unit);
 				font.draw(batch, ""+((int)cell.energy.unit), x, y);
 			}
 		}

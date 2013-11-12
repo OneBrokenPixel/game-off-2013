@@ -120,15 +120,15 @@ public class CorruptionGdxGame extends Game {
 		
 		@Override
 		public void render(float delta) {
-			Gdx.gl.glClearColor(0, 0, 0.2f, 1);
+			Gdx.gl.glClearColor(0, 0, 0.0f, 1);
 			Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 			
 			renderer.setView(camera);
 			renderer.render();
 			
-			Table.drawDebug(stage);
 			stage.act();
 			stage.draw();
+			//Table.drawDebug(stage);
 		}
 
 		@Override
