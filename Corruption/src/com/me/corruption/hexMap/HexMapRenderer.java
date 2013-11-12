@@ -207,7 +207,7 @@ public class HexMapRenderer {
 			 final float layerTileWidth, final float layerTileHeight, final float color){
 		final float[] vertices = this.vertices;
 		
-		final HashSet<Cell> visable = map.getVisibleCells();
+		final HashSet<Cell> visable = map.getPlayer().getVisible();
 		
 		//System.out.println("Row: " + rowFrom + "-" + rowTo);
 		
@@ -366,7 +366,7 @@ public class HexMapRenderer {
 					//x += layerTileWidth * width_offset;
 					continue;
 				}
-				System.out.println(cell.energy.unit);
+				//System.out.println(cell.energy.unit);
 				font.draw(batch, ""+((int)cell.energy.unit), x, y);
 			}
 		}

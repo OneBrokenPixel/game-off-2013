@@ -90,7 +90,7 @@ public class HexMap implements Disposable {
 			this.owner = owner;
 			this.tile = tiles.get(this.owner+"Hex");
 			if( this.owner.contains("player") ) {
-				setPlayerCell(this);
+				getPlayer().setPlayerCell(this);
 			}
 			else if( this.owner.contains("corruption") ) {
 				setCorruptionCell(this);
@@ -114,8 +114,76 @@ public class HexMap implements Disposable {
 	private static HexMapSpriteList units;
 	
 	
-	private HashSet<Cell> playerCells = new HashSet<HexMap.Cell>();
-	private HashSet<Cell> visibleCells = new HashSet<HexMap.Cell>();
+	class PlayerEntity {
+		private HashSet<Cell> owned = new HashSet<HexMap.Cell>();
+		private HashSet<Cell> visible = new HashSet<HexMap.Cell>();
+		
+		
+		public HashSet<Cell> getVisible() {
+			return visible;
+		}
+		
+		public HashSet<Cell> getOwned(){
+			return owned;
+		}
+		
+		/**
+		 * Sets a Cell as belonging to the player
+		 * @param cell
+		 */
+		public void setPlayerCell( Cell cell ) {
+			owned.add(cell);
+			//System.out.println(playerCells);
+			
+			if( visible.contains(cell)){
+				visible.remove(cell);
+			}
+			
+			updateVisibleCells(cell);
+		}
+		
+		/**
+		 * 
+		 * @param cell
+		 */
+		private void setCellAsVisible(Cell cell) {
+			if(cell != null && cell.owner.contains("neutral")) {
+				visible.add(cell);
+			}
+		}
+		
+		/**
+		 * takes a cell and updates the tiles visible to the player.
+		 * @param cell
+		 */
+		private void updateVisibleCells(Cell cell) {
+			
+			final GridPoint2 point = cell.point;
+			
+			if( point.x % 2 == 0) {
+				setCellAsVisible(getCell(point.x-1, point.y-1));
+				setCellAsVisible(getCell(point.x-0, point.y-1));
+				setCellAsVisible(getCell(point.x+1, point.y-1));
+				setCellAsVisible(getCell(point.x-1, point.y+0));
+				setCellAsVisible(getCell(point.x+1, point.y+0));
+				setCellAsVisible(getCell(point.x-0, point.y+1));
+			}
+			else {
+				
+				setCellAsVisible(getCell(point.x-1, point.y+1));
+				setCellAsVisible(getCell(point.x-0, point.y+1));
+				setCellAsVisible(getCell(point.x+1, point.y+1));
+				setCellAsVisible(getCell(point.x-1, point.y+0));
+				setCellAsVisible(getCell(point.x+1, point.y+0));
+				setCellAsVisible(getCell(point.x-0, point.y-1));
+			}
+			
+		}
+	}
+	
+	
+	private PlayerEntity player = new PlayerEntity();
+	
 	private HashSet<Cell> corruptedCells = new HashSet<HexMap.Cell>();
 	
 	/**
@@ -162,7 +230,7 @@ public class HexMap implements Disposable {
 				  	  new HexMapSpriteObject("solarplant", atlas),
 				  	  new HexMapSpriteObject("windplant", atlas));
 		
-		System.out.println(buildings.getCount());
+		//System.out.println(buildings.getCount());
 		
 		
 	}
@@ -219,8 +287,8 @@ public class HexMap implements Disposable {
 		return null;
 	}	
 
-	public HashSet<Cell> getVisibleCells() {
-		return visibleCells;
+	public PlayerEntity getPlayer() {
+		return player;
 	}
 	
 	/**
@@ -235,68 +303,6 @@ public class HexMap implements Disposable {
 		
 		this.cells = cells;
 	}
-	
-	/**
-	 * Sets a Cell as belonging to the player
-	 * @param cell
-	 */
-	public void setPlayerCell( Cell cell ) {
-		playerCells.add(cell);
-		System.out.println(playerCells);
-		
-		if( visibleCells.contains(cell)){
-			visibleCells.remove(cell);
-		}
-		
-		updateVisibleCells(cell);
-	}
-	
-	/**
-	 * 
-	 * @param cell
-	 */
-	private void setCellAsVisible(Cell cell) {
-		if(cell != null && cell.owner.contains("neutral")) {
-			visibleCells.add(cell);
-		}
-	}
-	
-	/**
-	 * takes a cell and updates the tiles visible to the player.
-	 * @param cell
-	 */
-	private void updateVisibleCells(Cell cell) {
-		/*
-		for(int row = Math.max(cell.point.y-1,0); row < Math.min(cell.point.y+2, this.height); row++) {
-			for(int col = Math.max(cell.point.x-1,0); col < Math.min(cell.point.x+2, this.width); col++) {
-				final Cell c = getCell(col, row);
-				if( c.owner != Owner.PLAYER) {
-					visibleCells.add(c);
-				}
-			}
-		}*/
-		
-		final GridPoint2 point = cell.point;
-		
-		if( point.x % 2 == 0) {
-			setCellAsVisible(getCell(point.x-1, point.y-1));
-			setCellAsVisible(getCell(point.x-0, point.y-1));
-			setCellAsVisible(getCell(point.x+1, point.y-1));
-			setCellAsVisible(getCell(point.x-1, point.y+0));
-			setCellAsVisible(getCell(point.x+1, point.y+0));
-			setCellAsVisible(getCell(point.x-0, point.y+1));
-		}
-		else {
-			
-			setCellAsVisible(getCell(point.x-1, point.y+1));
-			setCellAsVisible(getCell(point.x-0, point.y+1));
-			setCellAsVisible(getCell(point.x+1, point.y+1));
-			setCellAsVisible(getCell(point.x-1, point.y+0));
-			setCellAsVisible(getCell(point.x+1, point.y+0));
-			setCellAsVisible(getCell(point.x-0, point.y-1));
-		}
-		
-	}
 
 	/**
 	 * Updates corrupted tiles
@@ -304,7 +310,6 @@ public class HexMap implements Disposable {
 	 */
 	public void setCorruptionCell( Cell cell ) {
 		corruptedCells.add(cell);
-		System.out.println(corruptedCells);
 	}
 	
 	/**
