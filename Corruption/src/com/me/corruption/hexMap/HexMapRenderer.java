@@ -22,15 +22,11 @@ import static com.badlogic.gdx.graphics.g2d.SpriteBatch.Y3;
 import static com.badlogic.gdx.graphics.g2d.SpriteBatch.Y4;
 
 import java.util.HashSet;
-import java.util.TreeSet;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.maps.Map;
-import com.badlogic.gdx.math.GridPoint2;
-import com.badlogic.gdx.math.GridPoint3;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
@@ -47,7 +43,7 @@ public class HexMapRenderer {
 	private float unitScale = 1.0f;
 	
 	private final float width_offset = 0.75f;
-	private final float height_offset = 0.5f;
+	//private final float height_offset = 0.5f;
 	
 	/*
 	 * chemical top left

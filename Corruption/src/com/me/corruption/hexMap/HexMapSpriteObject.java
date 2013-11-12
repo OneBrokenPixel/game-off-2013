@@ -2,7 +2,6 @@ package com.me.corruption.hexMap;
 
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.sun.org.apache.bcel.internal.generic.ATHROW;
 
 public class HexMapSpriteObject {
 

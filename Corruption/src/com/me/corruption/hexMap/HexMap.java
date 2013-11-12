@@ -1,16 +1,12 @@
 package com.me.corruption.hexMap;
 
 import java.util.HashSet;
-import java.util.TreeSet;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.GridPoint2;
 import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
-import com.me.corruption.hexMap.HexMap.Cell;
 
 /**
  * Main map class
@@ -21,9 +17,8 @@ import com.me.corruption.hexMap.HexMap.Cell;
 public class HexMap implements Disposable {
 
 	/**
-	 * Tile Cell class
+	 * Owner enumeration
 	 */
-
 	public static enum Owner {
 		PLAYER, NEUTRAL, CORRUPTION;
 	}
@@ -33,12 +28,19 @@ public class HexMap implements Disposable {
 	public static final int RESOURCE_CHEMICAL	= 2;
 	public static final int RESOURCE_MAX		= 3;
 	
+	
+	/**
+	 * Energy for tile cells
+	 */
 	public class Energy {
 		public float unit;
 		public float recharge;
 		public float max;
 	}
 	
+	/**
+	 * Resource for tile cells
+	 */
 	public class Resource {
 		String name;
 		int amount;
@@ -52,6 +54,9 @@ public class HexMap implements Disposable {
 		
 	}
 	
+	/**
+	 * Tile Cell class
+	 */
 	public class Cell
 	{
 		public GridPoint2 point = new GridPoint2();
@@ -96,6 +101,7 @@ public class HexMap implements Disposable {
 	
 	/**
 	 * static initialisation for sprite from the texture atlas.
+	 * Loads all texture assets into the map.
 	 */	
 	static {
 
@@ -178,7 +184,16 @@ public class HexMap implements Disposable {
 		return cells[col][row];
 	}	
 
+	public HashSet<Cell> getVisableCells() {
+		return visableCells;
+	}
 	
+	/**
+	 * initalise the map with width height and tiles.
+	 * @param width
+	 * @param height
+	 * @param cells
+	 */
 	public void initalise( int width, int height, Cell[][] cells) {
 		this.width = width;
 		this.height = height;
@@ -197,6 +212,10 @@ public class HexMap implements Disposable {
 		updateVisableCells(cell);
 	}
 	
+	/**
+	 * takes a cell and updates the tiles visable to the player.
+	 * @param cell
+	 */
 	private void updateVisableCells(Cell cell) {
 		/*
 		for(int row = Math.max(cell.point.y-1,0); row < Math.min(cell.point.y+2, this.height); row++) {
@@ -230,6 +249,10 @@ public class HexMap implements Disposable {
 		
 	}
 
+	/**
+	 * Updates corrupted tiles
+	 * @param cell
+	 */
 	public void setCorruptionCell( Cell cell ) {
 		corruptedCells.add(cell);
 		System.out.println(corruptedCells);
@@ -252,12 +275,6 @@ public class HexMap implements Disposable {
 	public void dispose() {
 		
 	}
-
-	public HashSet<Cell> getVisableCells() {
-		// TODO Auto-generated method stub
-		return visableCells;
-	}
-
 
 
 }

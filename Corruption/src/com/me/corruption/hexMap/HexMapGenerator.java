@@ -1,16 +1,20 @@
 package com.me.corruption.hexMap;
 
-import java.util.Random;
-
 import com.badlogic.gdx.math.MathUtils;
 import com.me.corruption.hexMap.HexMap.Cell;
 import com.me.corruption.hexMap.HexMap.Owner;
-import com.me.corruption.hexMap.HexMap.Resource;
 
 public class HexMapGenerator {
 
-	
-	private static void setStartingTile( Owner owner, final int width, final int height, HexMap map ) {
+	/**
+	 * Sets the starting tile for a specific owner.
+	 * @param owner  - of the tile to set.
+	 * @param map    - the map instance
+	 */
+	private static void setStartingTile( Owner owner, HexMap map ) {
+		
+		final int width = map.getWidth();
+		final int height = map.getHeight(); 
 		
 		do {
 	
@@ -57,8 +61,8 @@ public class HexMapGenerator {
 		}
 		map.initalise(width, height, cells);
 		
-		setStartingTile(Owner.PLAYER,width,height,map);
-		setStartingTile(Owner.CORRUPTION,width,height,map);
+		setStartingTile(Owner.PLAYER,map);
+		setStartingTile(Owner.CORRUPTION,map);
 		
 		//map.setPlayerStartCell(MathUtils.random.nextInt(width),MathUtils.random.nextInt(height));
 		//map.setCorruptionStartCell(MathUtils.random.nextInt(width),MathUtils.random.nextInt(height));
