@@ -9,7 +9,7 @@ public class Main {
 		cfg.title = "Corruption";
 		cfg.useGL20 = false;
 		cfg.width = 1024;
-		cfg.height = 768;
+		cfg.height = 600;
 		
 		new LwjglApplication(new CorruptionGdxGame(), cfg);
 	}

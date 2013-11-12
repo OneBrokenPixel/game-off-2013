@@ -31,6 +31,7 @@ import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.me.corruption.hexMap.HexMap.Building;
 import com.me.corruption.hexMap.HexMap.Cell;
 import com.me.corruption.hexMap.HexMap.Resource;
 
@@ -54,9 +55,9 @@ public class HexMapRenderer {
 	private static final Vector2[] IconLookup = new Vector2[HexMap.RESOURCE_MAX];
 	
 	static {
-		IconLookup[HexMap.RESOURCE_WIND] = new Vector2(0.65f, 0.30f);
-		IconLookup[HexMap.RESOURCE_SOLAR] = new Vector2(0.35f, 0.30f);
-		IconLookup[HexMap.RESOURCE_CHEMICAL] = new Vector2(0.35f, 0.70f);
+		IconLookup[HexMap.RESOURCE_WIND] = new Vector2(0.65f, 0.35f);
+		IconLookup[HexMap.RESOURCE_SOLAR] = new Vector2(0.35f, 0.35f);
+		IconLookup[HexMap.RESOURCE_CHEMICAL] = new Vector2(0.35f, 0.75f);
 	}
 	
 	private float[] vertices = new float[20];
@@ -143,7 +144,7 @@ public class HexMapRenderer {
 				
 				
 				float x = (layerTileWidth*0.5f) * 3/2 * col;
-				float y = (float) ((layerTileWidth*0.5f) * sqrt3 * (row + 0.5 * (col%2)));
+				float y = (float) ((layerTileWidth*0.5f) * sqrt3 * (row + 0.5 * (col&1)));
 				
 				final Cell cell = map.getCell(col, row);
 				if(cell == null) {
@@ -155,9 +156,11 @@ public class HexMapRenderer {
 				if (tile != null) {
 
 					TextureRegion region = tile.getTexture();
-
-					float x1 = x;
-					float y1 = y;
+					final float hWidth = layerTileWidth * 0.5f;
+					final float hHeight = layerTileHeight * 0.5f;
+					
+					float x1 = x - hWidth;
+					float y1 = y - hHeight;
 					float x2 = (x1 + layerTileWidth);
 					float y2 = (y1 + layerTileHeight);
 
@@ -200,7 +203,7 @@ public class HexMapRenderer {
 			 final float layerTileWidth, final float layerTileHeight, final float color){
 		final float[] vertices = this.vertices;
 		
-		final HashSet<Cell> visable = map.getVisableCells();
+		final HashSet<Cell> visable = map.getVisibleCells();
 		
 		//System.out.println("Row: " + rowFrom + "-" + rowTo);
 		
@@ -208,7 +211,7 @@ public class HexMapRenderer {
 			for (int col = colFrom; col < colTo; col++) {
 				
 				float x = (layerTileWidth*0.5f) * 3/2 * col;
-				float y = (float) ((layerTileWidth*0.5f) * sqrt3 * (row + 0.5 * (col%2)));
+				float y = (float) ((layerTileWidth*0.5f) * sqrt3 * (row + 0.5 * (col&1)));
 				
 				final Cell cell = map.getCell(col, row);
 				//System.out.println(cell.point.x + "-" + cell.point.y + " " + col + "-" + row);
@@ -229,8 +232,12 @@ public class HexMapRenderer {
 					final HexMapSpriteObject icon = res.sprite;
 
 					TextureRegion region =  icon.getTexture();
-					float x1 = (int)(x + layerTileWidth*offset.x - (region.getRegionWidth()*0.5f) );
-					float y1 = (int)(y + layerTileHeight*offset.y - (region.getRegionHeight()*0.5f) );
+					
+					final float hWidth = layerTileWidth * 0.5f;
+					final float hHeight = layerTileWidth * 0.5f;
+					
+					float x1 = (int)((x - hWidth) + (layerTileWidth*offset.x - (region.getRegionWidth()*0.5f)));
+					float y1 = (int)((y - hHeight) + (layerTileHeight*offset.y - (region.getRegionHeight()*0.5f)));
 					
 					float x2 = (int)(x1 + region.getRegionWidth() * unitScale);
 					float y2 = (int)(y1 + region.getRegionHeight() * unitScale);
@@ -272,6 +279,73 @@ public class HexMapRenderer {
 		}
 	}
 	
+	private void renderBuildings(final int rowFrom, final int rowTo, final int colFrom, final int colTo,
+			 final float layerTileWidth, final float layerTileHeight, final float color){
+		final float[] vertices = this.vertices;
+		
+		//final HashSet<Cell> visable = map.getVisibleCells();
+		
+		//System.out.println("Row: " + rowFrom + "-" + rowTo);
+		
+		for (int row = rowFrom; row < rowTo; row++) {
+			for (int col = colFrom; col < colTo; col++) {	
+				float x = (layerTileWidth*0.5f) * 3/2 * col;
+				float y = (float) ((layerTileWidth*0.5f) * sqrt3 * (row + 0.5 * (col&1)));
+				
+				final Cell cell = map.getCell(col, row);
+				//System.out.println(cell.point.x + "-" + cell.point.y + " " + col + "-" + row);
+				if(cell == null || cell.building.sprite == null) {
+					//x += layerTileWidth * width_offset;
+					continue;
+				}
+				final Building res = cell.building;
+
+				final HexMapSpriteObject sprite = res.sprite;
+
+				TextureRegion region =  sprite.getTexture();
+				
+				
+				float x1 = (int)((x) -(region.getRegionWidth() * unitScale* 0.5f));
+				float y1 = (int)((y) - (region.getRegionHeight() * unitScale * 0.5f));
+				
+				float x2 = (int)(x1 + region.getRegionWidth() * unitScale);
+				float y2 = (int)(y1 + region.getRegionHeight() * unitScale);
+				
+				//System.out.println("xy: " + x1 + ", " + y1);
+				
+				float u1 = region.getU();
+				float v1 = region.getV2();
+				float u2 = region.getU2();
+				float v2 = region.getV();
+
+				vertices[X1] = x1;
+				vertices[Y1] = y1;
+				vertices[C1] = color;
+				vertices[U1] = u1;
+				vertices[V1] = v1;
+
+				vertices[X2] = x1;
+				vertices[Y2] = y2;
+				vertices[C2] = color;
+				vertices[U2] = u1;
+				vertices[V2] = v2;
+
+				vertices[X3] = x2;
+				vertices[Y3] = y2;
+				vertices[C3] = color;
+				vertices[U3] = u2;
+				vertices[V3] = v2;
+
+				vertices[X4] = x2;
+				vertices[Y4] = y1;
+				vertices[C4] = color;
+				vertices[U4] = u2;
+				vertices[V4] = v1;
+
+				this.batch.draw(region.getTexture(), vertices, 0, 20);
+			}
+		}
+	}
 	public void render() {
 
 		final Color batchColor = this.batch.getColor();
@@ -285,14 +359,13 @@ public class HexMapRenderer {
 		
 		final int colFrom = Math.max(0, (int) (viewBounds.x / (layerTileWidth*width_offset))-1);
 		final int colTo = Math.min(layerWidth, (int) ((viewBounds.x + viewBounds.width + layerTileWidth) / (layerTileWidth*width_offset)));
-
-		//float y = (float) ((layerTileWidth*0.5f) * sqrt3 * (row + 0.5 * (col%2)));
 		
 		final int rowFrom = Math.max(0, (int) (viewBounds.y / layerTileHeight)-1);
 		final int rowTo = Math.min(layerHeight, (int) ((viewBounds.y + viewBounds.height + layerTileHeight) / layerTileHeight));		
 		
 		this.batch.begin();
 		this.renderTiles(rowFrom, rowTo, colFrom, colTo, layerTileWidth, layerTileHeight, color);
+		this.renderBuildings(rowFrom, rowTo, colFrom, colTo, layerTileWidth, layerTileHeight, color);
 		this.renderResourceIcons(rowFrom, rowTo, colFrom, colTo, layerTileWidth, layerTileHeight, color);
 		this.batch.end();
 	}
@@ -341,6 +414,36 @@ public class HexMapRenderer {
 	
 	public Cell getCellFromTouchCoord( final Vector3 coord ) {
 		
+		final int layerWidth = map.getWidth();
+		final int layerHeight = map.getHeight();
+
+		final float layerTileWidth = map.getTile_width() * unitScale ;
+		final float layerTileHeight = map.getTile_height() * unitScale;
+		
+		final int colFrom = Math.max(0, (int) (viewBounds.x / (layerTileWidth*width_offset))-1);
+		final int colTo = Math.min(layerWidth, (int) ((viewBounds.x + viewBounds.width + layerTileWidth) / (layerTileWidth*width_offset)));
+		
+		final int rowFrom = Math.max(0, (int) (viewBounds.y / layerTileHeight)-1);
+		final int rowTo = Math.min(layerHeight, (int) ((viewBounds.y + viewBounds.height + layerTileHeight) / layerTileHeight));		
+		
+		Vector2 touch = new Vector2();
+		float len2 = (layerTileWidth*0.5f)*(layerTileWidth*0.5f);
+		
+		for (int row = rowFrom; row < rowTo; row++) {
+			for (int col = colFrom; col < colTo; col++) {
+				float x = ((layerTileWidth*0.5f) * 3/2 * col);
+				float y = (float) ((layerTileWidth*0.5f) * sqrt3 * (row + 0.5 * (col&1)));
+				
+				final Cell cell = map.getCell(col, row);
+				
+				touch.set(coord.x-x,coord.y-y);
+				
+				if( touch.len2() < len2 ) {
+					return cell;
+				}
+				
+			}
+		}
 		
 		return null;
 	}

@@ -1,132 +1,206 @@
 package com.me.corruption;
 
-import com.badlogic.gdx.ApplicationListener;
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.me.corruption.hexMap.HexMap;
+import com.me.corruption.hexMap.HexMap.Cell;
 import com.me.corruption.hexMap.HexMapGenerator;
 import com.me.corruption.hexMap.HexMapRenderer;
+import com.me.corruption.ui.GameUI;
 
-public class CorruptionGdxGame implements ApplicationListener {
-	private OrthographicCamera camera;
-	private SpriteBatch batch;
+/* add to game screen!
 
 	
-	private HexMap map;
-	private HexMapRenderer renderer;
+
 	
-	InputProcessor processor = new InputProcessor() {
+
+ */
+
+/**
+ * 
+ * @author Anthony/Marie
+ *
+ */
+public class CorruptionGdxGame extends Game {
+	
+	public class GameScreen implements Screen {
+
+		private OrthographicCamera camera;
+		private SpriteBatch batch;
+
+		private HexMap map;
+		private HexMapRenderer renderer;
 		
-		private Vector3 v = new Vector3();
+		private CorruptionGdxGame gameInstance;	
+		private GameUI stage;
 		
-		@Override
-		public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-			// TODO Auto-generated method stub
-			return false;
-		}
+		private InputMultiplexer multiplexer;
 		
-		@Override
-		public boolean touchDragged(int screenX, int screenY, int pointer) {
-			// TODO Auto-generated method stub
-			return false;
-		}
-		
-		@Override
-		public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-			// TODO Auto-generated method stub
+		InputProcessor processor = new InputProcessor() {
 			
-			if( renderer != null ){
-				
-				v.set(screenX, screenY, 0f);
-				camera.unproject(v);
-				
-				
-				renderer.getCellFromTouchCoord(v);
+			private Vector3 v = new Vector3();
+			
+			@Override
+			public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+				// TODO Auto-generated method stub
+				return false;
 			}
 			
-			return false;
+			@Override
+			public boolean touchDragged(int screenX, int screenY, int pointer) {
+				// TODO Auto-generated method stub
+				return false;
+			}
+			
+			@Override
+			public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+				// TODO Auto-generated method stub
+				
+				if( renderer != null ){
+					
+					v.set(screenX, screenY, 0f);
+					camera.unproject(v);
+					
+					Cell cell = renderer.getCellFromTouchCoord(v);
+					if( cell != null ) {
+						
+						if(cell.owner.contains("player")){
+							cell.building.set("chemicalplant");
+						}
+						else {
+							cell.setOwner("player");
+						}
+						System.out.println(cell);
+					}
+				}
+				
+				return false;
+			}
+			
+			@Override
+			public boolean scrolled(int amount) {
+				// TODO Auto-generated method stub
+				return false;
+			}
+			
+			@Override
+			public boolean mouseMoved(int screenX, int screenY) {
+				// TODO Auto-generated method stub
+				return false;
+			}
+			
+			@Override
+			public boolean keyUp(int keycode) {
+				// TODO Auto-generated method stub
+				return false;
+			}
+			
+			@Override
+			public boolean keyTyped(char character) {
+				// TODO Auto-generated method stub
+				return false;
+			}
+			
+			@Override
+			public boolean keyDown(int keycode) {
+				// TODO Auto-generated method stub
+				return false;
+			}
+		};
+		
+	
+		
+		public GameScreen(CorruptionGdxGame instance ) {
+			
+			this.gameInstance = instance;
+
+
 		}
 		
 		@Override
-		public boolean scrolled(int amount) {
+		public void render(float delta) {
+			Gdx.gl.glClearColor(0, 0, 0.2f, 1);
+			Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
+			
+			renderer.setView(camera);
+			renderer.render();
+			
+			Table.drawDebug(stage);
+			stage.act();
+			stage.draw();
+		}
+
+		@Override
+		public void resize(int width, int height) {
+			camera.viewportWidth = width;
+			camera.viewportHeight = height;
+			camera.update();
+		}
+
+		@Override
+		public void show() {
+			
+			stage = new GameUI();
+			
+			multiplexer = new InputMultiplexer();
+			multiplexer.addProcessor(stage);
+			multiplexer.addProcessor(processor);			
+			
+			
+			final float w = Gdx.graphics.getWidth();
+			final float h = Gdx.graphics.getHeight();
+			
+			camera = new OrthographicCamera(w, h);
+			batch = new SpriteBatch();
+			
+			map = HexMapGenerator.generateTestMap(10, 10);
+			renderer = new HexMapRenderer(batch,map);
+			
+			camera.position.set(renderer.getMapPixelWidth()/2, renderer.getMapPixelHeight()/2, 0f);
+			camera.update();
+			
+			Gdx.input.setInputProcessor(multiplexer);
+
+		}
+
+		@Override
+		public void hide() {
 			// TODO Auto-generated method stub
-			return false;
+			
+		}
+
+		@Override
+		public void pause() {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void resume() {
+			
+		}
+
+		@Override
+		public void dispose() {
+			batch.dispose();
 		}
 		
-		@Override
-		public boolean mouseMoved(int screenX, int screenY) {
-			// TODO Auto-generated method stub
-			return false;
-		}
-		
-		@Override
-		public boolean keyUp(int keycode) {
-			// TODO Auto-generated method stub
-			return false;
-		}
-		
-		@Override
-		public boolean keyTyped(char character) {
-			// TODO Auto-generated method stub
-			return false;
-		}
-		
-		@Override
-		public boolean keyDown(int keycode) {
-			// TODO Auto-generated method stub
-			return false;
-		}
-	};
+	}
+	
+	GameScreen game = new GameScreen(this);
 	
 	@Override
-	public void create() {		
-		float w = Gdx.graphics.getWidth();
-		float h = Gdx.graphics.getHeight();
-		
-		camera = new OrthographicCamera(w, h);
-		batch = new SpriteBatch();
-		
-		map = HexMapGenerator.generateTestMap(10, 10);
-		renderer = new HexMapRenderer(batch,map);
-		
-		camera.position.set(renderer.getMapPixelWidth()/2, renderer.getMapPixelHeight()/2, 0f);
-		camera.update();
-		
-		Gdx.input.setInputProcessor(processor);
+	public void create() {
+		setScreen(game);
 	}
+	
 
-	@Override
-	public void dispose() {
-		batch.dispose();
-	}
-
-	@Override
-	public void render() {		
-		Gdx.gl.glClearColor(0, 0, 0.2f, 1);
-		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
-		
-		renderer.setView(camera);
-		renderer.render();
-		
-	}
-
-	@Override
-	public void resize(int width, int height) {
-		camera.viewportWidth = width;
-		camera.viewportHeight = height;
-		camera.update();
-	}
-
-	@Override
-	public void pause() {
-	}
-
-	@Override
-	public void resume() {
-	}
 }

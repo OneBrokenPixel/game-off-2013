@@ -11,7 +11,7 @@ public class HexMapGenerator {
 	 * @param owner  - of the tile to set.
 	 * @param map    - the map instance
 	 */
-	private static void setStartingTile( Owner owner, HexMap map ) {
+	private static void setStartingTile( String owner, HexMap map ) {
 		
 		final int width = map.getWidth();
 		final int height = map.getHeight(); 
@@ -23,7 +23,7 @@ public class HexMapGenerator {
 			
 			final Cell cell = map.getCell(x, y);
 			
-			if( cell.owner == Owner.NEUTRAL ) {
+			if( cell.owner.contains("neutral") ) {
 				
 				cell.setOwner(owner);
 				
@@ -51,7 +51,7 @@ public class HexMapGenerator {
 
 				Cell cell = map.new Cell();
 				cell.point.set(col, row);
-				cell.setOwner(Owner.NEUTRAL);
+				cell.setOwner("neutral");
 				cell.resources[HexMap.RESOURCE_WIND] = map.new Resource("wind",2);
 				cell.resources[HexMap.RESOURCE_SOLAR] = map.new Resource("solar",1);
 				cell.resources[HexMap.RESOURCE_CHEMICAL] = map.new Resource("chemical",1);
@@ -61,8 +61,8 @@ public class HexMapGenerator {
 		}
 		map.initalise(width, height, cells);
 		
-		setStartingTile(Owner.PLAYER,map);
-		setStartingTile(Owner.CORRUPTION,map);
+		setStartingTile("player",map);
+		setStartingTile("corruption",map);
 		
 		//map.setPlayerStartCell(MathUtils.random.nextInt(width),MathUtils.random.nextInt(height));
 		//map.setCorruptionStartCell(MathUtils.random.nextInt(width),MathUtils.random.nextInt(height));
