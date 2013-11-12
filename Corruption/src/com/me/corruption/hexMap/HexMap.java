@@ -90,10 +90,10 @@ public class HexMap implements Disposable {
 			this.owner = owner;
 			this.tile = tiles.get(this.owner+"Hex");
 			if( this.owner.contains("player") ) {
-				getPlayer().setPlayerCell(this);
+				getPlayer().setOwnedCell(this);
 			}
 			else if( this.owner.contains("corruption") ) {
-				setCorruptionCell(this);
+				getCorruption().setOwnedCell(this);
 			}
 		}
 	}
@@ -131,7 +131,7 @@ public class HexMap implements Disposable {
 		 * Sets a Cell as belonging to the player
 		 * @param cell
 		 */
-		public void setPlayerCell( Cell cell ) {
+		public void setOwnedCell( Cell cell ) {
 			owned.add(cell);
 			//System.out.println(playerCells);
 			
@@ -183,8 +183,8 @@ public class HexMap implements Disposable {
 	
 	
 	private PlayerEntity player = new PlayerEntity();
-	
-	private HashSet<Cell> corruptedCells = new HashSet<HexMap.Cell>();
+	private PlayerEntity corruption = new PlayerEntity();
+	//private HashSet<Cell> corruptedCells = new HashSet<HexMap.Cell>();
 	
 	/**
 	 * Static initialisation for sprite from the texture atlas.
@@ -291,6 +291,10 @@ public class HexMap implements Disposable {
 		return player;
 	}
 	
+	public PlayerEntity getCorruption() {
+		return corruption;
+	}
+	
 	/**
 	 * initalise the map with width height and tiles.
 	 * @param width
@@ -302,14 +306,6 @@ public class HexMap implements Disposable {
 		this.height = height;
 		
 		this.cells = cells;
-	}
-
-	/**
-	 * Updates corrupted tiles
-	 * @param cell
-	 */
-	public void setCorruptionCell( Cell cell ) {
-		corruptedCells.add(cell);
 	}
 	
 	/**

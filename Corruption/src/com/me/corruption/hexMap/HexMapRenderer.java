@@ -63,6 +63,27 @@ public class HexMapRenderer {
 	}
 	
 	private float[] vertices = new float[20];
+	
+	
+	private boolean showResources = true;
+	private boolean showEnergy = true;
+	
+	public boolean isShowResources() {
+		return showResources;
+	}
+
+	public void setShowResources(boolean showResources) {
+		this.showResources = showResources;
+	}
+
+	public boolean isShowEnergy() {
+		return showEnergy;
+	}
+
+	public void setShowEnergy(boolean showEnergy) {
+		this.showEnergy = showEnergy;
+	}
+
 	/**
 	 * Constructor
 	 */
@@ -392,8 +413,12 @@ public class HexMapRenderer {
 		this.batch.begin();
 		this.renderTiles(rowFrom, rowTo, colFrom, colTo, layerTileWidth, layerTileHeight, color);
 		this.renderBuildings(rowFrom, rowTo, colFrom, colTo, layerTileWidth, layerTileHeight, color);
-		this.renderResourceIcons(rowFrom, rowTo, colFrom, colTo, layerTileWidth, layerTileHeight, color);
-		this.renderEnergy(rowFrom, rowTo, colFrom, colTo, layerTileWidth, layerTileHeight, color);
+		if( this.showResources ) {
+			this.renderResourceIcons(rowFrom, rowTo, colFrom, colTo, layerTileWidth, layerTileHeight, color);
+		}
+		if( this.showEnergy ) {
+			this.renderEnergy(rowFrom, rowTo, colFrom, colTo, layerTileWidth, layerTileHeight, color);
+		}
 		this.batch.end();
 	}
 	/*
