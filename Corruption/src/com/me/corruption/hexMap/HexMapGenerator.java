@@ -24,7 +24,7 @@ public class HexMapGenerator {
 			
 			square(p0,pc,size);
 			
-			System.out.println(this.data[0][0]);
+			//System.out.println(this.data[0][0]);
 		}
 		
 		private GridPoint2 setData(GridPoint2 point, int dataPoint) {
@@ -52,7 +52,7 @@ public class HexMapGenerator {
 			
 			
 			int value = (MathUtils.random(min, max)+d0+d1+d2+d3)/5;
-			System.out.println("Value: " + value);
+			//System.out.println("Value: " + value);
 			
 			// this is the problem
 			GridPoint2 pc = setData(new GridPoint2(p0.x+((p2.x-p0.x)/2),p0.y+((p2.y-p0.y)/2)), value);
@@ -73,8 +73,8 @@ public class HexMapGenerator {
 			int value1 = (MathUtils.random(min, max)+d0+dc)/3;
 			int value2 = (MathUtils.random(min, max)+d0+dc)/3;
 			
-			System.out.println("Value: " + value1);
-			System.out.println("Value: " + value2);
+			//System.out.println("Value: " + value1);
+			//System.out.println("Value: " + value2);
 			
 			GridPoint2 p1 = setData( new GridPoint2(p0.x,pc.y), value1);
 			GridPoint2 p3 = setData( new GridPoint2(pc.x,p0.y), value2);
@@ -92,9 +92,11 @@ public class HexMapGenerator {
 	 */
 	private static void generateTileEnergy( HexMap map ) {
 		
-		Fractal f = new Fractal(map.getWidth(), 0, 15);
+		final int size = Math.max(map.getWidth(), map.getHeight());
 		
-		for( int x = 0; x < map.getHeight(); x++) {
+		Fractal f = new Fractal(size, 0, 15);
+		
+		for( int x = 0; x < map.getWidth(); x++) {
 			for( int y = 0; y < map.getHeight(); y++) {
 				//System.out.println(x+ " "+y);
 				Cell cell = map.getCell(x, y);
@@ -138,14 +140,14 @@ public class HexMapGenerator {
 	 * @param height
 	 * @return returns the map generated
 	 */
-	public static HexMap generateTestMap( final int size) {
+	public static HexMap generateTestMap( final int width, final int height) {
 		
 		HexMap map = new HexMap();
 		
-		Cell[][] cells = new Cell[size][size];
+		Cell[][] cells = new Cell[width][height];
 		
-		for( int row = 0; row < size; row++) {
-			for( int col = 0; col < size; col++) {
+		for( int row = 0; row < height; row++) {
+			for( int col = 0; col < width; col++) {
 
 				Cell cell = map.new Cell();
 				cell.point.set(col, row);
@@ -154,12 +156,12 @@ public class HexMapGenerator {
 				cell.resources[HexMap.RESOURCE_SOLAR] = map.new Resource("solar",1);
 				cell.resources[HexMap.RESOURCE_CHEMICAL] = map.new Resource("chemical",1);
 				
-				cell.energy.unit = -10;
+				//cell.energy.unit = -10;
 				cells[col][row] = cell;
 
 			}
 		}
-		map.initalise(size, size, cells);
+		map.initalise(width, height, cells);
 		
 		setStartingTile("player",map);
 		setStartingTile("corruption",map);
