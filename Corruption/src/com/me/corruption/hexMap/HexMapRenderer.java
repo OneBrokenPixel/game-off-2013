@@ -240,7 +240,7 @@ public class HexMapRenderer {
 				
 				final Cell cell = map.getCell(col, row);
 				//System.out.println(cell.point.x + "-" + cell.point.y + " " + col + "-" + row);
-				if(cell == null || !visable.contains(cell)) {
+				if(cell == null || (!visable.contains(cell) && !cell.owner.contains("player")) || cell.building.sprite != null) {
 					//x += layerTileWidth * width_offset;
 					continue;
 				}
@@ -255,7 +255,7 @@ public class HexMapRenderer {
 
 					final Vector2 offset = IconLookup[resIndex];
 					final HexMapSpriteObject icon = res.sprite;
-
+					//System.out.println(res.name + res.amount);
 					TextureRegion region =  icon.getTexture();
 					
 					final float hWidth = layerTileWidth * 0.5f;

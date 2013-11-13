@@ -139,9 +139,7 @@ public class CorruptionGdxGame extends Game {
 		}
 
 		public void centerMap() {
-			final float w = Gdx.graphics.getWidth();
-			final float h = Gdx.graphics.getHeight();
-			
+		
 			final float map_w = map.getWidth()  * (map.getTile_width()*0.75f);
 			final float map_h = map.getHeight() * map.getTile_height() + map.getTile_height()*0.5f;
 			
