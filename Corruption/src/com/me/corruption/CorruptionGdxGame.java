@@ -154,10 +154,10 @@ public class CorruptionGdxGame extends Game {
 			camera = new OrthographicCamera(w, h);
 			batch = new SpriteBatch();
 			
-			map = HexMapGenerator.generateTestMap(14, 9);
+			map = HexMapGenerator.generateTestMap(8);
 			renderer = new HexMapRenderer(batch,map);
 			
-			camera.position.set(renderer.getMapPixelWidth()*0.35f, renderer.getMapPixelHeight()*0.525f, 0f);
+			camera.position.set(renderer.getMapPixelWidth()*0.35f, renderer.getMapPixelHeight()*0.5f, 0f);
 			camera.update();
 			
 			Gdx.input.setInputProcessor(multiplexer);

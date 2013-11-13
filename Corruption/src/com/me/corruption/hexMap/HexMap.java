@@ -281,7 +281,7 @@ public class HexMap implements Disposable {
 	 * @return null if out of range width/ height
 	 */
 	public Cell getCell(int col, int row) {
-		if( col > 0 && col < width && row > 0 && row <height){
+		if( col >= 0 && col < width && row >= 0 && row <height){
 			return cells[col][row];
 		}
 		return null;
