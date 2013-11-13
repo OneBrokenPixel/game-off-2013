@@ -90,9 +90,9 @@ public class HexMapGenerator {
 		final int size = Math.max(map.getWidth(), map.getHeight());
 		
 		// control the rand values here.
-		Fractal solar		= new Fractal(size, 0, 5);
-		Fractal wind		= new Fractal(size, 0, 5);
-		Fractal chemical	= new Fractal(size, 0, 4);
+		Fractal solar		= new Fractal(size, 1, 5);
+		Fractal wind		= new Fractal(size, 1, 5);
+		Fractal chemical	= new Fractal(size, 1, 4);
 		
 		for( int x = 0; x < map.getWidth(); x++) {
 			for( int y = 0; y < map.getHeight(); y++) {

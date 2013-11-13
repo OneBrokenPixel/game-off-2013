@@ -1,6 +1,9 @@
-d::0:application/unknown
+d:war/:0:application/unknown
 d:data:0:application/unknown
 i:data/libgdx.png:54931:image/png
+d:spritesheets:0:application/unknown
+t:spritesheets/HexTiles.atlas:1501:application/unknown
+i:spritesheets/HexTiles.png:24944:image/png
 t:com/badlogic/gdx/graphics/g3d/shaders/default.fragment.glsl:5043:application/unknown
 t:com/badlogic/gdx/graphics/g3d/shaders/default.vertex.glsl:8755:application/unknown
 t:com/badlogic/gdx/graphics/g3d/shaders/depth.fragment.glsl:549:application/unknown
