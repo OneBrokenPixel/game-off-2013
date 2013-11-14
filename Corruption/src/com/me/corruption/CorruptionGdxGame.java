@@ -141,7 +141,7 @@ public class CorruptionGdxGame extends Game {
 		@Override
 		public void show() {
 			
-			stage = new GameUI();
+			stage = new GameUI(renderer);
 			
 			multiplexer = new InputMultiplexer();
 			multiplexer.addProcessor(stage);

@@ -8,7 +8,7 @@ public class Main {
 		LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
 		cfg.title = "Corruption";
 		cfg.useGL20 = false;
-		cfg.width = 1024;
+		cfg.width = 1055;
 		cfg.height = 600;
 		
 		new LwjglApplication(new CorruptionGdxGame(), cfg);
