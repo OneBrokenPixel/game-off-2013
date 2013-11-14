@@ -228,8 +228,10 @@ public class HexMapRenderer {
 			 final float layerTileWidth, final float layerTileHeight, final float color){
 		final float[] vertices = this.vertices;
 		
-		final HashSet<Cell> visable = map.getPlayer().getVisible();
+		// ToDo read viable for the playerRendering or move player rendering somewhere else
 		
+		final HashSet<Cell> visible = map.getPlayer().getVisible();
+		//final HashSet<Cell> visible = new HashSet<HexMap.Cell>();
 		//System.out.println("Row: " + rowFrom + "-" + rowTo);
 		
 		for (int row = rowFrom; row < rowTo; row++) {
@@ -240,7 +242,7 @@ public class HexMapRenderer {
 				
 				final Cell cell = map.getCell(col, row);
 				//System.out.println(cell.point.x + "-" + cell.point.y + " " + col + "-" + row);
-				if(cell == null || (!visable.contains(cell) && !cell.owner.contains("player")) || cell.building.sprite != null) {
+				if(cell == null || (!visible.contains(cell) && !cell.owner.contains("player")) || cell.getBuilding().sprite != null) {
 					//x += layerTileWidth * width_offset;
 					continue;
 				}
@@ -319,11 +321,11 @@ public class HexMapRenderer {
 				
 				final Cell cell = map.getCell(col, row);
 				//System.out.println(cell.point.x + "-" + cell.point.y + " " + col + "-" + row);
-				if(cell == null || cell.building.sprite == null) {
+				if(cell == null || cell.getBuilding().sprite == null) {
 					//x += layerTileWidth * width_offset;
 					continue;
 				}
-				final Building res = cell.building;
+				final Building res = cell.getBuilding();
 
 				final HexMapSpriteObject sprite = res.sprite;
 
@@ -388,7 +390,7 @@ public class HexMapRenderer {
 					continue;
 				}
 				//System.out.println(cell.energy.unit);
-				font.draw(batch, ""+((int)cell.energy.unit), x, y);
+				font.draw(batch, ""+((int)cell.unit), x, y);
 			}
 		}
 	}

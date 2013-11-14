@@ -35,6 +35,7 @@ public class GameUI extends Stage {
 	private TextButton tbResources;
 	private TextButton tbEnergy;
 	private TextButton tbResearch;
+	private TextButton tbShields;
 	
 	private TextButton tbMute;   // change mute and pause to icons
 	private TextButton tbPause;
@@ -93,14 +94,17 @@ public class GameUI extends Stage {
 		tbResources = new TextButton("Show Resources", toggleStyle);
 		tbEnergy = new TextButton("Show Energy", toggleStyle);
 		tbResearch = new TextButton("Research", tbStyle);
-
+		tbShields = new TextButton("Add Energy", toggleStyle);
+		
 		sidebar.add(addEnergy);
 		sidebar.row();
 		sidebar.add(tbResources);
 		sidebar.row();
 		sidebar.add(tbEnergy);
 		sidebar.row();
-		sidebar.add(tbResearch).padBottom(180);
+		sidebar.add(tbShields);
+		sidebar.row();
+		sidebar.add(tbResearch).padBottom(150);
 		sidebar.row();
 		
 		Table rowTable = new Table();
@@ -126,6 +130,7 @@ public class GameUI extends Stage {
 		renderGroup = new ButtonGroup();
 		renderGroup.add(tbResources);
 		renderGroup.add(tbEnergy);
+		//renderGroup.add(tbShields);
 		renderGroup.setMaxCheckCount(1);
 		renderGroup.setMinCheckCount(0);
 		renderGroup.uncheckAll();
@@ -180,6 +185,13 @@ public class GameUI extends Stage {
 				if (!tbEnergy.isChecked()) {
 					tbEnergy.setText("Hide Energy");
 				}
+				return true;
+			}
+		});
+		
+		tbShields.addListener(new InputListener() {
+			public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+				System.out.println("Start shielding");
 				return true;
 			}
 		});

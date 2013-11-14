@@ -1,6 +1,11 @@
 package com.me.corruption.hexMap;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
+
+import sun.org.mozilla.javascript.internal.InterfaceAdapter;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -8,6 +13,7 @@ import com.badlogic.gdx.math.GridPoint2;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.Disposable;
 
+import com.me.corruption.entities.PlayerEntity;
 import com.me.corruption.hexMap.HexMapSpriteObject;
 /**
  * Main map class
@@ -16,33 +22,19 @@ import com.me.corruption.hexMap.HexMapSpriteObject;
  *
  */
 public class HexMap implements Disposable {
-
-	/**
-	 * Owner enumeration
-	 */
-	public static enum Owner {
-		PLAYER, NEUTRAL, CORRUPTION;
-	}
 	
 	public static final int RESOURCE_WIND		= 0;	
 	public static final int RESOURCE_SOLAR		= 1;
 	public static final int RESOURCE_CHEMICAL	= 2;
 	public static final int RESOURCE_MAX		= 3;
+
+	private static final float BUILDING_ENERGY[] = {0.0f,0.0f,0.0f};
 	
-	
-	/**
-	 * Energy for tile cells
-	 */
-	public class Energy {
-		public float unit;
-		public float recharge;
-		public float max;
-	}
 	
 	/**
 	 * Resource for tile cells
 	 */
-	public class Resource {
+	public class Resource implements Comparable<Resource> {
 		String name;
 		int amount;
 		HexMapSpriteObject sprite;
@@ -52,16 +44,25 @@ public class HexMap implements Disposable {
 			this.amount = MathUtils.clamp(amount, 0, 3);
 			this.sprite = resourceIcons.get(this.name+this.amount);
 		}
+
+		@Override
+		public int compareTo(Resource arg0) {
+			if(arg0 != null) {
+				return Integer.compare(this.amount, arg0.amount);
+			}
+			else {
+				return 1;
+			}
+		}
 		
 	}
 	
 	public class Building {
-		String name = null;
-		HexMapSpriteObject sprite = null;
+		public String name = null;
+		public HexMapSpriteObject sprite = null;
 		
-		public Building() {
-		}
-		
+		public float energyBonus = 0.0f;
+				
 		public void set(String name) {
 			this.name = name;
 			if(this.name != null) {
@@ -70,6 +71,17 @@ public class HexMap implements Disposable {
 			else {
 				this.sprite = null;
 			}
+
+			if( this.name.contains("chemicalplant") ) {
+				this.energyBonus = BUILDING_ENERGY[RESOURCE_CHEMICAL];
+			}
+			else if( this.name.contains("solarplant")) {
+				this.energyBonus = BUILDING_ENERGY[RESOURCE_SOLAR];
+			}
+			else if( this.name.contains("windplant")) {
+				this.energyBonus = BUILDING_ENERGY[RESOURCE_WIND];
+			}
+			//this.energyBonus = BUILDING_ENERGY
 		}
 	}
 	
@@ -81,20 +93,84 @@ public class HexMap implements Disposable {
 		public GridPoint2 point = new GridPoint2();
 		
 		public HexMapSpriteObject tile = null;
-		public Building building = new Building();
-		public Energy energy = new Energy();
+		private Building building = new Building();
+		
+		// energy
+		public float unit;
+		public float rechargeRate;
+		public float max;
+		
+		public boolean recharge = false;
+		
 		public Resource[] resources = new Resource[3];
 		public String owner = "neutral";
 		
 		public void setOwner( String owner ) {
 			this.owner = owner;
 			this.tile = tiles.get(this.owner+"Hex");
+			/*
 			if( this.owner.contains("player") ) {
 				getPlayer().setOwnedCell(this);
 			}
 			else if( this.owner.contains("corruption") ) {
 				getCorruption().setOwnedCell(this);
 			}
+			*/
+		}
+		
+		public void addEnergy( float energy) {
+			unit += energy;
+		}
+		
+		public void setRecharge(boolean r) {
+			this.recharge = r;
+			
+			HexMapSpriteObject toogleTile = tiles.get(this.owner+"Hex"+"_toggle");
+		
+			if( toogleTile != null) {
+				if(this.recharge) {
+					tile = toogleTile;
+				}
+				else {
+					tile = tiles.get(this.owner+"Hex");
+				}
+			}
+		}
+		
+		public void setBuilding( String name ) {
+			building.set(name);
+		}
+
+		public Building getBuilding() {
+			// TODO Auto-generated method stub
+			return building;
+		}
+		
+		public Integer[] sortResources() {
+			
+			Comparator<Integer> comp = new Comparator<Integer>() {
+
+				// i think this is how it works
+				@Override
+				public int compare(Integer arg0, Integer arg1) {
+					final Resource res1 = resources[arg0];
+					final Resource res2 = resources[arg1];
+					
+					if(res1 != null) {
+						return res1.compareTo(res2);
+					}
+					else {
+						return -1;
+					}
+				}
+				
+			}; 
+			
+			Integer a[] = { RESOURCE_WIND, RESOURCE_SOLAR, RESOURCE_CHEMICAL};
+			
+			Arrays.sort(a, comp);
+			
+			return a;
 		}
 	}
 	
@@ -113,7 +189,12 @@ public class HexMap implements Disposable {
 	private static HexMapSpriteList resourceIcons;
 	private static HexMapSpriteList units;
 	
-	
+	/*
+	/**
+	 * Player Entity class
+	 * @author Anthony
+	 *
+	 
 	class PlayerEntity {
 		private HashSet<Cell> owned = new HashSet<HexMap.Cell>();
 		private HashSet<Cell> visible = new HashSet<HexMap.Cell>();
@@ -127,10 +208,11 @@ public class HexMap implements Disposable {
 			return owned;
 		}
 		
+	
 		/**
 		 * Sets a Cell as belonging to the player
 		 * @param cell
-		 */
+		 
 		public void setOwnedCell( Cell cell ) {
 			owned.add(cell);
 			//System.out.println(playerCells);
@@ -145,7 +227,7 @@ public class HexMap implements Disposable {
 		/**
 		 * 
 		 * @param cell
-		 */
+		 
 		private void setCellAsVisible(Cell cell) {
 			if(cell != null && cell.owner.contains("neutral")) {
 				visible.add(cell);
@@ -155,7 +237,7 @@ public class HexMap implements Disposable {
 		/**
 		 * takes a cell and updates the tiles visible to the player.
 		 * @param cell
-		 */
+		 
 		private void updateVisibleCells(Cell cell) {
 			
 			final GridPoint2 point = cell.point;
@@ -181,10 +263,13 @@ public class HexMap implements Disposable {
 		}
 	}
 	
-	
+	// these are what i started using for player and c.
 	private PlayerEntity player = new PlayerEntity();
 	private PlayerEntity corruption = new PlayerEntity();
 	//private HashSet<Cell> corruptedCells = new HashSet<HexMap.Cell>();
+	 */
+	
+	private PlayerEntity player = new PlayerEntity(this);
 	
 	/**
 	 * Static initialisation for sprite from the texture atlas.
@@ -209,6 +294,7 @@ public class HexMap implements Disposable {
 		tile_height = atlas.findRegion("playerHex").getRegionHeight();
 		
 		tiles.add( new HexMapSpriteObject("playerHex", atlas),
+				   new HexMapSpriteObject("playerHex_toggle", atlas),
 				   new HexMapSpriteObject("neutralHex", atlas),
 				   new HexMapSpriteObject("corruptionHex", atlas));
 		
@@ -287,14 +373,15 @@ public class HexMap implements Disposable {
 		return null;
 	}	
 
+
 	public PlayerEntity getPlayer() {
 		return player;
 	}
-	
+	/*
 	public PlayerEntity getCorruption() {
 		return corruption;
 	}
-	
+	*/
 	/**
 	 * initalise the map with width height and tiles.
 	 * @param width

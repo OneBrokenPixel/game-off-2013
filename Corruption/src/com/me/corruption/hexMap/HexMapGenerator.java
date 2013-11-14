@@ -3,6 +3,8 @@ package com.me.corruption.hexMap;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.GridPoint2;
 import com.badlogic.gdx.math.MathUtils;
+import com.me.corruption.entities.Entity;
+import com.me.corruption.entities.PlayerEntity;
 import com.me.corruption.hexMap.HexMap.Cell;
 
 public class HexMapGenerator {
@@ -140,7 +142,7 @@ public class HexMapGenerator {
 				//System.out.println(x+ " "+y);
 				Cell cell = map.getCell(x, y);
 				//System.out.println(cell);
-				cell.energy.unit = f.getData(x,y);
+				cell.unit = f.getData(x,y);
 			}
 		}
 	}
@@ -150,12 +152,12 @@ public class HexMapGenerator {
 	 * @param owner  - of the tile to set.
 	 * @param map    - the map instance
 	 */
-	private static void setStartingTile( String owner, HexMap map ) {
+	private static void setStartingTile( Entity owner, HexMap map ) {
 		
 		final int width = map.getWidth();
 		final int height = map.getHeight(); 
-		
-		final Object[] other = (owner.contains("corruption"))? map.getPlayer().getOwned().toArray():map.getCorruption().getOwned().toArray();
+	
+		//final Object[] other = (owner.contains("corruption"))? map.getPlayer().getOwned().toArray():map.getCorruption().getOwned().toArray();
 		
 		
 		do {
@@ -168,6 +170,7 @@ public class HexMapGenerator {
 			if( cell.owner.contains("neutral") ) {
 				
 				// to ensure that the corruption is at least 4 tiles away.
+				/*
 				if(other.length > 0){
 					
 					for(Object o : other) {
@@ -178,14 +181,35 @@ public class HexMapGenerator {
 					}
 					
 				}
+				*/
 				
-				cell.setOwner(owner);
+				owner.addOwnedCell(cell);
 				
+				if(owner instanceof PlayerEntity) {
+					//cell.resources
+					Integer[] a = cell.sortResources();
+					System.out.println(a[0]);
+					switch(a[0]) {
+					case HexMap.RESOURCE_CHEMICAL:
+						cell.setBuilding("chemicalplant");
+						break;
+					case HexMap.RESOURCE_SOLAR:
+						cell.setBuilding("solarplant");
+						break;
+					case HexMap.RESOURCE_WIND:
+						cell.setBuilding("windplant");
+						break;
+					default:
+						break;
+					}
+					
+				}
 				break;
 			}
 			
 		}while( true );
 		
+	
 		
 	}
 	/**
@@ -214,13 +238,14 @@ public class HexMapGenerator {
 		}
 		map.initalise(width, height, cells);
 		
-		setStartingTile("player",map);
-		setStartingTile("corruption",map);
-		
 		generateTileEnergy(map);
 		generateResorces(map);
 		//map.setPlayerStartCell(MathUtils.random.nextInt(width),MathUtils.random.nextInt(height));
 		//map.setCorruptionStartCell(MathUtils.random.nextInt(width),MathUtils.random.nextInt(height));
+		
+		setStartingTile(map.getPlayer(),map);
+		//setStartingTile("corruption",map);
+		
 		return map;
 	}
 }

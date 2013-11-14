@@ -5,105 +5,112 @@ filter: Nearest,Nearest
 repeat: none
 chemical1
   rotate: false
-  xy: 236, 106
+  xy: 314, 52
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
 chemical2
   rotate: false
-  xy: 85, 2
+  xy: 125, 24
   size: 21, 24
   orig: 21, 24
   offset: 0, 0
   index: -1
 chemical3
   rotate: false
-  xy: 136, 29
+  xy: 353, 91
   size: 26, 25
   orig: 26, 25
   offset: 0, 0
   index: -1
 chemicalplant
   rotate: false
-  xy: 85, 28
+  xy: 46, 22
   size: 49, 26
   orig: 49, 26
   offset: 0, 0
   index: -1
 corruptionHex
   rotate: false
-  xy: 2, 56
+  xy: 2, 50
   size: 76, 66
   orig: 76, 66
   offset: 0, 0
   index: -1
 neutralHex
   rotate: false
-  xy: 80, 56
+  xy: 80, 50
   size: 76, 66
   orig: 76, 66
   offset: 0, 0
   index: -1
 playerHex
   rotate: false
-  xy: 158, 56
+  xy: 158, 50
+  size: 76, 66
+  orig: 76, 66
+  offset: 0, 0
+  index: -1
+playerHex_toggle
+  rotate: false
+  xy: 236, 50
   size: 76, 66
   orig: 76, 66
   offset: 0, 0
   index: -1
 solar1
   rotate: false
-  xy: 236, 88
+  xy: 46, 4
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
 solar2
   rotate: false
-  xy: 108, 2
+  xy: 409, 92
   size: 21, 24
   orig: 21, 24
   offset: 0, 0
   index: -1
 solar3
   rotate: false
-  xy: 164, 29
+  xy: 97, 23
   size: 26, 25
   orig: 26, 25
   offset: 0, 0
   index: -1
 solarplant
   rotate: false
-  xy: 2, 8
+  xy: 2, 2
   size: 42, 46
   orig: 42, 46
   offset: 0, 0
   index: -1
 wind1
   rotate: false
-  xy: 236, 70
+  xy: 353, 73
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
 wind2
   rotate: false
-  xy: 220, 30
+  xy: 148, 24
   size: 21, 24
   orig: 21, 24
   offset: 0, 0
   index: -1
 wind3
   rotate: false
-  xy: 192, 29
+  xy: 381, 91
   size: 26, 25
   orig: 26, 25
   offset: 0, 0
   index: -1
 windplant
   rotate: false
-  xy: 46, 8
+  xy: 314, 70
   size: 37, 46
   orig: 37, 46
   offset: 0, 0

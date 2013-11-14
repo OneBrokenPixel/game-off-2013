@@ -66,12 +66,14 @@ public class CorruptionGdxGame extends Game {
 					if( cell != null ) {
 						
 						if(cell.owner.contains("player")){
-							cell.building.set("chemicalplant");
+							//cell.building.set("chemicalplant");
+							//System.out.println("WTF!");
+							cell.setRecharge(!cell.recharge);
 						}
 						else {
-							cell.setOwner("player");
+							map.getPlayer().addOwnedCell(cell);
 						}
-						System.out.println(cell);
+						//System.out.println(cell);
 					}
 				}
 				
@@ -120,6 +122,9 @@ public class CorruptionGdxGame extends Game {
 		
 		@Override
 		public void render(float delta) {
+			
+			// all update is here!
+			
 			Gdx.gl.glClearColor(0, 0, 0.0f, 1);
 			Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 			
