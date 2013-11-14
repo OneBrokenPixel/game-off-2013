@@ -135,9 +135,22 @@ public class CorruptionGdxGame extends Game {
 		public void resize(int width, int height) {
 			camera.viewportWidth = width;
 			camera.viewportHeight = height;
-			camera.update();
+			centerMap();
 		}
 
+		public void centerMap() {
+		
+			final float map_w = map.getWidth()  * (map.getTile_width()*0.75f);
+			final float map_h = map.getHeight() * map.getTile_height() + map.getTile_height()*0.5f;
+			
+			final float sidebar = 100f+20f+20f;
+			
+			final int camera_x = (int) (((map_w-sidebar)/2)-(map.getTile_width()*0.5f));
+			final int camera_y = (int) ((map_h/2)-(map.getTile_height()*0.5f));
+			camera.position.set(camera_x,camera_y, 0f);
+			camera.update();
+		}
+		
 		@Override
 		public void show() {
 			
@@ -154,11 +167,10 @@ public class CorruptionGdxGame extends Game {
 			camera = new OrthographicCamera(w, h);
 			batch = new SpriteBatch();
 			
-			map = HexMapGenerator.generateTestMap(8);
+			map = HexMapGenerator.generateTestMap(14,8);
 			renderer = new HexMapRenderer(batch,map);
 			
-			camera.position.set(renderer.getMapPixelWidth()*0.35f, renderer.getMapPixelHeight()*0.5f, 0f);
-			camera.update();
+			centerMap();
 			
 			Gdx.input.setInputProcessor(multiplexer);
 

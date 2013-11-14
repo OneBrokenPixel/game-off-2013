@@ -24,7 +24,7 @@ public class HexMapGenerator {
 			
 			square(p0,pc,size);
 			
-			System.out.println(this.data[0][0]);
+			//System.out.println(this.data[0][0]);
 		}
 		
 		private GridPoint2 setData(GridPoint2 point, int dataPoint) {
@@ -37,7 +37,7 @@ public class HexMapGenerator {
 
 		}		
 
-		public float getData(int x, int y) {
+		public int getData(int x, int y) {
 			// TODO Auto-generated method stub
 			return data[x][y];
 		}
@@ -52,7 +52,7 @@ public class HexMapGenerator {
 			
 			
 			int value = (MathUtils.random(min, max)+d0+d1+d2+d3)/5;
-			System.out.println("Value: " + value);
+			//System.out.println("Value: " + value);
 			
 			// this is the problem
 			GridPoint2 pc = setData(new GridPoint2(p0.x+((p2.x-p0.x)/2),p0.y+((p2.y-p0.y)/2)), value);
@@ -73,8 +73,8 @@ public class HexMapGenerator {
 			int value1 = (MathUtils.random(min, max)+d0+dc)/3;
 			int value2 = (MathUtils.random(min, max)+d0+dc)/3;
 			
-			System.out.println("Value: " + value1);
-			System.out.println("Value: " + value2);
+			//System.out.println("Value: " + value1);
+			//System.out.println("Value: " + value2);
 			
 			GridPoint2 p1 = setData( new GridPoint2(p0.x,pc.y), value1);
 			GridPoint2 p3 = setData( new GridPoint2(pc.x,p0.y), value2);
@@ -86,15 +86,56 @@ public class HexMapGenerator {
 
 	}
 	
+	private static void generateResorces( HexMap map ) {
+		final int size = Math.max(map.getWidth(), map.getHeight());
+		
+		// control the rand values here.
+		Fractal solar		= new Fractal(size, 1, 5);
+		Fractal wind		= new Fractal(size, 1, 5);
+		Fractal chemical	= new Fractal(size, 1, 4);
+		
+		for( int x = 0; x < map.getWidth(); x++) {
+			for( int y = 0; y < map.getHeight(); y++) {
+				//System.out.println(x+ " "+y);
+				Cell cell = map.getCell(x, y);
+				
+				int max = 4;
+				final int solar_value = MathUtils.clamp(solar.getData(x,y), 1, 3);
+				final int wind_value = MathUtils.clamp(wind.getData(x,y), 1, 3);
+				final int chemical_value = MathUtils.clamp(chemical.getData(x,y), 1,3);
+				if( max > 0 && solar_value >= chemical_value && solar_value >= wind_value ) {
+					
+					cell.resources[HexMap.RESOURCE_SOLAR] = map.new Resource("solar",(max>solar_value)?solar_value:max);
+					max -= solar_value;
+				}
+
+				if( max > 0 && wind_value >= chemical_value && wind_value >= solar_value ) {
+
+					cell.resources[HexMap.RESOURCE_WIND] = map.new Resource("wind",(max>wind_value)?wind_value:max);
+					max -= wind_value;
+				}
+
+				if( max > 0 && chemical_value >= wind_value && chemical_value >= solar_value ) {
+
+					cell.resources[HexMap.RESOURCE_CHEMICAL] = map.new Resource("chemical",(max>chemical_value)?chemical_value:max);
+
+					max -= chemical_value;
+				}
+			}
+		}
+	}
+	
 	/**
 	 * Generates the starting energy using a fractal ish algorithm.
 	 * @param map
 	 */
 	private static void generateTileEnergy( HexMap map ) {
 		
-		Fractal f = new Fractal(map.getWidth(), 0, 15);
+		final int size = Math.max(map.getWidth(), map.getHeight());
 		
-		for( int x = 0; x < map.getHeight(); x++) {
+		Fractal f = new Fractal(size, 0, 15);
+		
+		for( int x = 0; x < map.getWidth(); x++) {
 			for( int y = 0; y < map.getHeight(); y++) {
 				//System.out.println(x+ " "+y);
 				Cell cell = map.getCell(x, y);
@@ -114,6 +155,9 @@ public class HexMapGenerator {
 		final int width = map.getWidth();
 		final int height = map.getHeight(); 
 		
+		final Object[] other = (owner.contains("corruption"))? map.getPlayer().getOwned().toArray():map.getCorruption().getOwned().toArray();
+		
+		
 		do {
 	
 			final int x = MathUtils.random.nextInt(width-2)+1;
@@ -122,6 +166,18 @@ public class HexMapGenerator {
 			final Cell cell = map.getCell(x, y);
 			
 			if( cell.owner.contains("neutral") ) {
+				
+				// to ensure that the corruption is at least 4 tiles away.
+				if(other.length > 0){
+					
+					for(Object o : other) {
+						final Cell c = (Cell) o;
+						if( Math.abs(c.point.x-x) < 5 && Math.abs(c.point.y-y) < 5 ) {
+							continue;
+						}
+					}
+					
+				}
 				
 				cell.setOwner(owner);
 				
@@ -138,34 +194,31 @@ public class HexMapGenerator {
 	 * @param height
 	 * @return returns the map generated
 	 */
-	public static HexMap generateTestMap( final int size) {
+	public static HexMap generateTestMap( final int width, final int height) {
 		
 		HexMap map = new HexMap();
 		
-		Cell[][] cells = new Cell[size][size];
+		Cell[][] cells = new Cell[width][height];
 		
-		for( int row = 0; row < size; row++) {
-			for( int col = 0; col < size; col++) {
+		for( int row = 0; row < height; row++) {
+			for( int col = 0; col < width; col++) {
 
 				Cell cell = map.new Cell();
 				cell.point.set(col, row);
 				cell.setOwner("neutral");
-				cell.resources[HexMap.RESOURCE_WIND] = map.new Resource("wind",2);
-				cell.resources[HexMap.RESOURCE_SOLAR] = map.new Resource("solar",1);
-				cell.resources[HexMap.RESOURCE_CHEMICAL] = map.new Resource("chemical",1);
 				
-				cell.energy.unit = -10;
+				//cell.energy.unit = -10;
 				cells[col][row] = cell;
 
 			}
 		}
-		map.initalise(size, size, cells);
+		map.initalise(width, height, cells);
 		
 		setStartingTile("player",map);
 		setStartingTile("corruption",map);
 		
 		generateTileEnergy(map);
-		
+		generateResorces(map);
 		//map.setPlayerStartCell(MathUtils.random.nextInt(width),MathUtils.random.nextInt(height));
 		//map.setCorruptionStartCell(MathUtils.random.nextInt(width),MathUtils.random.nextInt(height));
 		return map;
