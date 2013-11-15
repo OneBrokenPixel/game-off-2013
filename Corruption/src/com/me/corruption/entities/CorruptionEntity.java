@@ -4,7 +4,7 @@ import com.me.corruption.hexMap.HexMap;
 
 public class CorruptionEntity extends Entity {
 
-	protected CorruptionEntity(HexMap map) {
+	public CorruptionEntity(HexMap map) {
 		super(map, "corruption");
 		// TODO Auto-generated constructor stub
 	}

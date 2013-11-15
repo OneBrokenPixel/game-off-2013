@@ -13,6 +13,9 @@ import com.badlogic.gdx.math.GridPoint2;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.Disposable;
 
+import com.me.corruption.entities.CorruptionEntity;
+import com.me.corruption.entities.Entity;
+import com.me.corruption.entities.NeutralEntity;
 import com.me.corruption.entities.PlayerEntity;
 import com.me.corruption.hexMap.HexMapSpriteObject;
 /**
@@ -34,7 +37,7 @@ public class HexMap implements Disposable {
 	/**
 	 * Resource for tile cells
 	 */
-	public class Resource implements Comparable<Resource> {
+	public static class Resource implements Comparable<Resource> {
 		String name;
 		int amount;
 		HexMapSpriteObject sprite;
@@ -103,11 +106,11 @@ public class HexMap implements Disposable {
 		public boolean recharge = false;
 		
 		public Resource[] resources = new Resource[3];
-		public String owner = "neutral";
+		public Entity owner = null;
 		
-		public void setOwner( String owner ) {
+		public void setOwner( Entity owner ) {
 			this.owner = owner;
-			this.tile = tiles.get(this.owner+"Hex");
+			this.tile = tiles.get(this.owner.getOwnerName()+"Hex");
 			/*
 			if( this.owner.contains("player") ) {
 				getPlayer().setOwnedCell(this);
@@ -118,6 +121,11 @@ public class HexMap implements Disposable {
 			*/
 		}
 		
+		public void clearOwner() {
+			this.owner.removeCell(this);
+			this.owner = null;
+		}
+		
 		public void addEnergy( float energy) {
 			unit += energy;
 		}
@@ -125,14 +133,14 @@ public class HexMap implements Disposable {
 		public void setRecharge(boolean r) {
 			this.recharge = r;
 			
-			HexMapSpriteObject toogleTile = tiles.get(this.owner+"Hex"+"_toggle");
+			HexMapSpriteObject toogleTile = tiles.get(this.owner.getOwnerName()+"Hex"+"_toggle");
 		
 			if( toogleTile != null) {
 				if(this.recharge) {
 					tile = toogleTile;
 				}
 				else {
-					tile = tiles.get(this.owner+"Hex");
+					tile = tiles.get(this.owner.getOwnerName()+"Hex");
 				}
 			}
 		}
@@ -194,6 +202,8 @@ public class HexMap implements Disposable {
 
 	
 	private PlayerEntity player = new PlayerEntity(this);
+	private NeutralEntity neutral = new NeutralEntity(this);
+	private CorruptionEntity corruption = new CorruptionEntity(this);
 	
 	/**
 	 * Static initialisation for sprite from the texture atlas.
@@ -305,11 +315,15 @@ public class HexMap implements Disposable {
 	public PlayerEntity getPlayer() {
 		return player;
 	}
-	/*
-	public PlayerEntity getCorruption() {
+
+	public NeutralEntity getNeutral() {
+		return neutral;
+	}
+	
+	public CorruptionEntity getCorruption() {
 		return corruption;
 	}
-	*/
+
 	/**
 	 * initalise the map with width height and tiles.
 	 * @param width

@@ -32,6 +32,7 @@ import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.me.corruption.entities.PlayerEntity;
 import com.me.corruption.hexMap.HexMap.Building;
 import com.me.corruption.hexMap.HexMap.Cell;
 import com.me.corruption.hexMap.HexMap.Resource;
@@ -248,7 +249,7 @@ public class HexMapRenderer {
 					
 					final Cell cell = map.getCell(col, row);
 					//System.out.println(cell.point.x + "-" + cell.point.y + " " + col + "-" + row);
-					if(cell == null || (!visible.contains(cell) && !cell.owner.contains("player")) || cell.getBuilding().sprite != null) {
+					if(cell == null || (!visible.contains(cell) && !(cell.owner instanceof PlayerEntity)) || cell.getBuilding().sprite != null) {
 						//x += layerTileWidth * width_offset;
 						continue;
 					}
@@ -320,7 +321,7 @@ public class HexMapRenderer {
 			float y = (float) ((layerTileWidth*0.5f) * sqrt3 * (cell.point.y + 0.5 * (cell.point.x&1)));
 			
 			//System.out.println(cell.point.x + "-" + cell.point.y + " " + col + "-" + row);
-			if(cell == null || (!visible.contains(cell) && !cell.owner.contains("player")) || cell.getBuilding().sprite != null) {
+			if(cell == null || (!visible.contains(cell) && !(cell.owner instanceof PlayerEntity)) || cell.getBuilding().sprite != null) {
 				//x += layerTileWidth * width_offset;
 				return;
 			}
@@ -467,7 +468,7 @@ public class HexMapRenderer {
 					
 					final Cell cell = map.getCell(col, row);
 					//System.out.println(cell.point.x + "-" + cell.point.y + " " + col + "-" + row);
-					if(cell == null || (!visible.contains(cell) || cell.owner.contains("player"))) {
+					if(cell == null || (!visible.contains(cell) || (cell.owner instanceof PlayerEntity))) {
 						//x += layerTileWidth * width_offset;
 						continue;
 					}
@@ -480,7 +481,7 @@ public class HexMapRenderer {
 
 			final Cell cell = mouseOverCell;
 			
-			if(cell == null || (!visible.contains(cell) || cell.owner.contains("player"))) {
+			if(cell == null || (!visible.contains(cell) || (cell.owner instanceof PlayerEntity))) {
 				return;
 			}
 			

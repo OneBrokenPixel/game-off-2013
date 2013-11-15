@@ -10,6 +10,8 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.me.corruption.entities.Entity;
+import com.me.corruption.entities.PlayerEntity;
 import com.me.corruption.hexMap.HexMap;
 import com.me.corruption.hexMap.HexMap.Cell;
 import com.me.corruption.hexMap.HexMapGenerator;
@@ -64,7 +66,7 @@ public class CorruptionGdxGame extends Game {
 					Cell cell = renderer.getMouseOverCell();
 					if( cell != null ) {
 						
-						if(cell.owner.contains("player")){
+						if(cell.owner instanceof PlayerEntity){
 							//cell.building.set("chemicalplant");
 							//System.out.println("WTF!");
 							cell.setRecharge(!cell.recharge);

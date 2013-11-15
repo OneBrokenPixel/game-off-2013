@@ -26,13 +26,19 @@ public class PlayerEntity extends Entity {
 		this.updateVisible(cell);
 	}
 	
+	@Override
+	public void removeCell(Cell cell) {
+		super.removeCell(cell);
+		repocessVisible();
+	}
+	
 	private void setCellAsVisible(Cell cell) {
-		if(cell != null && cell.owner.contains("neutral")) {
+		if(cell != null && cell.owner instanceof NeutralEntity) {
 			visible.add(cell);
 		}
 	}	
 	
-	public void updateVisible(Cell cell) {
+	private void updateVisible(Cell cell) {
 		final GridPoint2 point = cell.point;
 		
 		if( point.x % 2 == 0) {
@@ -52,7 +58,13 @@ public class PlayerEntity extends Entity {
 			setCellAsVisible(map.getCell(point.x+1, point.y+0));
 			setCellAsVisible(map.getCell(point.x-0, point.y-1));
 		}
-		
+	}
+	
+	private void repocessVisible() {
+		visible.clear();
+		for(Cell c : getOwnedCells()) {
+			updateVisible(c);
+		}
 	}
 	
 

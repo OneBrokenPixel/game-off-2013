@@ -23,10 +23,17 @@ public abstract class Entity {
 	
 	public void addOwnedCell(Cell cell) {
 		ownedCells.add(cell);
-		cell.setOwner(owner);
+		cell.setOwner(this);
 	}
 	
+	public String getOwnerName() {
+		return owner;
+	}
 	
 	public abstract void tick(float dt);
+
+	public void removeCell(Cell cell) {
+		ownedCells.remove(cell);
+	}
 	
 }
