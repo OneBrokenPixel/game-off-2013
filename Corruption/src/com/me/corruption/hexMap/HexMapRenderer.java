@@ -468,7 +468,7 @@ public class HexMapRenderer {
 					
 					final Cell cell = map.getCell(col, row);
 					//System.out.println(cell.point.x + "-" + cell.point.y + " " + col + "-" + row);
-					if(cell == null || (!visible.contains(cell) || (cell.owner instanceof PlayerEntity))) {
+					if(cell == null || (!visible.contains(cell) || ((cell.owner instanceof PlayerEntity) && cell.recharge == false))) {
 						//x += layerTileWidth * width_offset;
 						continue;
 					}
@@ -481,7 +481,7 @@ public class HexMapRenderer {
 
 			final Cell cell = mouseOverCell;
 			
-			if(cell == null || (!visible.contains(cell) || (cell.owner instanceof PlayerEntity))) {
+			if(cell == null || (!visible.contains(cell) || ((cell.owner instanceof PlayerEntity) && cell.recharge == false))) {
 				return;
 			}
 			

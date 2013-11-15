@@ -28,6 +28,9 @@ public class GameUI extends Stage {
 	private Pixmap pixmap;
 	public static Skin skin;
 	
+	private Table sidebar;
+	private Table layout; 
+	
 	private LabelStyle lstyle;
 	private Label energyDisp;
 	private int energy; // for ui testing purposes only
@@ -63,11 +66,11 @@ public class GameUI extends Stage {
 		
 		skin.add("bitmapFont", new BitmapFont());
 
-		Table layout = new Table();
+		layout = new Table();
 		layout.setFillParent(true);
 		this.addActor(layout);
 		
-		Table sidebar = new Table();
+		sidebar = new Table();
 		sidebar.setBackground(skin.newDrawable("lgrey"));
 		layout.left().bottom();
 		layout.add(sidebar).expandY().fill();
@@ -253,10 +256,11 @@ public class GameUI extends Stage {
 				
 		tbQuit.addListener(new InputListener() {
 			public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-					// TODO are you sure you want to quit?
-					hexmap.quit();
-					return true;
-				}
+				// TODO are you sure you want to quit?
+				System.out.println(getWidth());
+				hexmap.quit();
+				return true;
+			}
 		});
 		
 		tbHelp.addListener(new InputListener() {
@@ -294,5 +298,13 @@ public class GameUI extends Stage {
 		pixmap.setColor(colour);
 		pixmap.fill();
 		skin.add(cName, new Texture(pixmap));
+	}
+	
+	public void setEnergy(int energy) {
+		energyDisp.setText("Energy: " + energy);
+	}
+	
+	public float getWidth() {
+		return sidebar.getWidth();
 	}
 }

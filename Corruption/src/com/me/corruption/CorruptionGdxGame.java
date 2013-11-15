@@ -153,6 +153,10 @@ public class CorruptionGdxGame extends Game {
 			
 			// all update is here!
 			
+			this.map.getPlayer().tick(delta);
+			
+			stage.setEnergy(ui_if.getEnergyBank());
+			
 			Gdx.gl.glClearColor(0, 0, 0.0f, 1);
 			Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 			
@@ -163,6 +167,7 @@ public class CorruptionGdxGame extends Game {
 			
 			stage.act();
 			stage.draw();
+
 			//Table.drawDebug(stage);
 		}
 

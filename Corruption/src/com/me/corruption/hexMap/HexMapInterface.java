@@ -97,4 +97,11 @@ public class HexMapInterface {
 		game.setScreen(screen);
 	}
 	
+	public int getEnergyBank() {
+		return (int) player.getEnergyBank();
+	}
+	
+	public void updateEnergyDisplay() {
+		
+	}
 }
