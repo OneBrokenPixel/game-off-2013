@@ -13,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.me.corruption.hexMap.HexMap;
 import com.me.corruption.hexMap.HexMap.Cell;
 import com.me.corruption.hexMap.HexMapGenerator;
+import com.me.corruption.hexMap.HexMapInterface;
 import com.me.corruption.hexMap.HexMapRenderer;
 import com.me.corruption.ui.GameUI;
 
@@ -31,12 +32,13 @@ public class CorruptionGdxGame extends Game {
 
 		private HexMap map;
 		private HexMapRenderer renderer;
+		private HexMapInterface ui_if;
 		
 		private CorruptionGdxGame gameInstance;	
 		private GameUI stage;
 		
 		private InputMultiplexer multiplexer;
-		
+
 		InputProcessor processor = new InputProcessor() {
 			
 			private Vector3 v = new Vector3();
@@ -58,11 +60,8 @@ public class CorruptionGdxGame extends Game {
 				// TODO Auto-generated method stub
 				
 				if( renderer != null ){
-					
-					v.set(screenX, screenY, 0f);
-					camera.unproject(v);
-					
-					Cell cell = renderer.getCellFromTouchCoord(v);
+
+					Cell cell = renderer.getMouseOverCell();
 					if( cell != null ) {
 						
 						if(cell.owner.contains("player")){
@@ -89,7 +88,17 @@ public class CorruptionGdxGame extends Game {
 			@Override
 			public boolean mouseMoved(int screenX, int screenY) {
 				// TODO Auto-generated method stub
-				return false;
+				if( renderer != null ){
+					
+					v.set(screenX, screenY, 0f);
+					camera.unproject(v);
+					
+					final Cell mouseOverCell = renderer.getCellFromTouchCoord(v);
+					
+					renderer.setMouseOverCell(mouseOverCell);
+					
+				}
+				return true;
 			}
 			
 			@Override
@@ -117,7 +126,24 @@ public class CorruptionGdxGame extends Game {
 			
 			this.gameInstance = instance;
 
+			final float w = Gdx.graphics.getWidth();
+			final float h = Gdx.graphics.getHeight();
+			batch = new SpriteBatch();
+			
+			camera = new OrthographicCamera(w, h);
+				
+			map = HexMapGenerator.generateTestMap(14,8);
+			renderer = new HexMapRenderer(batch,map);
+			ui_if = new HexMapInterface(gameInstance,renderer);
 
+			stage = new GameUI(ui_if);
+			
+			multiplexer = new InputMultiplexer();
+			multiplexer.addProcessor(stage);
+			multiplexer.addProcessor(processor);	
+			
+			ui_if.addScreen("gameScreen", this);
+			centerMap();
 		}
 		
 		@Override
@@ -128,8 +154,10 @@ public class CorruptionGdxGame extends Game {
 			Gdx.gl.glClearColor(0, 0, 0.0f, 1);
 			Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 			
-			renderer.setView(camera);
-			renderer.render();
+			if( camera != null ) {
+				renderer.setView(camera);
+				renderer.render();
+			}
 			
 			stage.act();
 			stage.draw();
@@ -158,33 +186,15 @@ public class CorruptionGdxGame extends Game {
 		
 		@Override
 		public void show() {
-			
-			stage = new GameUI(renderer);
-			
-			multiplexer = new InputMultiplexer();
-			multiplexer.addProcessor(stage);
-			multiplexer.addProcessor(processor);			
-			
-			
-			final float w = Gdx.graphics.getWidth();
-			final float h = Gdx.graphics.getHeight();
-			
-			camera = new OrthographicCamera(w, h);
-			batch = new SpriteBatch();
-			
-			map = HexMapGenerator.generateTestMap(14,8);
-			renderer = new HexMapRenderer(batch,map);
-			
-			centerMap();
-			
 			Gdx.input.setInputProcessor(multiplexer);
-
 		}
 
 		@Override
 		public void hide() {
 			// TODO Auto-generated method stub
-			
+
+			//batch.dispose();
+			Gdx.input.setInputProcessor(null);
 		}
 
 		@Override
@@ -205,10 +215,11 @@ public class CorruptionGdxGame extends Game {
 		
 	}
 	
-	GameScreen game = new GameScreen(this);
+	GameScreen game = null;
 	
 	@Override
 	public void create() {
+		this.game = new GameScreen(this);
 		setScreen(game);
 	}
 	

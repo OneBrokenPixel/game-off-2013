@@ -189,85 +189,9 @@ public class HexMap implements Disposable {
 	private static HexMapSpriteList resourceIcons;
 	private static HexMapSpriteList units;
 	
-	/*
-	/**
-	 * Player Entity class
-	 * @author Anthony
-	 *
-	 
-	class PlayerEntity {
-		private HashSet<Cell> owned = new HashSet<HexMap.Cell>();
-		private HashSet<Cell> visible = new HashSet<HexMap.Cell>();
-		
-		
-		public HashSet<Cell> getVisible() {
-			return visible;
-		}
-		
-		public HashSet<Cell> getOwned(){
-			return owned;
-		}
-		
+	//private HexMapInterface ui_if;
 	
-		/**
-		 * Sets a Cell as belonging to the player
-		 * @param cell
-		 
-		public void setOwnedCell( Cell cell ) {
-			owned.add(cell);
-			//System.out.println(playerCells);
-			
-			if( visible.contains(cell)){
-				visible.remove(cell);
-			}
-			
-			updateVisibleCells(cell);
-		}
-		
-		/**
-		 * 
-		 * @param cell
-		 
-		private void setCellAsVisible(Cell cell) {
-			if(cell != null && cell.owner.contains("neutral")) {
-				visible.add(cell);
-			}
-		}
-		
-		/**
-		 * takes a cell and updates the tiles visible to the player.
-		 * @param cell
-		 
-		private void updateVisibleCells(Cell cell) {
-			
-			final GridPoint2 point = cell.point;
-			
-			if( point.x % 2 == 0) {
-				setCellAsVisible(getCell(point.x-1, point.y-1));
-				setCellAsVisible(getCell(point.x-0, point.y-1));
-				setCellAsVisible(getCell(point.x+1, point.y-1));
-				setCellAsVisible(getCell(point.x-1, point.y+0));
-				setCellAsVisible(getCell(point.x+1, point.y+0));
-				setCellAsVisible(getCell(point.x-0, point.y+1));
-			}
-			else {
-				
-				setCellAsVisible(getCell(point.x-1, point.y+1));
-				setCellAsVisible(getCell(point.x-0, point.y+1));
-				setCellAsVisible(getCell(point.x+1, point.y+1));
-				setCellAsVisible(getCell(point.x-1, point.y+0));
-				setCellAsVisible(getCell(point.x+1, point.y+0));
-				setCellAsVisible(getCell(point.x-0, point.y-1));
-			}
-			
-		}
-	}
-	
-	// these are what i started using for player and c.
-	private PlayerEntity player = new PlayerEntity();
-	private PlayerEntity corruption = new PlayerEntity();
-	//private HashSet<Cell> corruptedCells = new HashSet<HexMap.Cell>();
-	 */
+
 	
 	private PlayerEntity player = new PlayerEntity(this);
 	
@@ -322,7 +246,7 @@ public class HexMap implements Disposable {
 	}
 	
 	public HexMap() {
-		
+		//ui_if = new HexMapInterface(this);
 	}
 	
 	public int getWidth() {
@@ -360,6 +284,10 @@ public class HexMap implements Disposable {
 	public Cell[][] getCells() {
 		return cells;
 	}
+
+	//public HexMapInterface getInterface() {
+	//	return ui_if;
+	//}
 	
 	/**
 	 * @param col

@@ -45,6 +45,8 @@ public class HexMapRenderer {
 	private Rectangle viewBounds = new Rectangle();
 	private float unitScale = 1.0f;
 	
+	private Cell mouseOverCell = null;
+	
 	private final float width_offset = 0.75f;
 	//private final float height_offset = 0.5f;
 	
@@ -65,8 +67,8 @@ public class HexMapRenderer {
 	private float[] vertices = new float[20];
 	
 	
-	private boolean showResources = true;
-	private boolean showEnergy = true;
+	private boolean showResources = false;
+	private boolean showEnergy = false;
 	
 	public boolean isShowResources() {
 		return showResources;
@@ -126,7 +128,9 @@ public class HexMapRenderer {
 	 */
 	public void setView(OrthographicCamera camera) {
 		
-		this.batch.setProjectionMatrix(camera.combined);
+		if(this.batch != null){
+			this.batch.setProjectionMatrix(camera.combined);
+		}
 		float width = camera.viewportWidth * camera.zoom;
 		float height = camera.viewportHeight * camera.zoom;
 		this.viewBounds.set(camera.position.x - width / 2, camera.position.y - height / 2, width, height);
@@ -234,74 +238,147 @@ public class HexMapRenderer {
 		//final HashSet<Cell> visible = new HashSet<HexMap.Cell>();
 		//System.out.println("Row: " + rowFrom + "-" + rowTo);
 		
-		for (int row = rowFrom; row < rowTo; row++) {
-			for (int col = colFrom; col < colTo; col++) {
-				
-				float x = (layerTileWidth*0.5f) * 3/2 * col;
-				float y = (float) ((layerTileWidth*0.5f) * sqrt3 * (row + 0.5 * (col&1)));
-				
-				final Cell cell = map.getCell(col, row);
-				//System.out.println(cell.point.x + "-" + cell.point.y + " " + col + "-" + row);
-				if(cell == null || (!visible.contains(cell) && !cell.owner.contains("player")) || cell.getBuilding().sprite != null) {
-					//x += layerTileWidth * width_offset;
-					continue;
-				}
-				for( int resIndex = 0; resIndex < HexMap.RESOURCE_MAX; resIndex++) {
+		if( this.showResources ) {
+		
+			for (int row = rowFrom; row < rowTo; row++) {
+				for (int col = colFrom; col < colTo; col++) {
 					
-					final Resource res = cell.resources[resIndex];
-
+					float x = (layerTileWidth*0.5f) * 3/2 * col;
+					float y = (float) ((layerTileWidth*0.5f) * sqrt3 * (row + 0.5 * (col&1)));
 					
-					if( res == null ) {
+					final Cell cell = map.getCell(col, row);
+					//System.out.println(cell.point.x + "-" + cell.point.y + " " + col + "-" + row);
+					if(cell == null || (!visible.contains(cell) && !cell.owner.contains("player")) || cell.getBuilding().sprite != null) {
+						//x += layerTileWidth * width_offset;
 						continue;
 					}
-
-					final Vector2 offset = IconLookup[resIndex];
-					final HexMapSpriteObject icon = res.sprite;
-					//System.out.println(res.name + res.amount);
-					TextureRegion region =  icon.getTexture();
-					
-					final float hWidth = layerTileWidth * 0.5f;
-					final float hHeight = layerTileWidth * 0.5f;
-					
-					float x1 = (int)((x - hWidth) + (layerTileWidth*offset.x - (region.getRegionWidth()*0.5f)));
-					float y1 = (int)((y - hHeight) + (layerTileHeight*offset.y - (region.getRegionHeight()*0.5f)));
-					
-					float x2 = (int)(x1 + region.getRegionWidth() * unitScale);
-					float y2 = (int)(y1 + region.getRegionHeight() * unitScale);
-					
-					//System.out.println("xy: " + x1 + ", " + y1);
-					
-					float u1 = region.getU();
-					float v1 = region.getV2();
-					float u2 = region.getU2();
-					float v2 = region.getV();
-
-					vertices[X1] = x1;
-					vertices[Y1] = y1;
-					vertices[C1] = color;
-					vertices[U1] = u1;
-					vertices[V1] = v1;
-
-					vertices[X2] = x1;
-					vertices[Y2] = y2;
-					vertices[C2] = color;
-					vertices[U2] = u1;
-					vertices[V2] = v2;
-
-					vertices[X3] = x2;
-					vertices[Y3] = y2;
-					vertices[C3] = color;
-					vertices[U3] = u2;
-					vertices[V3] = v2;
-
-					vertices[X4] = x2;
-					vertices[Y4] = y1;
-					vertices[C4] = color;
-					vertices[U4] = u2;
-					vertices[V4] = v1;
-
-					this.batch.draw(region.getTexture(), vertices, 0, 20);
+					for( int resIndex = 0; resIndex < HexMap.RESOURCE_MAX; resIndex++) {
+						
+						final Resource res = cell.resources[resIndex];
+	
+						
+						if( res == null ) {
+							continue;
+						}
+	
+						final Vector2 offset = IconLookup[resIndex];
+						final HexMapSpriteObject icon = res.sprite;
+						//System.out.println(res.name + res.amount);
+						TextureRegion region =  icon.getTexture();
+						
+						final float hWidth = layerTileWidth * 0.5f;
+						final float hHeight = layerTileWidth * 0.5f;
+						
+						float x1 = (int)((x - hWidth) + (layerTileWidth*offset.x - (region.getRegionWidth()*0.5f)));
+						float y1 = (int)((y - hHeight) + (layerTileHeight*offset.y - (region.getRegionHeight()*0.5f)));
+						
+						float x2 = (int)(x1 + region.getRegionWidth() * unitScale);
+						float y2 = (int)(y1 + region.getRegionHeight() * unitScale);
+						
+						//System.out.println("xy: " + x1 + ", " + y1);
+						
+						float u1 = region.getU();
+						float v1 = region.getV2();
+						float u2 = region.getU2();
+						float v2 = region.getV();
+	
+						vertices[X1] = x1;
+						vertices[Y1] = y1;
+						vertices[C1] = color;
+						vertices[U1] = u1;
+						vertices[V1] = v1;
+	
+						vertices[X2] = x1;
+						vertices[Y2] = y2;
+						vertices[C2] = color;
+						vertices[U2] = u1;
+						vertices[V2] = v2;
+	
+						vertices[X3] = x2;
+						vertices[Y3] = y2;
+						vertices[C3] = color;
+						vertices[U3] = u2;
+						vertices[V3] = v2;
+	
+						vertices[X4] = x2;
+						vertices[Y4] = y1;
+						vertices[C4] = color;
+						vertices[U4] = u2;
+						vertices[V4] = v1;
+	
+						this.batch.draw(region.getTexture(), vertices, 0, 20);
+					}
 				}
+			}
+		}
+		else if( mouseOverCell != null ) {
+			
+
+			final Cell cell = mouseOverCell;
+			
+			float x = (layerTileWidth*0.5f) * 3/2 * cell.point.x;
+			float y = (float) ((layerTileWidth*0.5f) * sqrt3 * (cell.point.y + 0.5 * (cell.point.x&1)));
+			
+			//System.out.println(cell.point.x + "-" + cell.point.y + " " + col + "-" + row);
+			if(cell == null || (!visible.contains(cell) && !cell.owner.contains("player")) || cell.getBuilding().sprite != null) {
+				//x += layerTileWidth * width_offset;
+				return;
+			}
+			for( int resIndex = 0; resIndex < HexMap.RESOURCE_MAX; resIndex++) {
+				
+				final Resource res = cell.resources[resIndex];
+
+				
+				if( res == null ) {
+					continue;
+				}
+
+				final Vector2 offset = IconLookup[resIndex];
+				final HexMapSpriteObject icon = res.sprite;
+				//System.out.println(res.name + res.amount);
+				TextureRegion region =  icon.getTexture();
+				
+				final float hWidth = layerTileWidth * 0.5f;
+				final float hHeight = layerTileWidth * 0.5f;
+				
+				float x1 = (int)((x - hWidth) + (layerTileWidth*offset.x - (region.getRegionWidth()*0.5f)));
+				float y1 = (int)((y - hHeight) + (layerTileHeight*offset.y - (region.getRegionHeight()*0.5f)));
+				
+				float x2 = (int)(x1 + region.getRegionWidth() * unitScale);
+				float y2 = (int)(y1 + region.getRegionHeight() * unitScale);
+				
+				//System.out.println("xy: " + x1 + ", " + y1);
+				
+				float u1 = region.getU();
+				float v1 = region.getV2();
+				float u2 = region.getU2();
+				float v2 = region.getV();
+
+				vertices[X1] = x1;
+				vertices[Y1] = y1;
+				vertices[C1] = color;
+				vertices[U1] = u1;
+				vertices[V1] = v1;
+
+				vertices[X2] = x1;
+				vertices[Y2] = y2;
+				vertices[C2] = color;
+				vertices[U2] = u1;
+				vertices[V2] = v2;
+
+				vertices[X3] = x2;
+				vertices[Y3] = y2;
+				vertices[C3] = color;
+				vertices[U3] = u2;
+				vertices[V3] = v2;
+
+				vertices[X4] = x2;
+				vertices[Y4] = y1;
+				vertices[C4] = color;
+				vertices[U4] = u2;
+				vertices[V4] = v1;
+
+				this.batch.draw(region.getTexture(), vertices, 0, 20);
 			}
 		}
 	}
@@ -377,51 +454,80 @@ public class HexMapRenderer {
 	private void renderEnergy(final int rowFrom, final int rowTo, final int colFrom, final int colTo,
 			 final float layerTileWidth, final float layerTileHeight, final float color){
 		
-		for (int row = rowFrom; row < rowTo; row++) {
-			for (int col = colFrom; col < colTo; col++) {
-				
-				float x = (layerTileWidth*0.5f) * 3/2 * col;// + (layerTileWidth*energyLookup.x);
-				float y = (float) ((layerTileWidth*0.5f) * sqrt3 * (row + 0.5 * (col&1))+ (layerTileHeight*energyLookup.y));
-				
-				final Cell cell = map.getCell(col, row);
-				//System.out.println(cell.point.x + "-" + cell.point.y + " " + col + "-" + row);
-				if(cell == null) {
-					//x += layerTileWidth * width_offset;
-					continue;
+
+		final HashSet<Cell> visible = map.getPlayer().getVisible();
+		if( this.showEnergy )
+		{
+			
+			for (int row = rowFrom; row < rowTo; row++) {
+				for (int col = colFrom; col < colTo; col++) {
+					
+					float x = (layerTileWidth*0.5f) * 3/2 * col;// + (layerTileWidth*energyLookup.x);
+					float y = (float) ((layerTileWidth*0.5f) * sqrt3 * (row + 0.5 * (col&1))+ (layerTileHeight*energyLookup.y));
+					
+					final Cell cell = map.getCell(col, row);
+					//System.out.println(cell.point.x + "-" + cell.point.y + " " + col + "-" + row);
+					if(cell == null || (!visible.contains(cell) || cell.owner.contains("player"))) {
+						//x += layerTileWidth * width_offset;
+						continue;
+					}
+					//System.out.println(cell.energy.unit);
+					font.draw(batch, ""+((int)cell.unit), x, y);
 				}
-				//System.out.println(cell.energy.unit);
-				font.draw(batch, ""+((int)cell.unit), x, y);
 			}
+		}
+		else if( mouseOverCell != null ) {
+
+			final Cell cell = mouseOverCell;
+			
+			if(cell == null || (!visible.contains(cell) || cell.owner.contains("player"))) {
+				return;
+			}
+			
+			float x = (layerTileWidth*0.5f) * 3/2 * cell.point.x;// + (layerTileWidth*energyLookup.x);
+			float y = (float) ((layerTileWidth*0.5f) * sqrt3 * (cell.point.y + 0.5 * (cell.point.x&1))+ (layerTileHeight*energyLookup.y));
+			
+			//System.out.println(cell.energy.unit);
+			font.draw(batch, ""+((int)cell.unit), x, y);
 		}
 	}
 	
+	public Cell getMouseOverCell() {
+		return mouseOverCell;
+	}
+
+	public void setMouseOverCell(Cell mouseOverCell) {
+		this.mouseOverCell = mouseOverCell;
+	}
+
 	public void render() {
 
-		final Color batchColor = this.batch.getColor();
-		final float color = Color.toFloatBits(batchColor.r, batchColor.g, batchColor.b, batchColor.a * 1.0f);
-
-		final int layerWidth = map.getWidth();
-		final int layerHeight = map.getHeight();
-
-		final float layerTileWidth = map.getTile_width() * unitScale ;
-		final float layerTileHeight = map.getTile_height() * unitScale;
+		if( batch != null) {
+			final Color batchColor = this.batch.getColor();
+			final float color = Color.toFloatBits(batchColor.r, batchColor.g, batchColor.b, batchColor.a * 1.0f);
+			//final float color1 = Color.toFloatBits(batchColor.r, batchColor.g, batchColor.b, 0.25f);
+			
+			final int layerWidth = map.getWidth();
+			final int layerHeight = map.getHeight();
+	
+			final float layerTileWidth = map.getTile_width() * unitScale ;
+			final float layerTileHeight = map.getTile_height() * unitScale;
+			
+			final int colFrom = Math.max(0, (int) (viewBounds.x / (layerTileWidth*width_offset))-1);
+			final int colTo = Math.min(layerWidth, (int) ((viewBounds.x + viewBounds.width + layerTileWidth) / (layerTileWidth*width_offset)));
+			
+			final int rowFrom = Math.max(0, (int) (viewBounds.y / layerTileHeight)-1);
+			final int rowTo = Math.min(layerHeight, (int) ((viewBounds.y + viewBounds.height + layerTileHeight) / layerTileHeight));		
+			
+			this.batch.begin();
+				this.renderTiles(rowFrom, rowTo, colFrom, colTo, layerTileWidth, layerTileHeight, color);
+				this.renderBuildings(rowFrom, rowTo, colFrom, colTo, layerTileWidth, layerTileHeight, color);
 		
-		final int colFrom = Math.max(0, (int) (viewBounds.x / (layerTileWidth*width_offset))-1);
-		final int colTo = Math.min(layerWidth, (int) ((viewBounds.x + viewBounds.width + layerTileWidth) / (layerTileWidth*width_offset)));
+				this.renderResourceIcons(rowFrom, rowTo, colFrom, colTo, layerTileWidth, layerTileHeight, color);
 		
-		final int rowFrom = Math.max(0, (int) (viewBounds.y / layerTileHeight)-1);
-		final int rowTo = Math.min(layerHeight, (int) ((viewBounds.y + viewBounds.height + layerTileHeight) / layerTileHeight));		
-		
-		this.batch.begin();
-		this.renderTiles(rowFrom, rowTo, colFrom, colTo, layerTileWidth, layerTileHeight, color);
-		this.renderBuildings(rowFrom, rowTo, colFrom, colTo, layerTileWidth, layerTileHeight, color);
-		if( this.showResources ) {
-			this.renderResourceIcons(rowFrom, rowTo, colFrom, colTo, layerTileWidth, layerTileHeight, color);
+				this.renderEnergy(rowFrom, rowTo, colFrom, colTo, layerTileWidth, layerTileHeight, color);
+			this.batch.end();
 		}
-		if( this.showEnergy ) {
-			this.renderEnergy(rowFrom, rowTo, colFrom, colTo, layerTileWidth, layerTileHeight, color);
-		}
-		this.batch.end();
 	}
 	/*
 	private void toCubeCoord(int r, int q, GridPoint3 cubeCoord) {

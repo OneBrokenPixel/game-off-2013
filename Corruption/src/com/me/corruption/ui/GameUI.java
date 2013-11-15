@@ -18,13 +18,15 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Window.WindowStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
+import com.me.corruption.hexMap.HexMapInterface;
 import com.me.corruption.hexMap.HexMapRenderer;
 
 public class GameUI extends Stage {
-	final private HexMapRenderer renderer;
+	//final private HexMapRenderer renderer;
+	final private HexMapInterface hexmap;
 	
 	private Pixmap pixmap;
-	private Skin skin;
+	public static Skin skin;
 	
 	private LabelStyle lstyle;
 	private Label energyDisp;
@@ -44,10 +46,12 @@ public class GameUI extends Stage {
 	private TextButton tbHelp;
 	private Window helpWin;
 	private TextButton helpQuit;
+	//private HelpScreen hScreen;
 	
-	public GameUI(HexMapRenderer renderer) {
+	public GameUI(final HexMapInterface hexmap) {
 		
-		this.renderer = renderer;
+		//this.renderer = renderer;
+		this.hexmap = hexmap;
 		
 		skin = new Skin();
 		pixmap = new Pixmap(1,1, Format.RGBA8888);
@@ -84,18 +88,20 @@ public class GameUI extends Stage {
 		tbStyle.font = skin.getFont("bitmapFont");
 		tbStyle.up = skin.newDrawable("black");
 		tbStyle.down = skin.newDrawable("red");
+		skin.add("default", tbStyle);
 		
 		TextButtonStyle toggleStyle = new TextButtonStyle();
 		toggleStyle.font = skin.getFont("bitmapFont");
 		toggleStyle.up = skin.newDrawable("black");
 		toggleStyle.checked = skin.newDrawable("red");
-
-		final TextButton addEnergy = new TextButton("Cheat!", tbStyle);  // this will be deleted later
-		tbResources = new TextButton("Show Resources", toggleStyle);
-		tbEnergy = new TextButton("Show Energy", toggleStyle);
-		tbResearch = new TextButton("Research", tbStyle);
-		tbShields = new TextButton("Add Energy", toggleStyle);
+		skin.add("toggle", toggleStyle);
 		
+		final TextButton addEnergy = new TextButton("Cheat!", tbStyle);  // this will be deleted later
+		tbResources = new TextButton("Show Resources", skin, "toggle");
+		tbEnergy = new TextButton("Show Energy", skin, "toggle");
+		tbResearch = new TextButton("Research", skin);
+		tbShields = new TextButton("Add Energy", skin, "toggle");
+
 		sidebar.add(addEnergy);
 		sidebar.row();
 		sidebar.add(tbResources);
@@ -110,10 +116,10 @@ public class GameUI extends Stage {
 		Table rowTable = new Table();
 		sidebar.add(rowTable).expandX().fillX().pad(2);
 		
-		tbMute = new TextButton("Mute", toggleStyle);
-		tbPause = new TextButton("Pause", toggleStyle);
-		tbQuit = new TextButton("Quit", tbStyle);
-		tbHelp = new TextButton("Help", tbStyle);
+		tbMute = new TextButton("Mute", skin, "toggle");
+		tbPause = new TextButton("Pause", skin, "toggle");
+		tbQuit = new TextButton("Quit", skin);
+		tbHelp = new TextButton("Help", skin);
 		
 		//sidebar.defaults().width(50).height(50).pad(2);
 		rowTable.add(tbMute).pad(2).height(45);
@@ -127,6 +133,7 @@ public class GameUI extends Stage {
 		layout.debug();
 		sidebar.debug();
 		
+		/*
 		renderGroup = new ButtonGroup();
 		renderGroup.add(tbResources);
 		renderGroup.add(tbEnergy);
@@ -134,13 +141,14 @@ public class GameUI extends Stage {
 		renderGroup.setMaxCheckCount(1);
 		renderGroup.setMinCheckCount(0);
 		renderGroup.uncheckAll();
+		*/
 		
 		WindowStyle winStyle = new WindowStyle();
 		winStyle.titleFont = skin.getFont("bitmapFont");
 		
 		skin.add("default", winStyle);
 		skin.add("default",lstyle);
-		skin.add("default", tbStyle);
+		//skin.add("default", tbStyle);
 	
 		helpQuit = new TextButton("Quit", skin);
 		
@@ -158,11 +166,17 @@ public class GameUI extends Stage {
 		helpWin.setBackground(skin.newDrawable("lgrey"));
 		helpWin.setMovable(true);// <--- why doesn't this work?
 
-		this.addActor(helpWin);
+		//hScreen = new HelpScreen(hexmap);
+		hexmap.addScreen("helpScreen", new HelpScreen(hexmap));
+		//hScreen = new HelpScreen(hexmap, this., skin);
+		
+		//this.addActor(helpWin);
+		
 		addEnergy.addListener(new InputListener() {
 			public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
 				energy += 1;
 				energyDisp.setText("Energy: " + energy);
+				hexmap.addEnergy(1);
 				return true;
 			}
 		});
@@ -170,10 +184,14 @@ public class GameUI extends Stage {
 		tbResources.addListener(new InputListener() {
 			public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
 				//toggleRenderGroup(tbResources);
-				resetRenderGroup();
+				//resetRenderGroup();
 				if (!tbResources.isChecked()) {
 					tbResources.setText("Hide Resources");
-				
+					hexmap.showResourceIcons(true);
+				}
+				else {
+					tbResources.setText("Show Resources");
+					hexmap.showResourceIcons(false);
 				}
 				return true;
 			}
@@ -181,9 +199,14 @@ public class GameUI extends Stage {
 		
 		tbEnergy.addListener(new InputListener() {
 			public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-				resetRenderGroup();
+				//resetRenderGroup();
 				if (!tbEnergy.isChecked()) {
 					tbEnergy.setText("Hide Energy");
+					hexmap.showEnergy(true);
+				}
+				else {
+					tbEnergy.setText("Show Resources");
+					hexmap.showEnergy(false);
 				}
 				return true;
 			}
@@ -191,7 +214,12 @@ public class GameUI extends Stage {
 		
 		tbShields.addListener(new InputListener() {
 			public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-				System.out.println("Start shielding");
+				if (!tbShields.isChecked()) {
+					hexmap.addEnergyMode(true);
+				}
+				else {
+					hexmap.addEnergyMode(false);
+				}
 				return true;
 			}
 		});
@@ -205,35 +233,36 @@ public class GameUI extends Stage {
 		
 		tbMute.addListener(new InputListener() {
 			public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-				System.out.println("Shut up!");
+				if (!tbMute.isChecked())
+					hexmap.mute(true);
+				else
+					hexmap.mute(false);
 				return true;
 			}
 		});
 		
 		tbPause.addListener(new InputListener() {
 			public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-				System.out.println("Pause");
+				if (!tbPause.isChecked())
+					hexmap.pause(true);
+				else
+					hexmap.pause(false);
 				return true;
 			}
 		});
 				
 		tbQuit.addListener(new InputListener() {
 			public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-					System.out.println("Quit");
+					// TODO are you sure you want to quit?
+					hexmap.quit();
 					return true;
 				}
 		});
 		
 		tbHelp.addListener(new InputListener() {
 			public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-				//System.out.println("How to play");
-				//if (helpWin.isVisible()) {
-				//	helpWin.setVisible(false);
-				//	System.out.println("ssshh");
-				//}
-				//else 
-				
-				helpWin.setVisible(true);
+				//helpWin.setVisible(true);
+				hexmap.setScreen("helpScreen");
 				return true;
 			}
 		});
