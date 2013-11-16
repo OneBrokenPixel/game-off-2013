@@ -172,13 +172,16 @@ public class CorruptionEntity extends Entity {
 		};
 		
 		Arrays.sort(targets, eveluator);
-		
+		/*
 		for( Cell c : targets) {
 			//System.out.println(c.unit);
 			
 			//Cell[] attackers = getNeighbouringCellsWithOwners(c, CorruptionEntity.class);
 			attackCell(c);
 		
+		}*/
+		if(targets.length != 0) {
+			attackCell(targets[0]);
 		}
 	}
 }
