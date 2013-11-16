@@ -154,6 +154,7 @@ public class CorruptionGdxGame extends Game {
 			// all update is here!
 			
 			this.map.getPlayer().tick(delta);
+			this.map.getCorruption().tick(delta);
 			
 			stage.setEnergy(ui_if.getEnergyBank());
 			

@@ -117,8 +117,13 @@ public class HexMap implements Disposable {
 		public Entity owner = null;
 		
 		public void setOwner( Entity owner ) {
+			if( this.owner != null ) {
+				this.owner.removeCell(this);
+			}
 			this.owner = owner;
-			this.tile = tiles.get(this.owner.getOwnerName()+"Hex");
+			if(this.owner != null) {
+				this.tile = tiles.get(this.owner.getOwnerName()+"Hex");
+			}
 			/*
 			if( this.owner.contains("player") ) {
 				getPlayer().setOwnedCell(this);

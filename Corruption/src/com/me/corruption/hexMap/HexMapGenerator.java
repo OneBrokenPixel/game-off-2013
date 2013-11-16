@@ -190,11 +190,12 @@ public class HexMapGenerator {
 		default:
 			break;
 		}		
-		
+		//playerCell.unit
 		player.addOwnedCell(playerCell);
 		
 		
 		Cell corruptionCell = getRandomTile(cells, 1, width-2, height-2, playerCell.point, 2);
+		corruptionCell.unit = 0;
 		corruption.addOwnedCell(corruptionCell);
 		
 	}

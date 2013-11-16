@@ -35,7 +35,7 @@ public class PlayerEntity extends Entity {
 	public void addOwnedCell(Cell cell)
 	{
 		super.addOwnedCell(cell);
-		this.updateVisible(cell);
+		repocessVisible();
 	}
 	
 	@Override
@@ -45,7 +45,7 @@ public class PlayerEntity extends Entity {
 	}
 	
 	private void setCellAsVisible(Cell cell) {
-		if(cell != null && cell.owner instanceof NeutralEntity) {
+		if(cell != null && !(cell.owner instanceof PlayerEntity)) {
 			visible.add(cell);
 		}
 	}	
