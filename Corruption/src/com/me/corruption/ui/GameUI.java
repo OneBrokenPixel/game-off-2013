@@ -291,6 +291,7 @@ public class GameUI extends Stage {
 		tbQuit.addListener(new InputListener() {
 			public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
 				// TODO are you sure you want to quit?
+				System.out.println(getWidth());
 				hexmap.quit();
 				return true;
 			}

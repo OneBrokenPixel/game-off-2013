@@ -5,6 +5,7 @@ import java.util.HashSet;
 import sun.rmi.transport.proxy.CGIHandler;
 
 import com.badlogic.gdx.math.GridPoint2;
+import com.badlogic.gdx.math.MathUtils;
 import com.me.corruption.hexMap.HexMap;
 import com.me.corruption.hexMap.HexMap.Building;
 import com.me.corruption.hexMap.HexMap.Cell;
@@ -14,6 +15,7 @@ public class PlayerEntity extends Entity {
 
 	private HashSet<Cell> visible = new HashSet<Cell>();
 	private float energyBank;
+	private float rechargeRate = 2.0f;
 	
 	public PlayerEntity( HexMap map) {
 		super(map,"player");
@@ -103,9 +105,16 @@ public class PlayerEntity extends Entity {
 			}
 		}
 		
-		
-		for(Cell c : recharging) {
+		if( recharging.size() != 0 ) {
+			float rechargeEnergy = this.energyBank / recharging.size();
 			
+			for(Cell c : recharging) {
+				
+				float capped = MathUtils.clamp(rechargeEnergy, 0, rechargeRate*dt);
+				
+				c.addEnergy(capped);
+				this.energyBank -= capped;
+			}
 		}
 		
 		//System.out.println(this.energyBank);
