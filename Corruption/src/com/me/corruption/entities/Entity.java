@@ -71,14 +71,14 @@ public abstract class Entity {
 	}
 	
 
-	private static GridPoint2 odd[] = {	new GridPoint2(-1, -1),
-										new GridPoint2(0, -1),
-										new GridPoint2(1, -1),
-										new GridPoint2(1, 0),
-										new GridPoint2(1, 0),
-										new GridPoint2(0, 1)};
+	private static GridPoint2 even[] = {	new GridPoint2(-1, -1),
+											new GridPoint2(0, -1),
+											new GridPoint2(1, -1),
+											new GridPoint2(-1, 0),
+											new GridPoint2(1, 0),
+											new GridPoint2(0, 1)};
 
-	private static GridPoint2 even[] = {	new GridPoint2(1, 1),
+	private static GridPoint2 odd[] = {		new GridPoint2(-1, 1),
 											new GridPoint2(0, 1),
 											new GridPoint2(1, 1),
 											new GridPoint2(-1, 0),
@@ -92,7 +92,7 @@ public abstract class Entity {
 		final GridPoint2 point = cell.point;
 		int col = point.x;
 
-		GridPoint2 points[] = ((col&1) == 0)? odd:even;
+		GridPoint2 points[] = ((col&1) == 0)? even:odd;
 		cells.clear();
 		for( GridPoint2 p : points) {
 			final Cell c = map.getCell(point.x+p.x, point.y+p.y);
@@ -109,7 +109,7 @@ public abstract class Entity {
 		final GridPoint2 point = cell.point;
 		int col = point.x;
 
-		GridPoint2 points[] = ((col&1) == 0)? odd:even;
+		GridPoint2 points[] = ((col&1) == 0)? even:odd;
 		cells.clear();
 		for( GridPoint2 p : points) {
 			final Cell c = map.getCell(point.x+p.x, point.y+p.y);

@@ -74,9 +74,9 @@ public class CorruptionEntity extends Entity {
 		
 	*/
 	private int evalueateCell(Cell cell) {
-		int eval = (int) cell.unit;
+		int eval = (int) cell.unit + 1;
 		if( cell.owner instanceof PlayerEntity) {
-			eval*=10;
+			eval*=100;
 		}
 		return eval;
 	}
