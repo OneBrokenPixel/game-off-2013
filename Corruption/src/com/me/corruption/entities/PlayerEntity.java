@@ -2,19 +2,29 @@ package com.me.corruption.entities;
 
 import java.util.HashSet;
 
+import sun.rmi.transport.proxy.CGIHandler;
+
 import com.badlogic.gdx.math.GridPoint2;
 import com.me.corruption.hexMap.HexMap;
+import com.me.corruption.hexMap.HexMap.Building;
 import com.me.corruption.hexMap.HexMap.Cell;
+import com.me.corruption.hexMap.HexMap.Resource;
 
 public class PlayerEntity extends Entity {
 
 	private HashSet<Cell> visible = new HashSet<Cell>();
-
+	private float energyBank;
 	
 	public PlayerEntity( HexMap map) {
 		super(map,"player");
+		energyBank = 0.0f;
 	}
 	
+	
+	public float getEnergyBank() {
+		return energyBank;
+	}
+
 	public HashSet<Cell> getVisible() {
 		return visible;
 	}
@@ -68,9 +78,37 @@ public class PlayerEntity extends Entity {
 	}
 	
 
+	private HashSet<Cell> recharging = new HashSet<Cell>();
+	
 	@Override
 	public void tick(float dt) {
-		// TODO Auto-generated method stub
+		
+		//this.energyBank += 200f*dt;
+		
+		recharging.clear();
+		
+		for( Cell c : ownedCells) {
+			if(c.getBuilding().sprite != null){
+				// calculate energy generated here!
+				
+				final Building b = c.getBuilding();
+				final Resource r = c.getResourseForBuilding(b.name);
+				//System.out.println(r);
+				if(r!= null) {
+					this.energyBank += (b.energyBonus * r.getAmount() * dt);
+				}
+			}
+			if(c.recharge) {
+				recharging.add(c);
+			}
+		}
+		
+		
+		for(Cell c : recharging) {
+			
+		}
+		
+		//System.out.println(this.energyBank);
 		
 	}
 }

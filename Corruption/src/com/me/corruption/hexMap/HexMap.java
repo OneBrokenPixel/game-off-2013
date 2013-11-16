@@ -31,7 +31,7 @@ public class HexMap implements Disposable {
 	public static final int RESOURCE_CHEMICAL	= 2;
 	public static final int RESOURCE_MAX		= 3;
 
-	private static final float BUILDING_ENERGY[] = {0.0f,0.0f,0.0f};
+	private static final float BUILDING_ENERGY[] = {1.0f,2.0f,3.0f};
 	
 	
 	/**
@@ -47,6 +47,14 @@ public class HexMap implements Disposable {
 			this.amount = MathUtils.clamp(amount, 0, 3);
 			this.sprite = resourceIcons.get(this.name+this.amount);
 		}
+		
+		public int getAmount() {
+			return amount;
+		}
+		
+		public String getName() {
+			return name;
+		}
 
 		@Override
 		public int compareTo(Resource arg0) {
@@ -54,7 +62,7 @@ public class HexMap implements Disposable {
 				return Integer.compare(this.amount, arg0.amount);
 			}
 			else {
-				return 1;
+				return -1;
 			}
 		}
 		
@@ -150,7 +158,6 @@ public class HexMap implements Disposable {
 		}
 
 		public Building getBuilding() {
-			// TODO Auto-generated method stub
 			return building;
 		}
 		
@@ -168,7 +175,7 @@ public class HexMap implements Disposable {
 						return res1.compareTo(res2);
 					}
 					else {
-						return -1;
+						return 1;
 					}
 				}
 				
@@ -179,6 +186,21 @@ public class HexMap implements Disposable {
 			Arrays.sort(a, comp);
 			
 			return a;
+		}
+		
+		public Resource getResourseForBuilding(String name) {
+			////System.out.println(name);
+			if( name.contains("windplant")) {
+				return resources[RESOURCE_WIND];
+			}
+			else if(name.contains("solarplant")){
+				return resources[RESOURCE_SOLAR];
+			}
+			else if(name.contains("chemicalplant")){
+				//System.out.println(resources[RESOURCE_CHEMICAL]);
+				return resources[RESOURCE_CHEMICAL];
+			}
+			return null;
 		}
 	}
 	

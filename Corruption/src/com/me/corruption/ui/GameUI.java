@@ -1,5 +1,6 @@
 package com.me.corruption.ui;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Pixmap.Format;
@@ -28,6 +29,9 @@ public class GameUI extends Stage {
 	private Pixmap pixmap;
 	public static Skin skin;
 	
+	private Table sidebar;
+	private Table layout; 
+	
 	private LabelStyle lstyle;
 	private Label energyDisp;
 	private int energy; // for ui testing purposes only
@@ -44,16 +48,20 @@ public class GameUI extends Stage {
 	private TextButton tbQuit;
 	
 	private TextButton tbHelp;
-	private Window helpWin;
-	private TextButton helpQuit;
+	//private Window helpWin;
+	//private TextButton helpQuit;
 	//private HelpScreen hScreen;
+	
+	private BuildingWindow buildWin;
+	private ResearchWindow researchWin;
 	
 	public GameUI(final HexMapInterface hexmap) {
 		
 		//this.renderer = renderer;
 		this.hexmap = hexmap;
+
 		
-		skin = new Skin();
+		skin = new Skin(Gdx.files.internal("data/uiskin.json"));
 		pixmap = new Pixmap(1,1, Format.RGBA8888);
 		
 		addColour("black", Color.BLACK);
@@ -63,11 +71,11 @@ public class GameUI extends Stage {
 		
 		skin.add("bitmapFont", new BitmapFont());
 
-		Table layout = new Table();
+		layout = new Table();
 		layout.setFillParent(true);
 		this.addActor(layout);
 		
-		Table sidebar = new Table();
+		sidebar = new Table();
 		sidebar.setBackground(skin.newDrawable("lgrey"));
 		layout.left().bottom();
 		layout.add(sidebar).expandY().fill();
@@ -100,7 +108,7 @@ public class GameUI extends Stage {
 		tbResources = new TextButton("Show Resources", skin, "toggle");
 		tbEnergy = new TextButton("Show Energy", skin, "toggle");
 		tbResearch = new TextButton("Research", skin);
-		tbShields = new TextButton("Add Energy", skin, "toggle");
+		tbShields = new TextButton("Shields", skin, "toggle");
 
 		sidebar.add(addEnergy);
 		sidebar.row();
@@ -143,34 +151,58 @@ public class GameUI extends Stage {
 		renderGroup.uncheckAll();
 		*/
 		
-		WindowStyle winStyle = new WindowStyle();
-		winStyle.titleFont = skin.getFont("bitmapFont");
+		//WindowStyle winStyle = new WindowStyle();
+		//winStyle.titleFont = skin.getFont("bitmapFont");
 		
-		skin.add("default", winStyle);
-		skin.add("default",lstyle);
-		//skin.add("default", tbStyle);
+		//skin.add("default", winStyle);
 	
-		helpQuit = new TextButton("Quit", skin);
+		//helpQuit = new TextButton("Quit", skin);
 		
-		helpWin = new Window("How to play", skin);
-		//helpWin.getButtonTable().add(new TextButton("X", skin)).height(helpWin.getPadTop());
-		helpWin.getButtonTable().add(helpQuit).height(50).width(100);
-		helpWin.add("This is the how to play window");
-		helpWin.setModal(true);
-		helpWin.setVisible(false);
-		helpWin.setWidth(400);
-		helpWin.setHeight(150);
-
-		helpWin.setX(300);
-		helpWin.setY(300);
-		helpWin.setBackground(skin.newDrawable("lgrey"));
-		helpWin.setMovable(true);// <--- why doesn't this work?
-
-		//hScreen = new HelpScreen(hexmap);
 		hexmap.addScreen("helpScreen", new HelpScreen(hexmap));
-		//hScreen = new HelpScreen(hexmap, this., skin);
+
+		buildWin = new BuildingWindow("Building Window", skin, hexmap);
+		buildWin.setVisible(false);
+		researchWin = new ResearchWindow("Research Menu", skin, hexmap);
+		researchWin.setPosition(300, 300);
+		researchWin.setVisible(false);
 		
-		//this.addActor(helpWin);
+		this.addActor(buildWin);
+		this.addActor(researchWin);
+		
+		this.addListener(new InputListener() {
+			public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+				if (tbShields.isChecked()) {
+					
+					buildWin.setX(x);
+					buildWin.setY(y);
+					buildWin.setVisible(true);
+					
+					// random for now
+					if (Math.random() > 0.5) {
+						buildWin.populate(false,false,false,true);
+					}
+					else {
+						buildWin.populate(true,true,true,false);
+					}
+					
+					tbShields.setChecked(false);
+					return true;
+				}
+				
+				if (buildWin.isVisible()) {
+					buildWin.setVisible(false);
+					return true;
+				}
+				
+				if (researchWin.isVisible()) {
+					researchWin.setVisible(false);
+					return true;
+				}
+				
+				return false;
+			}
+			
+		});
 		
 		addEnergy.addListener(new InputListener() {
 			public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
@@ -226,7 +258,12 @@ public class GameUI extends Stage {
 		
 		tbResearch.addListener(new InputListener() {
 			public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-				System.out.println("Research Menu");
+				if (!researchWin.isVisible()) {
+					researchWin.setVisible(true);
+				}
+				else {
+					researchWin.setVisible(false);
+				}
 				return true;
 			}
 		});
@@ -253,10 +290,10 @@ public class GameUI extends Stage {
 				
 		tbQuit.addListener(new InputListener() {
 			public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-					// TODO are you sure you want to quit?
-					hexmap.quit();
-					return true;
-				}
+				// TODO are you sure you want to quit?
+				hexmap.quit();
+				return true;
+			}
 		});
 		
 		tbHelp.addListener(new InputListener() {
@@ -267,13 +304,15 @@ public class GameUI extends Stage {
 			}
 		});
 		
+		/*
 		helpQuit.addListener(new InputListener() {
 			public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-				System.out.println("quit");
-				helpWin.setVisible(false);
+				//System.out.println("quit");
+				//helpWin.setVisible(false);
 				return true;
 			}
 		});
+		*/
 	}
 
 	private void resetRenderGroup() {
@@ -294,5 +333,17 @@ public class GameUI extends Stage {
 		pixmap.setColor(colour);
 		pixmap.fill();
 		skin.add(cName, new Texture(pixmap));
+	}
+	
+	public void setEnergy(int energy) {
+		energyDisp.setText("Energy: " + energy);
+	}
+	
+	public float getSidebarWidth() {
+		return sidebar.getWidth();
+	}
+	
+	public float getSidebarHeight() {
+		return sidebar.getHeight();
 	}
 }
