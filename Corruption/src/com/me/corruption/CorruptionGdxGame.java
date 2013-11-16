@@ -72,7 +72,7 @@ public class CorruptionGdxGame extends Game {
 							cell.setRecharge(!cell.recharge);
 						}
 						else {
-							map.getPlayer().addOwnedCell(cell);
+							map.getPlayer().attackCell(cell);
 						}
 						//System.out.println(cell);
 					}

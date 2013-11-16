@@ -76,7 +76,7 @@ public class CorruptionEntity extends Entity {
 	private int evalueateCell(Cell cell) {
 		int eval = (int) cell.unit;
 		if( cell.owner instanceof PlayerEntity) {
-			eval*=2;
+			eval*=10;
 		}
 		return eval;
 	}
@@ -136,14 +136,14 @@ public class CorruptionEntity extends Entity {
 		
 		float meanCellEnergy = minCellEnergy+((maxCellEnergy-minCellEnergy)*0.5f);
 
-		float leachEnergy = resourseCount * 0.5f * dt;
+		float leachEnergy = resourseCount * 0.1f * dt;
 
 		//System.out.println(resourseCount);
 		
 		for( Cell c : ownedCells) {
 			
 			c.rechargeRate = (maxCellEnergy+1-c.unit)*dt;
-			System.out.println(c.rechargeRate);
+			//System.out.println(c.rechargeRate);
 			cellEnergyDefisite += c.rechargeRate;
 			
 		}	
@@ -176,8 +176,8 @@ public class CorruptionEntity extends Entity {
 		for( Cell c : targets) {
 			//System.out.println(c.unit);
 			
-			Cell[] attackers = getNeighbouringCellsWithOwners(c, CorruptionEntity.class);
-			attackCell(c, attackers);
+			//Cell[] attackers = getNeighbouringCellsWithOwners(c, CorruptionEntity.class);
+			attackCell(c);
 		
 		}
 	}

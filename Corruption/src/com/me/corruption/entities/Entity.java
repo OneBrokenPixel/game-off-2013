@@ -39,12 +39,14 @@ public abstract class Entity {
 		//cell.setOwner(null);
 	}
 	
-	public boolean attackCell(Cell target, Cell...attekers) {
-		final int count = attekers.length;
+	public boolean attackCell(Cell target) {
+		
+		Cell[] attackers = getNeighbouringCellsWithOwners(target, this.getClass());
+		
 		
 		float totalAttackingEnergy = 0.0f;
 		
-		for(Cell c : attekers) {
+		for(Cell c : attackers) {
 			totalAttackingEnergy += c.unit;
 		}
 		
@@ -55,7 +57,7 @@ public abstract class Entity {
 			
 			target.unit = 0;
 			
-			for(Cell c : attekers) {
+			for(Cell c : attackers) {
 				c.unit -= energyUnit * c.unit;
 			}
 			target.unit = 0;
