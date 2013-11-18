@@ -251,7 +251,7 @@ public class HexMapRenderer {
 					
 					final Cell cell = map.getCell(col, row);
 					//System.out.println(cell.point.x + "-" + cell.point.y + " " + col + "-" + row);
-					if(cell == null || (!visible.contains(cell) && !(cell.owner instanceof PlayerEntity)) || cell.getBuilding().sprite != null) {
+					if(cell == null || (!visible.contains(cell) && !(cell.owner instanceof PlayerEntity)) || cell.getBuilding() != null) {
 						//x += layerTileWidth * width_offset;
 						continue;
 					}
@@ -316,17 +316,17 @@ public class HexMapRenderer {
 		}
 		else if( mouseOverCell != null ) {
 			
-
 			final Cell cell = mouseOverCell;
 			
 			float x = (layerTileWidth*0.5f) * 3/2 * cell.point.x;
 			float y = (float) ((layerTileWidth*0.5f) * sqrt3 * (cell.point.y + 0.5 * (cell.point.x&1)));
 			
 			//System.out.println(cell.point.x + "-" + cell.point.y + " " + col + "-" + row);
-			if(cell == null || (!visible.contains(cell) && !(cell.owner instanceof PlayerEntity)) || cell.getBuilding().sprite != null) {
+			if(cell == null || (!visible.contains(cell) && !(cell.owner instanceof PlayerEntity)) || cell.getBuilding() != null ) {
 				//x += layerTileWidth * width_offset;
 				return;
 			}
+		
 			for( int resIndex = 0; resIndex < HexMap.RESOURCE_MAX; resIndex++) {
 				
 				final Resource res = cell.resources[resIndex];
@@ -401,7 +401,7 @@ public class HexMapRenderer {
 				
 				final Cell cell = map.getCell(col, row);
 				//System.out.println(cell.point.x + "-" + cell.point.y + " " + col + "-" + row);
-				if(cell == null || cell.getBuilding().sprite == null) {
+				if(cell == null || cell.getBuilding() == null) {
 					//x += layerTileWidth * width_offset;
 					continue;
 				}

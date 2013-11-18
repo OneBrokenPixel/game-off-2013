@@ -101,7 +101,13 @@ public abstract class Entity {
 			}
 		}
 		
-		return cells.toArray(Cell.class);
+		Cell[] cellsArray = new Cell[cells.size];
+		
+		for( int i = 0; i<cells.size; i++ ) {
+			cellsArray[i] = cells.get(i);
+		}
+		
+		return cellsArray;
 	}
 	
 	protected Cell[] getNeighbouringCellsWithOwners(Cell cell, Class<?>...owners) {
@@ -126,7 +132,13 @@ public abstract class Entity {
 			}
 		}
 		
-		return cells.toArray(Cell.class);
+		Cell[] cellsArray = new Cell[cells.size];
+		
+		for( int i = 0; i<cells.size; i++ ) {
+			cellsArray[i] = cells.get(i);
+		}
+		
+		return cellsArray;
 	}
 		
 }

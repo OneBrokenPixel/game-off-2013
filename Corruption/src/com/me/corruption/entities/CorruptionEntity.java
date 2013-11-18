@@ -22,57 +22,6 @@ public class CorruptionEntity extends Entity {
 		// TODO Auto-generated constructor stub
 	}
 
-	/*
-	@Override
-	public void addOwnedCell(Cell cell)
-	{
-		super.addOwnedCell(cell);
-		repocessVisible();
-	}
-	
-	@Override
-	public void removeCell(Cell cell) {
-		super.removeCell(cell);
-		repocessVisible();
-	}
-	
-	private void setCellAsVisible(Cell cell) {
-		if(cell != null && !(cell.owner instanceof CorruptionEntity)) {
-			//System.out.println(cell.owner.toString() + cell.owner.getOwnerName());
-			visible.add(cell);
-		}
-	}	
-	
-	private void updateVisible(Cell cell) {
-		final GridPoint2 point = cell.point;
-		
-		if( point.x % 2 == 0) {
-			setCellAsVisible(map.getCell(point.x-1, point.y-1));
-			setCellAsVisible(map.getCell(point.x-0, point.y-1));
-			setCellAsVisible(map.getCell(point.x+1, point.y-1));
-			setCellAsVisible(map.getCell(point.x-1, point.y+0));
-			setCellAsVisible(map.getCell(point.x+1, point.y+0));
-			setCellAsVisible(map.getCell(point.x-0, point.y+1));
-		}
-		else {
-			
-			setCellAsVisible(map.getCell(point.x-1, point.y+1));
-			setCellAsVisible(map.getCell(point.x-0, point.y+1));
-			setCellAsVisible(map.getCell(point.x+1, point.y+1));
-			setCellAsVisible(map.getCell(point.x-1, point.y+0));
-			setCellAsVisible(map.getCell(point.x+1, point.y+0));
-			setCellAsVisible(map.getCell(point.x-0, point.y-1));
-		}
-	}
-	
-	private void repocessVisible() {
-		visible.clear();
-		for(Cell c : getOwnedCells()) {
-			updateVisible(c);
-		}
-	}
-		
-	*/
 	private int evalueateCell(Cell cell) {
 		int eval = (int) cell.unit + 1;
 		if( cell.owner instanceof PlayerEntity) {

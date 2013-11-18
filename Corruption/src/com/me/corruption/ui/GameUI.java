@@ -1,6 +1,7 @@
 package com.me.corruption.ui;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Pixmap.Format;
@@ -19,6 +20,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Window.WindowStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
+import com.me.corruption.entities.PlayerEntity;
+import com.me.corruption.hexMap.HexMap.Cell;
+import com.me.corruption.hexMap.HexMap.Resource;
 import com.me.corruption.hexMap.HexMapInterface;
 import com.me.corruption.hexMap.HexMapRenderer;
 
@@ -171,22 +175,38 @@ public class GameUI extends Stage {
 		
 		this.addListener(new InputListener() {
 			public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-				if (tbShields.isChecked()) {
-					
-					buildWin.setX(x);
-					buildWin.setY(y);
-					buildWin.setVisible(true);
-					
-					// random for now
-					if (Math.random() > 0.5) {
-						buildWin.populate(false,false,false,true);
-					}
-					else {
-						buildWin.populate(true,true,true,false);
-					}
-					
-					tbShields.setChecked(false);
+				
+				if (buildWin.isVisible()) {
+					buildWin.setVisible(false);
 					return true;
+				}
+				
+				if (button == Buttons.LEFT) {
+					Cell cell = hexmap.getMouseOverTile();
+				
+					if (cell != null && cell.owner instanceof PlayerEntity) {
+						hexmap.setClickedOn(cell);
+						
+						boolean wind = cell.getResourceForBuilding("windplant") != null;
+						boolean chemical = cell.getResourceForBuilding("chemicalplant") != null;
+						boolean solar = cell.getResourceForBuilding("solarplant") != null;
+						boolean demolish = cell.getBuilding() != null;
+						
+						buildWin.setX(x);
+						buildWin.setY(y);
+						buildWin.setVisible(true);
+						
+						if (demolish) {
+							buildWin.populate(false, false, false, true);
+						}
+						else {
+							buildWin.populate(wind,chemical,solar,false);
+						}
+
+						
+						return true;
+					}
+					
 				}
 				
 				if (buildWin.isVisible()) {

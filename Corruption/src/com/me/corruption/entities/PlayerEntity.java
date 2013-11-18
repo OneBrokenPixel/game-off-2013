@@ -90,14 +90,16 @@ public class PlayerEntity extends Entity {
 		recharging.clear();
 		
 		for( Cell c : ownedCells) {
-			if(c.getBuilding().sprite != null){
+			if(c.getBuilding() != null){
 				// calculate energy generated here!
 				
 				final Building b = c.getBuilding();
-				final Resource r = c.getResourseForBuilding(b.name);
-				//System.out.println(r);
-				if(r!= null) {
-					this.energyBank += (b.energyBonus * r.getAmount() * dt);
+				if(b != null) {
+					final Resource r = c.getResourceForBuilding(b.name);
+					//System.out.println(r);
+					if(r!= null) {
+						this.energyBank += (b.energyBonus * r.getAmount() * dt);
+					}
 				}
 			}
 			if(c.recharge) {
