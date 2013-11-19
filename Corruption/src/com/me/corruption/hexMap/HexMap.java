@@ -12,6 +12,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.GridPoint2;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
 
 import com.me.corruption.entities.CorruptionEntity;
@@ -105,7 +106,7 @@ public class HexMap implements Disposable {
 			//this.energyBonus = BUILDING_ENERGY
 		}
 	}
-	
+		
 	/**
 	 * Tile Cell class
 	 */
@@ -125,6 +126,8 @@ public class HexMap implements Disposable {
 		
 		public Resource[] resources = new Resource[3];
 		public Entity owner = null;
+		
+		public Array<Entity> attckers = new Array<Entity>(2);
 		
 		public void setOwner( Entity owner ) {
 			if( this.owner != null ) {

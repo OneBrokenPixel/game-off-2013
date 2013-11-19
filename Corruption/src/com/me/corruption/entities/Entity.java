@@ -41,27 +41,38 @@ public abstract class Entity {
 	}
 	
 	
-	private static HashMap<Cell,Array<Entity>> contestedCells = new HashMap<Cell,Array<Entity>>(); 
-	
-	public static void updateAttacks( float dt, Entity...enities ) {
-
-		contestedCells.clear();
+	public void update(float dt) {
 		
-		for( Entity e : enities) {
-			for( Cell c : e.attacks) {
-				c.unit -= e.attackRate*dt;
-				if( contestedCells.containsKey(c) ) {
-					contestedCells.get(c).add(e);
-				}
-				else {
-					
-					contestedCells.put(c, new Array<Entity>());
+		
+		Cell[] temp = new Cell[this.attacks.size];
+		
+		for( int i = 0; i<this.attacks.size; i++ ) {
+			temp[i] = this.attacks.get(i);
+		}
+	
+		for( Cell target : temp) {
+			
+			Cell[] attakingCells = getNeighbouringCellsWithOwners(target, this.getClass());
+			
+			int count = 0;
+			for( Cell att : attakingCells) {
+				float thisAttack = this.attackRate* dt ;
+				if( att.unit >= thisAttack ) {
+					att.unit -= thisAttack;
+					count += 1;
 				}
 			}
+			
+			target.unit -= this.attackRate * count * dt;
+			
+			if( target.unit <= 0.0f ) {
+				addOwnedCell(target);
+				for( Entity att : target.attckers) {
+					att.stopAttack(target);
+				}
+				
+			}
 		}
-	}
-	
-	public void update(float dt) {
 		
 		tick(dt);
 	}
@@ -76,6 +87,7 @@ public abstract class Entity {
 	public void attack(Cell target) {
 		if( getNeighbouringCellsWithOwners(target, this.getClass()).length != 0 ) {
 			attacks.add(target);
+			target.attckers.add(this);
 		}
 	}
 	
@@ -85,6 +97,7 @@ public abstract class Entity {
 	
 	public void stopAttack(Cell cell) {
 		attacks.removeValue(cell, false);
+		cell.attckers.removeValue(this, false);
 	}
 	
 	public Array<Cell> getAttacks() {
