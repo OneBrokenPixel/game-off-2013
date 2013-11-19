@@ -9,8 +9,10 @@ import sun.org.mozilla.javascript.internal.InterfaceAdapter;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.GridPoint2;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
 
 import com.me.corruption.entities.CorruptionEntity;
@@ -66,9 +68,15 @@ public class HexMap implements Disposable {
 		
 	}
 	
+	/**
+	 * Class for building in each cell
+	 * @author Anthony/Marie
+	 *
+	 */
 	public class Building {
 		public String name = null;
 		public HexMapSpriteObject sprite = null;
+		public int cost = 0;
 		
 		public int id;
 				
@@ -79,12 +87,15 @@ public class HexMap implements Disposable {
 				this.sprite = buildings.get(this.name);
 				if( this.name.contains("chemicalplant") ) {
 					this.id = RESOURCE_CHEMICAL;
+					this.cost = 30;
 				}
 				else if( this.name.contains("solarplant")) {
 					this.id = RESOURCE_SOLAR;
+					this.cost = 20;
 				}
 				else if( this.name.contains("windplant")) {
 					this.id = RESOURCE_WIND;
+					this.cost = 10;
 				}
 			}
 			else {
@@ -95,7 +106,7 @@ public class HexMap implements Disposable {
 			//this.energyBonus = BUILDING_ENERGY
 		}
 	}
-	
+		
 	/**
 	 * Tile Cell class
 	 */
@@ -115,6 +126,8 @@ public class HexMap implements Disposable {
 		
 		public Resource[] resources = new Resource[3];
 		public Entity owner = null;
+		
+		public Array<Entity> attckers = new Array<Entity>(2);
 		
 		public void setOwner( Entity owner ) {
 			if( this.owner != null ) {
@@ -265,8 +278,10 @@ public class HexMap implements Disposable {
 		
 		tiles.add( new HexMapSpriteObject("playerHex", atlas),
 				   new HexMapSpriteObject("playerHex_toggle", atlas),
+				   new HexMapSpriteObject("playerHex_Attack", atlas),
 				   new HexMapSpriteObject("neutralHex", atlas),
-				   new HexMapSpriteObject("corruptionHex", atlas));
+				   new HexMapSpriteObject("corruptionHex", atlas),
+				   new HexMapSpriteObject("corruptionHex_Attack", atlas));
 		
 		resourceIcons = new HexMapSpriteList();
 		
@@ -293,6 +308,10 @@ public class HexMap implements Disposable {
 	
 	public HexMap() {
 		//ui_if = new HexMapInterface(this);
+	}
+	
+	public HexMapSpriteObject getTileTexture(String name) {
+		return tiles.get(name);
 	}
 	
 	public int getWidth() {

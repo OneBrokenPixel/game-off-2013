@@ -141,4 +141,10 @@ public class HexMapInterface {
 	public void demolishBuilding() {
 		build(null);	
 	}
+
+
+	public void gameLost() {
+		System.out.println("You lose");
+		
+	}
 }

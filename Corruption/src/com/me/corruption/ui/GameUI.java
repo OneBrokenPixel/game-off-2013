@@ -45,7 +45,6 @@ public class GameUI extends Stage {
 	private TextButton tbResources;
 	private TextButton tbEnergy;
 	private TextButton tbResearch;
-	private TextButton tbShields;
 	
 	private TextButton tbMute;   // change mute and pause to icons
 	private TextButton tbPause;
@@ -112,7 +111,7 @@ public class GameUI extends Stage {
 		tbResources = new TextButton("Show Resources", skin, "toggle");
 		tbEnergy = new TextButton("Show Energy", skin, "toggle");
 		tbResearch = new TextButton("Research", skin);
-		tbShields = new TextButton("Shields", skin, "toggle");
+		//tbShields = new TextButton("Shields", skin, "toggle");
 
 		sidebar.add(addEnergy);
 		sidebar.row();
@@ -120,8 +119,7 @@ public class GameUI extends Stage {
 		sidebar.row();
 		sidebar.add(tbEnergy);
 		sidebar.row();
-		sidebar.add(tbShields);
-		sidebar.row();
+		//sidebar.add(tbShields);
 		sidebar.add(tbResearch).padBottom(150);
 		sidebar.row();
 		
@@ -181,7 +179,7 @@ public class GameUI extends Stage {
 					return true;
 				}
 				
-				if (button == Buttons.LEFT) {
+				if (button == Buttons.RIGHT) {
 					Cell cell = hexmap.getMouseOverTile();
 				
 					if (cell != null && cell.owner instanceof PlayerEntity) {
@@ -264,6 +262,7 @@ public class GameUI extends Stage {
 			}
 		});
 		
+		/*
 		tbShields.addListener(new InputListener() {
 			public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
 				if (!tbShields.isChecked()) {
@@ -275,6 +274,7 @@ public class GameUI extends Stage {
 				return true;
 			}
 		});
+		 */
 		
 		tbResearch.addListener(new InputListener() {
 			public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {

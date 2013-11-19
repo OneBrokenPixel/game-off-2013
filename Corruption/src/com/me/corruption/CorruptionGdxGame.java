@@ -59,24 +59,33 @@ public class CorruptionGdxGame extends Game {
 
 			@Override
 			public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-				System.out.println(button);
+
 				if (renderer != null) {
 
 					Cell cell = renderer.getMouseOverCell();
 					if (cell != null) {
-						
-						if (button == Buttons.RIGHT) {
+						if (button == Buttons.LEFT) {
 							if (cell.owner instanceof PlayerEntity) {
 								cell.setRecharge(!cell.recharge);
 							}
-						}
-						
-						if (button == Buttons.LEFT) {
-							if (map.getPlayer().attackCell(cell)) {
-								cell.unit += 1;
+							else if( map.getPlayer().isAttacking(cell)) {
+								map.getPlayer().stopAttack(cell);
+							}
+							else {
+								map.getPlayer().attack(cell);
 							}
 						}
+						
+						if (button == Buttons.RIGHT){
+							if (cell.owner instanceof PlayerEntity) {
+								map.getPlayer().removeCell(cell);
+							}
+							map.getCorruption().addOwnedCell(cell);
+						
+						}
 					}
+					
+				
 				}
 
 				return false;
@@ -145,18 +154,23 @@ public class CorruptionGdxGame extends Game {
 
 			ui_if.addScreen("gameScreen", this);
 			centerMap();
+		
 		}
 
 		@Override
 		public void render(float delta) {
 
-			// all update is here!
+			// all update is here! 
 
-			this.map.getPlayer().tick(delta);
-			this.map.getCorruption().tick(delta);
+			this.map.getPlayer().update(delta);
+			this.map.getCorruption().update(delta);
 
 			stage.setEnergy(ui_if.getEnergyBank());
 
+			if (this.map.getPlayer().ownedAmount() <= 0) {
+				ui_if.gameLost();
+			}
+			
 			Gdx.gl.glClearColor(0, 0, 0.0f, 1);
 			Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 

@@ -1,6 +1,8 @@
 package com.me.corruption.entities;
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.TreeSet;
 
 import com.badlogic.gdx.math.GridPoint2;
 import com.badlogic.gdx.utils.Array;
@@ -9,6 +11,12 @@ import com.me.corruption.hexMap.HexMap.Cell;
 
 public abstract class Entity {
 
+	
+	private Array<Cell> attacks = new Array<Cell>();
+	
+	private float attackRate = 1.0f;
+	
+	
 	protected HashSet<Cell> ownedCells = new HashSet<Cell>();
 	protected String owner = "";
 
@@ -32,6 +40,43 @@ public abstract class Entity {
 		return owner;
 	}
 	
+	
+	public void update(float dt) {
+		
+		
+		Cell[] temp = new Cell[this.attacks.size];
+		
+		for( int i = 0; i<this.attacks.size; i++ ) {
+			temp[i] = this.attacks.get(i);
+		}
+	
+		for( Cell target : temp) {
+			
+			Cell[] attakingCells = getNeighbouringCellsWithOwners(target, this.getClass());
+			
+			int count = 0;
+			for( Cell att : attakingCells) {
+				float thisAttack = this.attackRate* dt ;
+				if( att.unit >= thisAttack ) {
+					att.unit -= thisAttack;
+					count += 1;
+				}
+			}
+			
+			target.unit -= this.attackRate * count * dt;
+			
+			if( target.unit <= 0.0f ) {
+				addOwnedCell(target);
+				for( Entity att : target.attckers) {
+					att.stopAttack(target);
+				}
+				
+			}
+		}
+		
+		tick(dt);
+	}
+	
 	public abstract void tick(float dt);
 
 	public void removeCell(Cell cell) {
@@ -39,6 +84,32 @@ public abstract class Entity {
 		//cell.setOwner(null);
 	}
 	
+	public void attack(Cell target) {
+		if( getNeighbouringCellsWithOwners(target, this.getClass()).length != 0 ) {
+			attacks.add(target);
+			target.attckers.add(this);
+		}
+	}
+	
+	public boolean  isAttacking(Cell cell) {
+		return attacks.contains(cell, false);
+	}
+	
+	public void stopAttack(Cell cell) {
+		attacks.removeValue(cell, false);
+		cell.attckers.removeValue(this, false);
+	}
+	
+	public Array<Cell> getAttacks() {
+		// TODO Auto-generated method stub
+		return attacks;
+	}
+	
+	public int ownedAmount() {
+		return ownedCells.size();
+		
+	}
+	/*
 	public boolean attackCell(Cell target) {
 		
 		Cell[] attackers = getNeighbouringCellsWithOwners(target, this.getClass());
@@ -69,7 +140,7 @@ public abstract class Entity {
 		
 		return false;
 	}
-	
+	*/
 
 	private static GridPoint2 even[] = {	new GridPoint2(-1, -1),
 											new GridPoint2(0, -1),
@@ -139,6 +210,5 @@ public abstract class Entity {
 		}
 		
 		return cellsArray;
-	}
-		
+	}	
 }

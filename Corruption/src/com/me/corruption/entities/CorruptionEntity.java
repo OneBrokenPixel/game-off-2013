@@ -14,9 +14,10 @@ import com.me.corruption.hexMap.HexMap.Resource;
 
 public class CorruptionEntity extends Entity {
 
-	private static final float handycap = 0.08f;
-	private HashSet<Cell> visible = new HashSet<Cell>();
+	private static final float handicap = 0.08f;
 
+	private HashSet<Cell> targetCells = new HashSet<Cell>();
+	
 
 	public CorruptionEntity(HexMap map) {
 		super(map, "corruption");
@@ -32,8 +33,6 @@ public class CorruptionEntity extends Entity {
 	}
 	
 
-	private HashSet<Cell> targetCells = new HashSet<Cell>();
-	
 	private void setTarget(Cell cell) {
 		if(cell != null && !(cell.owner instanceof CorruptionEntity)) {
 			//System.out.println(cell.owner.toString() + cell.owner.getOwnerName());
@@ -84,11 +83,11 @@ public class CorruptionEntity extends Entity {
 			
 		}		
 		
-		float meanCellEnergy = minCellEnergy+((maxCellEnergy-minCellEnergy)*0.5f);
+		//float meanCellEnergy = minCellEnergy+((maxCellEnergy-minCellEnergy)*0.5f);
 
-		float leachEnergy = resourseCount * this.handycap * dt;
+		float leachEnergy = resourseCount * this.handicap * dt;
 
-		//System.out.println(resourseCount);
+		//System.out.println(resourseC;
 		
 		for( Cell c : ownedCells) {
 			
@@ -131,7 +130,7 @@ public class CorruptionEntity extends Entity {
 		
 		}*/
 		if(targets.length != 0) {
-			attackCell(targets[0]);
+			attack(targets[0]);
 		}
 	}
 }
