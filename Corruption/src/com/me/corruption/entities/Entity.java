@@ -67,7 +67,7 @@ public abstract class Entity {
 			
 			if( target.unit <= 0.0f ) {
 				addOwnedCell(target);
-				for( Entity att : target.attckers) {
+				for( Entity att : target.attackers) {
 					att.stopAttack(target);
 				}
 				
@@ -87,7 +87,7 @@ public abstract class Entity {
 	public void attack(Cell target) {
 		if( getNeighbouringCellsWithOwners(target, this.getClass()).length != 0 ) {
 			attacks.add(target);
-			target.attckers.add(this);
+			target.attackers.add(this);
 		}
 	}
 	
@@ -97,7 +97,7 @@ public abstract class Entity {
 	
 	public void stopAttack(Cell cell) {
 		attacks.removeValue(cell, false);
-		cell.attckers.removeValue(this, false);
+		cell.attackers.removeValue(this, false);
 	}
 	
 	public Array<Cell> getAttacks() {
@@ -109,38 +109,6 @@ public abstract class Entity {
 		return ownedCells.size();
 		
 	}
-	/*
-	public boolean attackCell(Cell target) {
-		
-		Cell[] attackers = getNeighbouringCellsWithOwners(target, this.getClass());
-		
-		
-		float totalAttackingEnergy = 0.0f;
-		
-		for(Cell c : attackers) {
-			totalAttackingEnergy += c.unit;
-		}
-		
-		//System.out.println(attekers.length);
-		
-		if( totalAttackingEnergy >=  target.unit ) {
-			float energyUnit = target.unit/totalAttackingEnergy;
-			
-			target.unit = 0;
-			
-			for(Cell c : attackers) {
-				c.unit -= energyUnit * c.unit;
-			}
-			target.unit = 0;
-			
-			this.addOwnedCell(target);
-			
-			return true;
-		}
-		
-		return false;
-	}
-	*/
 
 	private static GridPoint2 even[] = {	new GridPoint2(-1, -1),
 											new GridPoint2(0, -1),

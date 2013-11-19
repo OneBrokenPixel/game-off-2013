@@ -4,6 +4,8 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashSet;
 
+import sun.misc.Cleaner;
+
 import com.badlogic.gdx.math.GridPoint2;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.Array;
@@ -130,7 +132,16 @@ public class CorruptionEntity extends Entity {
 		
 		}*/
 		if(targets.length != 0) {
-			attack(targets[0]);
+			if( !isAttacking(targets[0])) {
+				Cell[] attackers = getNeighbouringCellsWithOwners(targets[0], this.getClass());
+				float tEnergy = 0;
+				for( Cell c : attackers) {
+					tEnergy += c.unit;
+				}
+				if( tEnergy >= 5.0f*attackers.length) {
+					attack(targets[0]);
+				}
+			}
 		}
 	}
 }

@@ -127,7 +127,7 @@ public class HexMap implements Disposable {
 		public Resource[] resources = new Resource[3];
 		public Entity owner = null;
 		
-		public Array<Entity> attckers = new Array<Entity>(2);
+		public Array<Entity> attackers = new Array<Entity>(2);
 		
 		public void setOwner( Entity owner ) {
 			if( this.owner != null ) {
