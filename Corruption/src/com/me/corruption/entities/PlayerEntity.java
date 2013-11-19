@@ -16,6 +16,8 @@ public class PlayerEntity extends Entity {
 	private HashSet<Cell> visible = new HashSet<Cell>();
 	private float energyBank;
 	private float rechargeRate = 2.0f;
+	// wind, solar, chemical
+	private static final float BUILDING_ENERGY[] = {0.2f,0.4f,0.8f};
 	
 	public PlayerEntity( HexMap map) {
 		super(map,"player");
@@ -98,7 +100,7 @@ public class PlayerEntity extends Entity {
 					final Resource r = c.getResourceForBuilding(b.name);
 					//System.out.println(r);
 					if(r!= null) {
-						this.energyBank += (b.energyBonus * r.getAmount() * dt);
+						this.energyBank += ( BUILDING_ENERGY[b.id] * r.getAmount() * dt);
 					}
 				}
 			}

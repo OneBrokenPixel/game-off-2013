@@ -30,8 +30,6 @@ public class HexMap implements Disposable {
 	public static final int RESOURCE_SOLAR		= 1;
 	public static final int RESOURCE_CHEMICAL	= 2;
 	public static final int RESOURCE_MAX		= 3;
-
-	private static final float BUILDING_ENERGY[] = {1.0f,2.0f,3.0f};
 	
 	
 	/**
@@ -72,7 +70,7 @@ public class HexMap implements Disposable {
 		public String name = null;
 		public HexMapSpriteObject sprite = null;
 		
-		public float energyBonus = 0.0f;
+		public int id;
 				
 		public void set(String name) {
 			this.name = name;// can be null
@@ -80,13 +78,13 @@ public class HexMap implements Disposable {
 				this.name.toLowerCase();
 				this.sprite = buildings.get(this.name);
 				if( this.name.contains("chemicalplant") ) {
-					this.energyBonus = BUILDING_ENERGY[RESOURCE_CHEMICAL];
+					this.id = RESOURCE_CHEMICAL;
 				}
 				else if( this.name.contains("solarplant")) {
-					this.energyBonus = BUILDING_ENERGY[RESOURCE_SOLAR];
+					this.id = RESOURCE_SOLAR;
 				}
 				else if( this.name.contains("windplant")) {
-					this.energyBonus = BUILDING_ENERGY[RESOURCE_WIND];
+					this.id = RESOURCE_WIND;
 				}
 			}
 			else {

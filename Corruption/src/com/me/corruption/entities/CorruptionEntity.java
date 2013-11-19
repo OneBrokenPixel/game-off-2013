@@ -14,6 +14,7 @@ import com.me.corruption.hexMap.HexMap.Resource;
 
 public class CorruptionEntity extends Entity {
 
+	private static final float handycap = 0.08f;
 	private HashSet<Cell> visible = new HashSet<Cell>();
 
 
@@ -85,7 +86,7 @@ public class CorruptionEntity extends Entity {
 		
 		float meanCellEnergy = minCellEnergy+((maxCellEnergy-minCellEnergy)*0.5f);
 
-		float leachEnergy = resourseCount * 0.1f * dt;
+		float leachEnergy = resourseCount * this.handycap * dt;
 
 		//System.out.println(resourseCount);
 		
