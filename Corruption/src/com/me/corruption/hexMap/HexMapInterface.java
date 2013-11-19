@@ -6,6 +6,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.Screen;
 import com.me.corruption.CorruptionGdxGame;
 import com.me.corruption.entities.PlayerEntity;
+import com.me.corruption.hexMap.HexMap.Cell;
 /**
  * 
  * @author Marie
@@ -102,6 +103,48 @@ public class HexMapInterface {
 	}
 	
 	public void updateEnergyDisplay() {
+		
+	}
+	
+	public Cell getMouseOverTile() {
+		return renderer.getMouseOverCell();
+	}
+
+
+	private Cell clickedOn = null;
+	
+	public void setClickedOn(Cell cell){
+		clickedOn = cell;
+	}
+	
+	private void build(String name) {
+		final Cell cell = clickedOn;
+		if( cell != null) {
+			cell.setBuilding(name);
+			//System.out.println(cell.getBuilding().name);
+		}
+	}
+	
+	public void buildWind() {
+		build("windplant");
+	}
+	
+	public void buildSolar() {
+		build("solarplant");
+	}
+	
+	public void buildChemical() {
+		build("chemicalplant");
+	}
+
+
+	public void demolishBuilding() {
+		build(null);	
+	}
+
+
+	public void gameLost() {
+		System.out.println("You lose");
 		
 	}
 }

@@ -14,65 +14,16 @@ import com.me.corruption.hexMap.HexMap.Resource;
 
 public class CorruptionEntity extends Entity {
 
-	private HashSet<Cell> visible = new HashSet<Cell>();
+	private static final float handicap = 0.08f;
 
+	private HashSet<Cell> targetCells = new HashSet<Cell>();
+	
 
 	public CorruptionEntity(HexMap map) {
 		super(map, "corruption");
 		// TODO Auto-generated constructor stub
 	}
 
-	/*
-	@Override
-	public void addOwnedCell(Cell cell)
-	{
-		super.addOwnedCell(cell);
-		repocessVisible();
-	}
-	
-	@Override
-	public void removeCell(Cell cell) {
-		super.removeCell(cell);
-		repocessVisible();
-	}
-	
-	private void setCellAsVisible(Cell cell) {
-		if(cell != null && !(cell.owner instanceof CorruptionEntity)) {
-			//System.out.println(cell.owner.toString() + cell.owner.getOwnerName());
-			visible.add(cell);
-		}
-	}	
-	
-	private void updateVisible(Cell cell) {
-		final GridPoint2 point = cell.point;
-		
-		if( point.x % 2 == 0) {
-			setCellAsVisible(map.getCell(point.x-1, point.y-1));
-			setCellAsVisible(map.getCell(point.x-0, point.y-1));
-			setCellAsVisible(map.getCell(point.x+1, point.y-1));
-			setCellAsVisible(map.getCell(point.x-1, point.y+0));
-			setCellAsVisible(map.getCell(point.x+1, point.y+0));
-			setCellAsVisible(map.getCell(point.x-0, point.y+1));
-		}
-		else {
-			
-			setCellAsVisible(map.getCell(point.x-1, point.y+1));
-			setCellAsVisible(map.getCell(point.x-0, point.y+1));
-			setCellAsVisible(map.getCell(point.x+1, point.y+1));
-			setCellAsVisible(map.getCell(point.x-1, point.y+0));
-			setCellAsVisible(map.getCell(point.x+1, point.y+0));
-			setCellAsVisible(map.getCell(point.x-0, point.y-1));
-		}
-	}
-	
-	private void repocessVisible() {
-		visible.clear();
-		for(Cell c : getOwnedCells()) {
-			updateVisible(c);
-		}
-	}
-		
-	*/
 	private int evalueateCell(Cell cell) {
 		int eval = (int) cell.unit + 1;
 		if( cell.owner instanceof PlayerEntity) {
@@ -82,8 +33,6 @@ public class CorruptionEntity extends Entity {
 	}
 	
 
-	private HashSet<Cell> targetCells = new HashSet<Cell>();
-	
 	private void setTarget(Cell cell) {
 		if(cell != null && !(cell.owner instanceof CorruptionEntity)) {
 			//System.out.println(cell.owner.toString() + cell.owner.getOwnerName());
@@ -134,11 +83,11 @@ public class CorruptionEntity extends Entity {
 			
 		}		
 		
-		float meanCellEnergy = minCellEnergy+((maxCellEnergy-minCellEnergy)*0.5f);
+		//float meanCellEnergy = minCellEnergy+((maxCellEnergy-minCellEnergy)*0.5f);
 
-		float leachEnergy = resourseCount * 0.1f * dt;
+		float leachEnergy = resourseCount * this.handicap * dt;
 
-		//System.out.println(resourseCount);
+		//System.out.println(resourseC;
 		
 		for( Cell c : ownedCells) {
 			
@@ -181,7 +130,7 @@ public class CorruptionEntity extends Entity {
 		
 		}*/
 		if(targets.length != 0) {
-			attackCell(targets[0]);
+			attack(targets[0]);
 		}
 	}
 }

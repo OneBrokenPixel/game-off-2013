@@ -9,6 +9,7 @@ import sun.org.mozilla.javascript.internal.InterfaceAdapter;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.GridPoint2;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.Disposable;
@@ -30,8 +31,6 @@ public class HexMap implements Disposable {
 	public static final int RESOURCE_SOLAR		= 1;
 	public static final int RESOURCE_CHEMICAL	= 2;
 	public static final int RESOURCE_MAX		= 3;
-
-	private static final float BUILDING_ENERGY[] = {1.0f,2.0f,3.0f};
 	
 	
 	/**
@@ -59,7 +58,7 @@ public class HexMap implements Disposable {
 		@Override
 		public int compareTo(Resource arg0) {
 			if(arg0 != null) {
-				return Integer.compare(this.amount, arg0.amount);
+				return this.amount - arg0.amount;
 			}
 			else {
 				return -1;
@@ -68,30 +67,41 @@ public class HexMap implements Disposable {
 		
 	}
 	
+	/**
+	 * Class for building in each cell
+	 * @author Anthony/Marie
+	 *
+	 */
 	public class Building {
 		public String name = null;
 		public HexMapSpriteObject sprite = null;
+		public int cost = 0;
 		
-		public float energyBonus = 0.0f;
+		public int id;
 				
 		public void set(String name) {
-			this.name = name;
+			this.name = name;// can be null
 			if(this.name != null) {
+				this.name.toLowerCase();
 				this.sprite = buildings.get(this.name);
+				if( this.name.contains("chemicalplant") ) {
+					this.id = RESOURCE_CHEMICAL;
+					this.cost = 30;
+				}
+				else if( this.name.contains("solarplant")) {
+					this.id = RESOURCE_SOLAR;
+					this.cost = 20;
+				}
+				else if( this.name.contains("windplant")) {
+					this.id = RESOURCE_WIND;
+					this.cost = 10;
+				}
 			}
 			else {
 				this.sprite = null;
 			}
 
-			if( this.name.contains("chemicalplant") ) {
-				this.energyBonus = BUILDING_ENERGY[RESOURCE_CHEMICAL];
-			}
-			else if( this.name.contains("solarplant")) {
-				this.energyBonus = BUILDING_ENERGY[RESOURCE_SOLAR];
-			}
-			else if( this.name.contains("windplant")) {
-				this.energyBonus = BUILDING_ENERGY[RESOURCE_WIND];
-			}
+
 			//this.energyBonus = BUILDING_ENERGY
 		}
 	}
@@ -104,7 +114,7 @@ public class HexMap implements Disposable {
 		public GridPoint2 point = new GridPoint2();
 		
 		public HexMapSpriteObject tile = null;
-		private Building building = new Building();
+		private Building building = null;
 		
 		// energy
 		public float unit;
@@ -159,7 +169,15 @@ public class HexMap implements Disposable {
 		}
 		
 		public void setBuilding( String name ) {
-			building.set(name);
+			if( building == null) {
+				building = new Building();
+			}
+			if( name == null) {
+				building = null;
+			}
+			else {
+				building.set(name);
+			}
 		}
 
 		public Building getBuilding() {
@@ -193,7 +211,8 @@ public class HexMap implements Disposable {
 			return a;
 		}
 		
-		public Resource getResourseForBuilding(String name) {
+		public Resource getResourceForBuilding(String name) {
+			name = name.toLowerCase();
 			////System.out.println(name);
 			if( name.contains("windplant")) {
 				return resources[RESOURCE_WIND];
@@ -256,8 +275,10 @@ public class HexMap implements Disposable {
 		
 		tiles.add( new HexMapSpriteObject("playerHex", atlas),
 				   new HexMapSpriteObject("playerHex_toggle", atlas),
+				   new HexMapSpriteObject("playerHex_Attack", atlas),
 				   new HexMapSpriteObject("neutralHex", atlas),
-				   new HexMapSpriteObject("corruptionHex", atlas));
+				   new HexMapSpriteObject("corruptionHex", atlas),
+				   new HexMapSpriteObject("corruptionHex_Attack", atlas));
 		
 		resourceIcons = new HexMapSpriteList();
 		
@@ -284,6 +305,10 @@ public class HexMap implements Disposable {
 	
 	public HexMap() {
 		//ui_if = new HexMapInterface(this);
+	}
+	
+	public HexMapSpriteObject getTileTexture(String name) {
+		return tiles.get(name);
 	}
 	
 	public int getWidth() {

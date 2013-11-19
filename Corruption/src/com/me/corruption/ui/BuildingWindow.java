@@ -10,8 +10,8 @@ import com.badlogic.gdx.scenes.scene2d.InputListener;
 
 public class BuildingWindow extends Window {
 	
-	HexMapInterface hexmap;
-	Skin skin;
+	private HexMapInterface hexmap;
+	private Skin skin;
 	
 	private TextButton wind;
 	private TextButton chemical;
@@ -19,7 +19,7 @@ public class BuildingWindow extends Window {
 	private TextButton nothing;
 	private TextButton demolish;
 	
-	public BuildingWindow(String title, Skin skin, HexMapInterface hexmap) {
+	public BuildingWindow(String title, Skin skin, final HexMapInterface hexmap) {
 		super(title, skin);
 		this.skin = skin;
 		this.hexmap = hexmap;
@@ -34,28 +34,28 @@ public class BuildingWindow extends Window {
 		
 		wind.addListener(new InputListener() {
 			public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-				System.out.println("Build wind farm");
+				hexmap.buildWind();
 				return true;
 			}
 		});
 		
 		chemical.addListener(new InputListener() {
 			public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-				System.out.println("Build chemical plant");
+				hexmap.buildChemical();
 				return true;
 			}
 		});
 		
 		solar.addListener(new InputListener() {
 			public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-				System.out.println("Build solar farm");
+				hexmap.buildSolar();
 				return true;
 			}
 		});
 		
 		demolish.addListener(new InputListener() {
 			public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-				System.out.println("Demolish building");
+				hexmap.demolishBuilding();
 				return true;
 			}
 		});

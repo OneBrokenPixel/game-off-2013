@@ -1,6 +1,7 @@
 package com.me.corruption.ui;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Pixmap.Format;
@@ -19,6 +20,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Window.WindowStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
+import com.me.corruption.entities.PlayerEntity;
+import com.me.corruption.hexMap.HexMap.Cell;
+import com.me.corruption.hexMap.HexMap.Resource;
 import com.me.corruption.hexMap.HexMapInterface;
 import com.me.corruption.hexMap.HexMapRenderer;
 
@@ -41,26 +45,22 @@ public class GameUI extends Stage {
 	private TextButton tbResources;
 	private TextButton tbEnergy;
 	private TextButton tbResearch;
-	private TextButton tbShields;
 	
 	private TextButton tbMute;   // change mute and pause to icons
 	private TextButton tbPause;
 	private TextButton tbQuit;
 	
 	private TextButton tbHelp;
-	//private Window helpWin;
-	//private TextButton helpQuit;
-	//private HelpScreen hScreen;
-	
+
 	private BuildingWindow buildWin;
 	private ResearchWindow researchWin;
+	private Window endWin;
 	
 	public GameUI(final HexMapInterface hexmap) {
-		
-		//this.renderer = renderer;
+
+		// interaction with the rest of the game (mainly hexmap)
 		this.hexmap = hexmap;
 
-		
 		skin = new Skin(Gdx.files.internal("data/uiskin.json"));
 		pixmap = new Pixmap(1,1, Format.RGBA8888);
 		
@@ -108,15 +108,12 @@ public class GameUI extends Stage {
 		tbResources = new TextButton("Show Resources", skin, "toggle");
 		tbEnergy = new TextButton("Show Energy", skin, "toggle");
 		tbResearch = new TextButton("Research", skin);
-		tbShields = new TextButton("Shields", skin, "toggle");
 
 		sidebar.add(addEnergy);
 		sidebar.row();
 		sidebar.add(tbResources);
 		sidebar.row();
 		sidebar.add(tbEnergy);
-		sidebar.row();
-		sidebar.add(tbShields);
 		sidebar.row();
 		sidebar.add(tbResearch).padBottom(150);
 		sidebar.row();
@@ -129,64 +126,74 @@ public class GameUI extends Stage {
 		tbQuit = new TextButton("Quit", skin);
 		tbHelp = new TextButton("Help", skin);
 		
-		//sidebar.defaults().width(50).height(50).pad(2);
 		rowTable.add(tbMute).pad(2).height(45);
-		//sidebar.row();
 		rowTable.add(tbPause).pad(2).height(45);
 		sidebar.row();
 		sidebar.add(tbQuit).padTop(2);
 		sidebar.row();
 		sidebar.add(tbHelp);
 
-		layout.debug();
-		sidebar.debug();
+		// uncomment these if you want table lines to show
+		//layout.debug();
+		//sidebar.debug();
 		
-		/*
-		renderGroup = new ButtonGroup();
-		renderGroup.add(tbResources);
-		renderGroup.add(tbEnergy);
-		//renderGroup.add(tbShields);
-		renderGroup.setMaxCheckCount(1);
-		renderGroup.setMinCheckCount(0);
-		renderGroup.uncheckAll();
-		*/
-		
-		//WindowStyle winStyle = new WindowStyle();
-		//winStyle.titleFont = skin.getFont("bitmapFont");
-		
-		//skin.add("default", winStyle);
-	
-		//helpQuit = new TextButton("Quit", skin);
 		
 		hexmap.addScreen("helpScreen", new HelpScreen(hexmap));
 
+		// pop up window with plant building/demolish options 
 		buildWin = new BuildingWindow("Building Window", skin, hexmap);
 		buildWin.setVisible(false);
-		researchWin = new ResearchWindow("Research Menu", skin, hexmap);
-		researchWin.setPosition(300, 300);
-		researchWin.setVisible(false);
 		
+		// not used right now
+		//researchWin = new ResearchWindow("Research Menu", skin, hexmap);
+		//researchWin.setPosition(300, 300);
+		//researchWin.setVisible(false);
+		
+		// modal pop up window when you win or lose
+
+		 endWin = new EndWindow("End Game", skin, hexmap);
+		 endWin.setPosition(500,300);
+		  
 		this.addActor(buildWin);
-		this.addActor(researchWin);
+		//this.addActor(researchWin);
+		
+		// start with energy shown
+		//tbEnergy.setChecked(true);
 		
 		this.addListener(new InputListener() {
 			public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-				if (tbShields.isChecked()) {
-					
-					buildWin.setX(x);
-					buildWin.setY(y);
-					buildWin.setVisible(true);
-					
-					// random for now
-					if (Math.random() > 0.5) {
-						buildWin.populate(false,false,false,true);
-					}
-					else {
-						buildWin.populate(true,true,true,false);
-					}
-					
-					tbShields.setChecked(false);
+				
+				if (buildWin.isVisible()) {
+					buildWin.setVisible(false);
 					return true;
+				}
+				
+				if (button == Buttons.RIGHT) {
+					Cell cell = hexmap.getMouseOverTile();
+				
+					if (cell != null && cell.owner instanceof PlayerEntity) {
+						hexmap.setClickedOn(cell);
+						
+						boolean wind = cell.getResourceForBuilding("windplant") != null;
+						boolean chemical = cell.getResourceForBuilding("chemicalplant") != null;
+						boolean solar = cell.getResourceForBuilding("solarplant") != null;
+						boolean demolish = cell.getBuilding() != null;
+						
+						buildWin.setX(x);
+						buildWin.setY(y);
+						buildWin.setVisible(true);
+						
+						if (demolish) {
+							buildWin.populate(false, false, false, true);
+						}
+						else {
+							buildWin.populate(wind,chemical,solar,false);
+						}
+
+						
+						return true;
+					}
+					
 				}
 				
 				if (buildWin.isVisible()) {
@@ -194,11 +201,12 @@ public class GameUI extends Stage {
 					return true;
 				}
 				
+				/*
 				if (researchWin.isVisible()) {
 					researchWin.setVisible(false);
 					return true;
 				}
-				
+				*/
 				return false;
 			}
 			
@@ -215,8 +223,7 @@ public class GameUI extends Stage {
 		
 		tbResources.addListener(new InputListener() {
 			public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-				//toggleRenderGroup(tbResources);
-				//resetRenderGroup();
+
 				if (!tbResources.isChecked()) {
 					tbResources.setText("Hide Resources");
 					hexmap.showResourceIcons(true);
@@ -237,13 +244,14 @@ public class GameUI extends Stage {
 					hexmap.showEnergy(true);
 				}
 				else {
-					tbEnergy.setText("Show Resources");
+					tbEnergy.setText("Show Energy");
 					hexmap.showEnergy(false);
 				}
 				return true;
 			}
 		});
 		
+		/*
 		tbShields.addListener(new InputListener() {
 			public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
 				if (!tbShields.isChecked()) {
@@ -255,6 +263,7 @@ public class GameUI extends Stage {
 				return true;
 			}
 		});
+		 */
 		
 		tbResearch.addListener(new InputListener() {
 			public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
