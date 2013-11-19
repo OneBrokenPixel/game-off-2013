@@ -5,8 +5,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
 
-import sun.org.mozilla.javascript.internal.InterfaceAdapter;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -19,7 +17,6 @@ import com.me.corruption.entities.CorruptionEntity;
 import com.me.corruption.entities.Entity;
 import com.me.corruption.entities.NeutralEntity;
 import com.me.corruption.entities.PlayerEntity;
-import com.me.corruption.hexMap.HexMapSpriteObject;
 /**
  * Main map class
  * 
@@ -87,24 +84,20 @@ public class HexMap implements Disposable {
 				this.sprite = buildings.get(this.name);
 				if( this.name.contains("chemicalplant") ) {
 					this.id = RESOURCE_CHEMICAL;
-					this.cost = 30;
 				}
 				else if( this.name.contains("solarplant")) {
 					this.id = RESOURCE_SOLAR;
-					this.cost = 20;
 				}
 				else if( this.name.contains("windplant")) {
 					this.id = RESOURCE_WIND;
-					this.cost = 10;
 				}
 			}
 			else {
 				this.sprite = null;
 			}
-
-
 			//this.energyBonus = BUILDING_ENERGY
 		}
+		
 	}
 		
 	/**

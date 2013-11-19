@@ -78,6 +78,14 @@ public class PlayerEntity extends Entity {
 		}
 	}
 
+	public boolean removeEnergy(int cost) {
+		if (energyBank >= cost) {
+			energyBank -= cost;
+			return true;
+		}
+		return false;
+	}
+	
 	private HashSet<Cell> recharging = new HashSet<Cell>();
 
 	@Override

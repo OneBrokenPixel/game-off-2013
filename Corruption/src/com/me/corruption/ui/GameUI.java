@@ -54,7 +54,7 @@ public class GameUI extends Stage {
 
 	private BuildingWindow buildWin;
 	private ResearchWindow researchWin;
-	private Window endWin;
+	private EndWindow endWin;
 	
 	public GameUI(final HexMapInterface hexmap) {
 
@@ -150,12 +150,13 @@ public class GameUI extends Stage {
 		//researchWin.setVisible(false);
 		
 		// modal pop up window when you win or lose
-
 		 endWin = new EndWindow("End Game", skin, hexmap);
 		 endWin.setPosition(500,300);
+		 endWin.setVisible(false);
 		  
 		this.addActor(buildWin);
 		//this.addActor(researchWin);
+		this.addActor(endWin);
 		
 		// start with energy shown
 		//tbEnergy.setChecked(true);
@@ -356,4 +357,11 @@ public class GameUI extends Stage {
 	public float getSidebarHeight() {
 		return sidebar.getHeight();
 	}
+	
+	public void endGame(boolean win) {
+		endWin.populate(win);
+		endWin.setVisible(true);
+		endWin.setModal(true);
+	}
+	
 }

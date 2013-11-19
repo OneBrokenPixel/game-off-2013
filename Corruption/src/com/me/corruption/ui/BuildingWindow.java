@@ -24,9 +24,9 @@ public class BuildingWindow extends Window {
 		this.skin = skin;
 		this.hexmap = hexmap;
 		
-		wind = new TextButton("Build Wind Farm", skin);
-		chemical = new TextButton("Build Chemical Plant", skin);
-		solar = new TextButton("Build Solar Energy Farm", skin);
+		wind = new TextButton("Build Wind Farm (10 energy)", skin);
+		chemical = new TextButton("Build Chemical Plant (30 energy)", skin);
+		solar = new TextButton("Build Solar Energy Farm (20 energy)", skin);
 		demolish = new TextButton("Demolish Building", skin);
 		nothing = new TextButton("Close Menu", skin);
 
@@ -79,12 +79,12 @@ public class BuildingWindow extends Window {
 			this.add(wind).expandX().fillX();
 			this.row();
 		}
-		if (hasChemical) {
-			this.add(chemical).expandX().fillX();
-			this.row();
-		}
 		if (hasSolar) {
 			this.add(solar).expandX().fillX();
+			this.row();
+		}
+		if (hasChemical) {
+			this.add(chemical).expandX().fillX();
 			this.row();
 		}
 		if (hasDemolish) {
