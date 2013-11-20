@@ -10,8 +10,11 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.GridPoint2;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
+import com.badlogic.gdx.utils.Pool;
+import com.badlogic.gdx.utils.Pool.Poolable;
 
 import com.me.corruption.entities.CorruptionEntity;
 import com.me.corruption.entities.Entity;
@@ -73,10 +76,11 @@ public class HexMap implements Disposable {
 	public class Building {
 		public String name = null;
 		public HexMapSpriteObject sprite = null;
-		public int cost = 0;
-		
-		public int id;
 				
+		public int id;
+		
+		public float energyCap = 0;
+		
 		public void set(String name) {
 			this.name = name;// can be null
 			if(this.name != null) {
@@ -113,7 +117,7 @@ public class HexMap implements Disposable {
 		// energy
 		public float unit;
 		public float rechargeRate;
-		public float max;
+		//public float max;
 		
 		public boolean recharge = false;
 		
@@ -130,14 +134,6 @@ public class HexMap implements Disposable {
 			if(this.owner != null) {
 				this.tile = tiles.get(this.owner.getOwnerName()+"Hex");
 			}
-			/*
-			if( this.owner.contains("player") ) {
-				getPlayer().setOwnedCell(this);
-			}
-			else if( this.owner.contains("corruption") ) {
-				getCorruption().setOwnedCell(this);
-			}
-			*/
 		}
 		
 		public void clearOwner() {
@@ -145,9 +141,9 @@ public class HexMap implements Disposable {
 			this.owner = null;
 		}
 		
-		public void addEnergy( float energy) {
-			unit += energy;
-		}
+		//public void addEnergy( float energy) {
+		//	unit += energy;
+		//}
 		
 		public void setRecharge(boolean r) {
 			this.recharge = r;
@@ -400,8 +396,161 @@ public class HexMap implements Disposable {
 	 */
 	@Override
 	public void dispose() {
-		
 	}
 
+	public class AnimatedSprite implements Poolable {
+
+		private String text = "";
+		
+		private Vector2 from = new Vector2();
+		private Vector2 to = new Vector2();
+		private Vector2 pos = new Vector2();
+		private boolean active = false;
+		private float alpha = 0.0f;
+		private float speed = 1.0f;
+		
+		public AnimatedSprite() {
+		}		
+
+		
+	
+		public String getText() {
+			return text;
+		}
+
+
+
+		public void setText(String text) {
+			this.text = text;
+		}
+
+
+
+		public Vector2 getFrom() {
+			return from;
+		}
+
+
+
+		public void setFrom(Vector2 from) {
+			this.from = from;
+		}
+
+
+
+		public Vector2 getTo() {
+			return to;
+		}
+
+
+
+		public void setTo(Vector2 to) {
+			this.to = to;
+		}
+
+
+
+		public Vector2 getPos() {
+			return pos;
+		}
+
+
+
+		public void setPos(Vector2 pos) {
+			this.pos = pos;
+		}
+
+
+
+		public boolean isActive() {
+			return active;
+		}
+
+
+
+		public void setActive(boolean active) {
+			this.active = active;
+		}
+
+
+
+		public float getAlpha() {
+			return alpha;
+		}
+
+
+
+		public void setAlpha(float alpha) {
+			this.alpha = alpha;
+		}
+
+
+
+		public float getSpeed() {
+			return speed;
+		}
+
+
+
+		public void setSpeed(float speed) {
+			this.speed = speed;
+		}
+
+
+
+		public void update(float dt) {
+			
+			if( this.active ){
+				alpha += speed*dt;
+				pos.set(from.lerp(to, alpha));
+				if( pos.equals(to)) {
+					active = false;
+				}
+			}
+		}
+		
+		@Override
+		public void reset() {
+			this.text = "";
+			this.from.set(0, 0);
+			this.to.set(0, 0);
+			this.active = false;
+			this.alpha = 0.0f;
+			this.speed = 1.0f;
+		}
+		
+	}
+	
+	
+	private final Array<AnimatedSprite> activeSprites = new Array<AnimatedSprite>();
+	
+	    // bullet pool.
+	final Pool<AnimatedSprite> spritePool = new Pool<AnimatedSprite>() {
+		@Override
+		protected AnimatedSprite newObject() {
+			return new AnimatedSprite();
+		}
+	};	
+	
+	public void createAnimatedText(String text, GridPoint2 from, float tox, float toy, float speed) {
+		
+		float x = (tile_width*0.5f) * 3/2 * from.x;
+		float y = (float) ((tile_width*0.5f) * HexMapRenderer.sqrt3 * (from.y + 0.5 * (from.x&1)));
+		
+		AnimatedSprite sprite = spritePool.obtain();
+		
+		sprite.text = text;
+		sprite.from.set(x,y);
+		sprite.to.set(x+tox,y+toy);
+		sprite.speed = speed;
+		sprite.active = true;
+		
+		activeSprites.add(sprite);
+	}
+
+	public Array<AnimatedSprite> getActiveSprites() {
+		// TODO Auto-generated method stub
+		return activeSprites;
+	}
 
 }

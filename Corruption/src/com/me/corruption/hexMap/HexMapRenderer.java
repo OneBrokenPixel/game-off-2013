@@ -27,6 +27,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
@@ -34,8 +35,12 @@ import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.Pool;
+import com.badlogic.gdx.utils.Pool.Poolable;
 import com.me.corruption.entities.Entity;
 import com.me.corruption.entities.PlayerEntity;
+import com.me.corruption.hexMap.HexMap.AnimatedSprite;
 import com.me.corruption.hexMap.HexMap.Building;
 import com.me.corruption.hexMap.HexMap.Cell;
 import com.me.corruption.hexMap.HexMap.Resource;
@@ -164,7 +169,7 @@ public class HexMapRenderer {
 		this.viewBounds.set(viewboundsX, viewboundsY, viewboundsWidth, viewboundsHeight);
 	}
 	
-	private float sqrt3 = (float) Math.sqrt(3);
+	public static final float sqrt3 = (float) Math.sqrt(3);
 	
 	/**
 	 * Renders Tiles
@@ -640,6 +645,32 @@ public class HexMapRenderer {
 		fade += 1 * Gdx.graphics.getDeltaTime();
 	}
 	
+	private void renderPopupText() {
+		
+		final float dt = Gdx.graphics.getDeltaTime();
+		final Array<AnimatedSprite> activeArray = map.getActiveSprites();
+		
+		AnimatedSprite[] array = new AnimatedSprite[activeArray.size];
+		
+		
+		
+		for(int i = 0; i<activeArray.size; i++) {
+			final AnimatedSprite a = activeArray.get(i);
+			a.update(dt);
+			font.draw(batch, a.getText(), a.getPos().x, a.getPos().y);
+			array[i] = a;
+		}
+	
+		for(int i = 0; i<activeArray.size; i++) {
+			
+			if(array[i].isActive() == false) {
+				activeArray.removeValue(array[i], false);
+				map.spritePool.free(array[i]);
+			}
+		}		
+		
+	}
+	
 	public void render() {
 
 		if( batch != null) {
@@ -647,8 +678,8 @@ public class HexMapRenderer {
 			final float color = Color.toFloatBits(batchColor.r, batchColor.g, batchColor.b, batchColor.a * 1.0f);
 			//final float color1 = Color.toFloatBits(batchColor.r, batchColor.g, batchColor.b, 0.25f);
 			
-			final int layerWidth = map.getWidth();
-			final int layerHeight = map.getHeight();
+			//final int layerWidth = map.getWidth();
+			//final int layerHeight = map.getHeight();
 	
 			final float layerTileWidth = map.getTile_width() * unitScale ;
 			final float layerTileHeight = map.getTile_height() * unitScale;
@@ -668,59 +699,18 @@ public class HexMapRenderer {
 				this.renderResourceIcons(rowFrom, rowTo, colFrom, colTo, layerTileWidth, layerTileHeight, color);
 		
 				this.renderEnergy(rowFrom, rowTo, colFrom, colTo, layerTileWidth, layerTileHeight, color);
+				
+				this.renderPopupText();
 			this.batch.end();
 		}
 	}
-	/*
-	private void toCubeCoord(int r, int q, GridPoint3 cubeCoord) {
-		cubeCoord.x = q;
-		cubeCoord.z = r - (q - (q&1)) / 2;
-		cubeCoord.y = -cubeCoord.x-cubeCoord.z;
-	}
-
-	private void fromCubeCoord(GridPoint3 cubeCoord, GridPoint2 oddQ) {
-		oddQ.x = cubeCoord.x;
-		oddQ.y = cubeCoord.z + (cubeCoord.x - (cubeCoord.x&1)) / 2;
-	}
-
-	private void roundToNearestHex(Vector3 cubeCoord, GridPoint3 finalCoord) {
-
-	    float rx = (int)(cubeCoord.x);
-	    float ry = (int)(cubeCoord.y);
-	    float rz = (int)(cubeCoord.z);
-
-	    float x_diff = Math.abs(rx - cubeCoord.x);
-	    float  y_diff = Math.abs(ry - cubeCoord.y);
-	    float z_diff = Math.abs(rz - cubeCoord.z);
-
-	    if(x_diff > y_diff && x_diff > z_diff) {
-	        rx = -ry-rz;
-	    }
-	    else if(y_diff > z_diff){
-	        ry = -rx-rz;
-	    }
-	    else{
-	        rz = -rx-ry;
-	    }
-
-	    finalCoord.set((int)rx, (int)ry, (int)rz);
-	    
-	}
-	
-	private void axialToCube( Vector2 axial, Vector3 cube) {
-		cube.x = axial.y;
-		cube.z = axial.x;
-		cube.y = -cube.x-cube.z;
-	}
-	*/
 	
 	public Cell getCellFromTouchCoord( final Vector3 coord ) {
 		
-		final int layerWidth = map.getWidth();
-		final int layerHeight = map.getHeight();
+		//final int layerWidth = map.getWidth();
+		//final int layerHeight = map.getHeight();
 
 		final float layerTileWidth = map.getTile_width() * unitScale ;
-		final float layerTileHeight = map.getTile_height() * unitScale;
 		
 		final int colFrom = 0;
 		final int colTo = map.getWidth();
@@ -749,4 +739,6 @@ public class HexMapRenderer {
 		
 		return null;
 	}
+	
+
 }

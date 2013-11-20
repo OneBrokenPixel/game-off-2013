@@ -104,7 +104,16 @@ public class PlayerEntity extends Entity {
 					final Resource r = c.getResourceForBuilding(b.name);
 					// System.out.println(r);
 					if (r != null) {
-						this.energyBank += (BUILDING_ENERGY[b.id] * r.getAmount() * dt);
+						final float energy = (BUILDING_ENERGY[b.id] * r.getAmount() * dt);
+						this.energyBank += energy;
+						b.energyCap += energy;
+						
+						if( b.energyCap >= 10.0f ) {
+							b.energyCap -= 10.0f;
+							
+							map.createAnimatedText("+10", c.point, 0,50f, 0.25f);
+							
+						}
 					}
 				}
 			}
@@ -120,7 +129,7 @@ public class PlayerEntity extends Entity {
 
 				float capped = MathUtils.clamp(rechargeEnergy, 0, this.getAttackRate()*dt);
 
-				c.addEnergy(capped);
+				c.unit += capped;
 				this.energyBank -= capped;
 			}
 		}
