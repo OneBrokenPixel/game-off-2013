@@ -19,7 +19,10 @@ public class HexMapInterface {
 	private PlayerEntity player;
 	private CorruptionGdxGame game;
 	private HashMap<String, Screen> screens;
-	private GameUI ui;
+	
+	private int windCost = 10;
+	private int solarCost = 30;
+	private int chemicalCost = 90;
 	
 	public HexMapInterface(CorruptionGdxGame game, HexMapRenderer renderer) {
 		
@@ -31,6 +34,25 @@ public class HexMapInterface {
 		screens = new HashMap<String, Screen>();
 	}
 	
+
+	
+	public int getWindCost() {
+		return windCost;
+	}
+
+
+
+	public int getSolarCost() {
+		return solarCost;
+	}
+
+
+
+	public int getChemicalCost() {
+		return chemicalCost;
+	}
+
+
 
 	/**
 	 * cheat method, remember to take this out!
@@ -126,20 +148,20 @@ public class HexMapInterface {
 	}
 	
 	public void buildWind() {
-		boolean bought = buyBuilding(10);
+		boolean bought = buyBuilding(windCost);
 		if (bought)
 			build("windplant");
 		
 	}
 	
 	public void buildSolar() {
-		boolean bought = buyBuilding(20);
+		boolean bought = buyBuilding(solarCost);
 		if (bought)
 			build("solarplant");
 	}
 	
 	public void buildChemical() {
-		boolean bought = buyBuilding(30);
+		boolean bought = buyBuilding(chemicalCost);
 		if (bought)
 			build("chemicalplant");
 	}

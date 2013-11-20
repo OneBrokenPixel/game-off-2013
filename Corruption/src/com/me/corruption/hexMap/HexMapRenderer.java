@@ -579,9 +579,9 @@ public class HexMapRenderer {
 		
 
 		//System.out.println(attackColour.a);
-		//attackColour.a = 1- Math.abs(MathUtils.sin(fade));
+		attackColour.a = 1- Math.abs(MathUtils.cos(fade));
 		//System.out.println(attackColour.a);
-		//colour = attackColour.toFloatBits();
+		colour = attackColour.toFloatBits();
 		
 		for( Cell c : corruption.getAttacks() ) {
 			

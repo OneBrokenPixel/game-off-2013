@@ -4,13 +4,10 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashSet;
 
-import sun.misc.Cleaner;
 
 import com.badlogic.gdx.math.GridPoint2;
 import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.utils.Array;
 import com.me.corruption.hexMap.HexMap;
-import com.me.corruption.hexMap.HexMap.Building;
 import com.me.corruption.hexMap.HexMap.Cell;
 import com.me.corruption.hexMap.HexMap.Resource;
 
@@ -28,8 +25,8 @@ public class CorruptionEntity extends Entity {
 
 	private int evalueateCell(Cell cell) {
 		int eval = (int) cell.unit + 1;
-		if( cell.owner instanceof PlayerEntity) {
-			eval*=100;
+		if( cell.owner instanceof PlayerEntity || cell.attackers.size != 0 ) {
+			eval*=10;
 		}
 		return eval;
 	}
@@ -87,7 +84,7 @@ public class CorruptionEntity extends Entity {
 		
 		//float meanCellEnergy = minCellEnergy+((maxCellEnergy-minCellEnergy)*0.5f);
 
-		float leachEnergy = resourseCount * this.handicap * dt;
+		float leachEnergy = resourseCount * CorruptionEntity.handicap * dt;
 
 		//System.out.println(resourseC;
 		
@@ -106,7 +103,7 @@ public class CorruptionEntity extends Entity {
 		
 		for( Cell c : ownedCells) {
 			
-			c.unit += (rechargeUnit * c.rechargeRate);
+			c.unit += MathUtils.clamp(rechargeUnit * c.rechargeRate, 0,this.getAttackRate()*dt);
 			updateTargets(c);
 		}	
 		
@@ -123,14 +120,7 @@ public class CorruptionEntity extends Entity {
 		};
 		
 		Arrays.sort(targets, eveluator);
-		/*
-		for( Cell c : targets) {
-			//System.out.println(c.unit);
-			
-			//Cell[] attackers = getNeighbouringCellsWithOwners(c, CorruptionEntity.class);
-			attackCell(c);
 		
-		}*/
 		if(targets.length != 0) {
 			if( !isAttacking(targets[0])) {
 				Cell[] attackers = getNeighbouringCellsWithOwners(targets[0], this.getClass());

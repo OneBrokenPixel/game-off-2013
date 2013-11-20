@@ -24,9 +24,9 @@ public class BuildingWindow extends Window {
 		this.skin = skin;
 		this.hexmap = hexmap;
 		
-		wind = new TextButton("Build Wind Farm (10 energy)", skin);
-		chemical = new TextButton("Build Chemical Plant (30 energy)", skin);
-		solar = new TextButton("Build Solar Energy Farm (20 energy)", skin);
+		wind = new TextButton("Build Wind Farm ("+ hexmap.getWindCost() +" energy)", skin);
+		chemical = new TextButton("Build Chemical Plant ("+ hexmap.getChemicalCost() +" energy)", skin);
+		solar = new TextButton("Build Solar Energy Farm ("+ hexmap.getSolarCost() +" energy)", skin);
 		demolish = new TextButton("Demolish Building", skin);
 		nothing = new TextButton("Close Menu", skin);
 

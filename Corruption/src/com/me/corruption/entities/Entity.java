@@ -27,6 +27,10 @@ public abstract class Entity {
 		this.owner = owner;
 	}
 	
+	public float getAttackRate() {
+		return attackRate;
+	}
+	
 	public HashSet<Cell> getOwnedCells() {
 		return ownedCells;
 	}

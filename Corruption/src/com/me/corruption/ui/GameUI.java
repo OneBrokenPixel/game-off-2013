@@ -55,6 +55,7 @@ public class GameUI extends Stage {
 	private BuildingWindow buildWin;
 	private ResearchWindow researchWin;
 	private EndWindow endWin;
+	private PauseScreen pauseScreen;
 	
 	public GameUI(final HexMapInterface hexmap) {
 
@@ -68,6 +69,7 @@ public class GameUI extends Stage {
 		addColour("white", Color.WHITE);
 		addColour("lgrey", Color.LIGHT_GRAY);
 		addColour("red", Color.RED);
+		addColour("tranparent", new Color(0.8f,0.8f,0.8f,0.3f));
 		
 		skin.add("bitmapFont", new BitmapFont());
 
@@ -150,10 +152,12 @@ public class GameUI extends Stage {
 		//researchWin.setVisible(false);
 		
 		// modal pop up window when you win or lose
-		 endWin = new EndWindow("End Game", skin, hexmap);
-		 endWin.setPosition(500,300);
-		 endWin.setVisible(false);
-		  
+		endWin = new EndWindow("End Game", skin, hexmap);
+		endWin.setPosition(500,300);
+		endWin.setVisible(false);
+		
+		 // show pause screen when game is paused
+		 
 		this.addActor(buildWin);
 		//this.addActor(researchWin);
 		this.addActor(endWin);

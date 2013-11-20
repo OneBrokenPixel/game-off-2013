@@ -15,7 +15,7 @@ public class PlayerEntity extends Entity {
 
 	private HashSet<Cell> visible = new HashSet<Cell>();
 	private float energyBank;
-	private float rechargeRate = 2.0f;
+	//private float rechargeRate = 2.0f;
 	// wind, solar, chemical
 	private static final float BUILDING_ENERGY[] = { 0.2f, 0.3f, 0.4f };
 
@@ -118,7 +118,7 @@ public class PlayerEntity extends Entity {
 
 			for (Cell c : recharging) {
 
-				float capped = MathUtils.clamp(rechargeEnergy, 0, rechargeRate * dt);
+				float capped = MathUtils.clamp(rechargeEnergy, 0, this.getAttackRate()*dt);
 
 				c.addEnergy(capped);
 				this.energyBank -= capped;
