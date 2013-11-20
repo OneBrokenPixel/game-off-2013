@@ -6,9 +6,9 @@ t:data/uiskin.atlas:2894:application/unknown
 t:data/uiskin.json:2850:application/unknown
 i:data/uiskin.png:22779:image/png
 d:spritesheets:0:application/unknown
-t:spritesheets/HexTiles.atlas:2201:application/unknown
-i:spritesheets/HexTiles.png:46125:image/png
-i:spritesheets/HexTiles2.png:12496:image/png
+t:spritesheets/HexTiles.atlas:4370:application/unknown
+i:spritesheets/HexTiles.png:70549:image/png
+i:spritesheets/HexTiles2.png:49374:image/png
 t:com/badlogic/gdx/graphics/g3d/shaders/default.fragment.glsl:5043:application/unknown
 t:com/badlogic/gdx/graphics/g3d/shaders/default.vertex.glsl:8755:application/unknown
 t:com/badlogic/gdx/graphics/g3d/shaders/depth.fragment.glsl:549:application/unknown
