@@ -41,6 +41,8 @@ public class CorruptionGdxGame extends Game {
 
 		private InputMultiplexer multiplexer;
 
+		private boolean pauseGame = false;
+		
 		InputProcessor processor = new InputProcessor() {
 
 			private Vector3 v = new Vector3();
@@ -76,7 +78,7 @@ public class CorruptionGdxGame extends Game {
 							}
 						}
 						
-						if (button == Buttons.RIGHT){
+						if (button == Buttons.MIDDLE){
 							if (cell.owner instanceof PlayerEntity) {
 								map.getPlayer().removeCell(cell);
 							}
@@ -162,13 +164,20 @@ public class CorruptionGdxGame extends Game {
 
 			// all update is here! 
 
-			this.map.getPlayer().update(delta);
-			this.map.getCorruption().update(delta);
+			if (!pauseGame) {
+				this.map.getPlayer().update(delta);
+				this.map.getCorruption().update(delta);
 
-			stage.setEnergy(ui_if.getEnergyBank());
+				stage.setEnergy(ui_if.getEnergyBank());
 
-			if (this.map.getPlayer().ownedAmount() <= 0) {
-				ui_if.gameLost();
+				if (this.map.getPlayer().ownedAmount() <= 0) {
+					pauseGame = true;
+					stage.endGame(false);
+				}
+				if (this.map.getCorruption().ownedAmount() <= 0) {
+					pauseGame = true;
+					stage.endGame(true);
+				}
 			}
 			
 			Gdx.gl.glClearColor(0, 0, 0.0f, 1);
@@ -220,13 +229,12 @@ public class CorruptionGdxGame extends Game {
 
 		@Override
 		public void pause() {
-			// TODO Auto-generated method stub
-
+			pauseGame = true;
 		}
 
 		@Override
 		public void resume() {
-
+			pauseGame = false;
 		}
 
 		@Override

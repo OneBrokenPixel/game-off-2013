@@ -211,3 +211,86 @@ oldTiles/windplant
   orig: 37, 46
   offset: 0, 0
   index: -1
+
+
+HexTiles2.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+oldTiles/chemicalplant
+  rotate: false
+  xy: 46, 22
+  size: 49, 26
+  orig: 49, 26
+  offset: 0, 0
+  index: -1
+oldTiles/corruptionHex
+  rotate: false
+  xy: 322, 52
+  size: 76, 66
+  orig: 76, 66
+  offset: 0, 0
+  index: -1
+oldTiles/corruptionHex_Attack
+  rotate: false
+  xy: 2, 50
+  size: 78, 68
+  orig: 78, 68
+  offset: 0, 0
+  index: -1
+oldTiles/neutralHex
+  rotate: false
+  xy: 400, 52
+  size: 76, 66
+  orig: 76, 66
+  offset: 0, 0
+  index: -1
+oldTiles/neutralHex2
+  rotate: false
+  xy: 82, 50
+  size: 78, 68
+  orig: 78, 68
+  offset: 0, 0
+  index: -1
+oldTiles/playerHex
+  rotate: false
+  xy: 478, 52
+  size: 76, 66
+  orig: 76, 66
+  offset: 0, 0
+  index: -1
+oldTiles/playerHex_Attack
+  rotate: false
+  xy: 162, 50
+  size: 78, 68
+  orig: 78, 68
+  offset: 0, 0
+  index: -1
+oldTiles/playerHex_toggle
+  rotate: false
+  xy: 556, 52
+  size: 76, 66
+  orig: 76, 66
+  offset: 0, 0
+  index: -1
+oldTiles/playerHex_toggle (2)
+  rotate: false
+  xy: 242, 50
+  size: 78, 68
+  orig: 78, 68
+  offset: 0, 0
+  index: -1
+oldTiles/solarplant
+  rotate: false
+  xy: 2, 2
+  size: 42, 46
+  orig: 42, 46
+  offset: 0, 0
+  index: -1
+oldTiles/windplant
+  rotate: false
+  xy: 634, 72
+  size: 37, 46
+  orig: 37, 46
+  offset: 0, 0
+  index: -1

@@ -51,19 +51,16 @@ public class GameUI extends Stage {
 	private TextButton tbQuit;
 	
 	private TextButton tbHelp;
-	//private Window helpWin;
-	//private TextButton helpQuit;
-	//private HelpScreen hScreen;
-	
+
 	private BuildingWindow buildWin;
 	private ResearchWindow researchWin;
+	private EndWindow endWin;
 	
 	public GameUI(final HexMapInterface hexmap) {
-		
-		//this.renderer = renderer;
+
+		// interaction with the rest of the game (mainly hexmap)
 		this.hexmap = hexmap;
 
-		
 		skin = new Skin(Gdx.files.internal("data/uiskin.json"));
 		pixmap = new Pixmap(1,1, Format.RGBA8888);
 		
@@ -111,7 +108,6 @@ public class GameUI extends Stage {
 		tbResources = new TextButton("Show Resources", skin, "toggle");
 		tbEnergy = new TextButton("Show Energy", skin, "toggle");
 		tbResearch = new TextButton("Research", skin);
-		//tbShields = new TextButton("Shields", skin, "toggle");
 
 		sidebar.add(addEnergy);
 		sidebar.row();
@@ -119,7 +115,6 @@ public class GameUI extends Stage {
 		sidebar.row();
 		sidebar.add(tbEnergy);
 		sidebar.row();
-		//sidebar.add(tbShields);
 		sidebar.add(tbResearch).padBottom(150);
 		sidebar.row();
 		
@@ -131,45 +126,40 @@ public class GameUI extends Stage {
 		tbQuit = new TextButton("Quit", skin);
 		tbHelp = new TextButton("Help", skin);
 		
-		//sidebar.defaults().width(50).height(50).pad(2);
 		rowTable.add(tbMute).pad(2).height(45);
-		//sidebar.row();
 		rowTable.add(tbPause).pad(2).height(45);
 		sidebar.row();
 		sidebar.add(tbQuit).padTop(2);
 		sidebar.row();
 		sidebar.add(tbHelp);
 
-		layout.debug();
-		sidebar.debug();
+		// uncomment these if you want table lines to show
+		//layout.debug();
+		//sidebar.debug();
 		
-		/*
-		renderGroup = new ButtonGroup();
-		renderGroup.add(tbResources);
-		renderGroup.add(tbEnergy);
-		//renderGroup.add(tbShields);
-		renderGroup.setMaxCheckCount(1);
-		renderGroup.setMinCheckCount(0);
-		renderGroup.uncheckAll();
-		*/
-		
-		//WindowStyle winStyle = new WindowStyle();
-		//winStyle.titleFont = skin.getFont("bitmapFont");
-		
-		//skin.add("default", winStyle);
-	
-		//helpQuit = new TextButton("Quit", skin);
 		
 		hexmap.addScreen("helpScreen", new HelpScreen(hexmap));
 
+		// pop up window with plant building/demolish options 
 		buildWin = new BuildingWindow("Building Window", skin, hexmap);
 		buildWin.setVisible(false);
-		researchWin = new ResearchWindow("Research Menu", skin, hexmap);
-		researchWin.setPosition(300, 300);
-		researchWin.setVisible(false);
 		
+		// not used right now
+		//researchWin = new ResearchWindow("Research Menu", skin, hexmap);
+		//researchWin.setPosition(300, 300);
+		//researchWin.setVisible(false);
+		
+		// modal pop up window when you win or lose
+		 endWin = new EndWindow("End Game", skin, hexmap);
+		 endWin.setPosition(500,300);
+		 endWin.setVisible(false);
+		  
 		this.addActor(buildWin);
-		this.addActor(researchWin);
+		//this.addActor(researchWin);
+		this.addActor(endWin);
+		
+		// start with energy shown
+		//tbEnergy.setChecked(true);
 		
 		this.addListener(new InputListener() {
 			public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
@@ -212,11 +202,12 @@ public class GameUI extends Stage {
 					return true;
 				}
 				
+				/*
 				if (researchWin.isVisible()) {
 					researchWin.setVisible(false);
 					return true;
 				}
-				
+				*/
 				return false;
 			}
 			
@@ -233,8 +224,7 @@ public class GameUI extends Stage {
 		
 		tbResources.addListener(new InputListener() {
 			public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-				//toggleRenderGroup(tbResources);
-				//resetRenderGroup();
+
 				if (!tbResources.isChecked()) {
 					tbResources.setText("Hide Resources");
 					hexmap.showResourceIcons(true);
@@ -255,7 +245,7 @@ public class GameUI extends Stage {
 					hexmap.showEnergy(true);
 				}
 				else {
-					tbEnergy.setText("Show Resources");
+					tbEnergy.setText("Show Energy");
 					hexmap.showEnergy(false);
 				}
 				return true;
@@ -367,4 +357,11 @@ public class GameUI extends Stage {
 	public float getSidebarHeight() {
 		return sidebar.getHeight();
 	}
+	
+	public void endGame(boolean win) {
+		endWin.populate(win);
+		endWin.setVisible(true);
+		endWin.setModal(true);
+	}
+	
 }

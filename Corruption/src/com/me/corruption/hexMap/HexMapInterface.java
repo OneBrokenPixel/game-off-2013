@@ -7,6 +7,7 @@ import com.badlogic.gdx.Screen;
 import com.me.corruption.CorruptionGdxGame;
 import com.me.corruption.entities.PlayerEntity;
 import com.me.corruption.hexMap.HexMap.Cell;
+import com.me.corruption.ui.GameUI;
 /**
  * 
  * @author Marie
@@ -18,6 +19,7 @@ public class HexMapInterface {
 	private PlayerEntity player;
 	private CorruptionGdxGame game;
 	private HashMap<String, Screen> screens;
+	private GameUI ui;
 	
 	public HexMapInterface(CorruptionGdxGame game, HexMapRenderer renderer) {
 		
@@ -70,12 +72,6 @@ public class HexMapInterface {
 	public void addScreen(String name, Screen screen) {
 		screens.put(name, screen);
 	}
-	
-	public void pause(boolean b) {
-		// TODO Auto-generated method stub
-		
-	}
-
 
 	public void quit() {
 		// TODO Auto-generated method stub
@@ -125,16 +121,27 @@ public class HexMapInterface {
 		}
 	}
 	
+	public boolean buyBuilding(int cost) {
+		return player.removeEnergy(cost);
+	}
+	
 	public void buildWind() {
-		build("windplant");
+		boolean bought = buyBuilding(10);
+		if (bought)
+			build("windplant");
+		
 	}
 	
 	public void buildSolar() {
-		build("solarplant");
+		boolean bought = buyBuilding(20);
+		if (bought)
+			build("solarplant");
 	}
 	
 	public void buildChemical() {
-		build("chemicalplant");
+		boolean bought = buyBuilding(30);
+		if (bought)
+			build("chemicalplant");
 	}
 
 
@@ -145,6 +152,15 @@ public class HexMapInterface {
 
 	public void gameLost() {
 		System.out.println("You lose");
+	}
+	
+	public void pause(boolean setpause) {
+		if (setpause) {
+			this.game.pause();
+		}
+		else {
+			this.game.resume();
+		}
 		
 	}
 }
