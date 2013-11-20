@@ -104,11 +104,11 @@ public class HexMapInterface {
 		//System.out.println(screens.values());
 		Screen screen = screens.get(name);
 		if (screen != null) {
-			System.out.println("Setting screen: " + name);
+			//System.out.println("Setting screen: " + name);
 			setScreen(screen);
 		}
 		else {
-			System.out.println("Can't find screen: " + name);
+			//System.out.println("Can't find screen: " + name);
 		}
 	}
 	

@@ -47,7 +47,7 @@ public class PauseScreen implements Screen {
 		//layout.add(resume);//.expandX().fillX();
 		stage.addActor(layout);
 		
-		layout.addListener(new InputListener() {
+		stage.addListener(new InputListener() {
 			public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
 				//hexmap.setScreen("gameScreen");
 				return true;

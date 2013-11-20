@@ -162,18 +162,17 @@ public class CorruptionGdxGame extends Game {
 
 			// all update is here! 
 
-			System.out.println("not paused");
 			this.map.getPlayer().update(delta);
 			this.map.getCorruption().update(delta);
 
 			stage.setEnergy(ui_if.getEnergyBank());
 
 			if (this.map.getPlayer().ownedAmount() <= 0) {
-				pauseGame = true;
+				//pauseGame = true;
 				stage.endGame(false);
 			}
 			if (this.map.getCorruption().ownedAmount() <= 0) {
-				pauseGame = true;
+				//pauseGame = true;
 				stage.endGame(true);
 			}
 
