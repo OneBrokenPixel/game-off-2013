@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.ButtonGroup;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton.ImageButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -69,10 +70,13 @@ public class GameUI extends Stage {
 		addColour("white", Color.WHITE);
 		addColour("lgrey", Color.LIGHT_GRAY);
 		addColour("red", Color.RED);
-		addColour("tranparent", new Color(0.8f,0.8f,0.8f,0.3f));
+		addColour("transparent", new Color(0.0f,0.0f,0.0f,0.01f));
 		
 		skin.add("bitmapFont", new BitmapFont());
-
+		skin.add("pauseUp",  new Texture("spritesheets/pauseUp.png"));
+		skin.add("pauseDown", new Texture("spritesheets/pauseDown.png"));
+		skin.add("pauseImage", new Texture("spritesheets/pauseSplash.png"));
+		
 		layout = new Table();
 		layout.setFillParent(true);
 		this.addActor(layout);
@@ -140,7 +144,7 @@ public class GameUI extends Stage {
 		//sidebar.debug();
 		
 		
-		hexmap.addScreen("helpScreen", new HelpScreen(hexmap));
+		//hexmap.addScreen("helpScreen", new HelpScreen(hexmap));
 
 		// pop up window with plant building/demolish options 
 		buildWin = new BuildingWindow("Building Window", skin, hexmap);
@@ -156,8 +160,15 @@ public class GameUI extends Stage {
 		endWin.setPosition(500,300);
 		endWin.setVisible(false);
 		
-		 // show pause screen when game is paused
-		 
+		// show pause screen when game is paused
+		ImageButtonStyle pauseStyle = new ImageButtonStyle();
+		pauseStyle.up = skin.newDrawable("pauseUp");
+		pauseStyle.down = skin.newDrawable("pauseDown");
+		skin.add("pauseStyle", pauseStyle);
+		
+		pauseScreen = new PauseScreen(hexmap);
+		hexmap.addScreen("pauseScreen", pauseScreen);
+		
 		this.addActor(buildWin);
 		//this.addActor(researchWin);
 		this.addActor(endWin);
