@@ -101,14 +101,14 @@ public class HexMapInterface {
 	}
 	
 	public void setScreen(String name) {
-		System.out.println(screens.values());
+		//System.out.println(screens.values());
 		Screen screen = screens.get(name);
 		if (screen != null) {
-			System.out.println("Setting screen: " + name);
+			//System.out.println("Setting screen: " + name);
 			setScreen(screen);
 		}
 		else {
-			System.out.println("Can't find screen: " + name);
+			//System.out.println("Can't find screen: " + name);
 		}
 	}
 	
@@ -179,9 +179,11 @@ public class HexMapInterface {
 	public void pause(boolean setpause) {
 		if (setpause) {
 			this.game.pause();
+			this.setScreen("pauseScreen");
 		}
 		else {
 			this.game.resume();
+			this.setScreen("gameScreen");
 		}
 		
 	}
