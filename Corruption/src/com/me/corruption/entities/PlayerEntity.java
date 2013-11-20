@@ -17,7 +17,7 @@ public class PlayerEntity extends Entity {
 	private float energyBank;
 	private float rechargeRate = 2.0f;
 	// wind, solar, chemical
-	private static final float BUILDING_ENERGY[] = { 0.2f, 0.4f, 0.8f };
+	private static final float BUILDING_ENERGY[] = { 0.2f, 0.3f, 0.4f };
 
 	public PlayerEntity(HexMap map) {
 		super(map, "player");

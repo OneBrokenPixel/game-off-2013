@@ -16,7 +16,7 @@ import com.me.corruption.hexMap.HexMap.Resource;
 
 public class CorruptionEntity extends Entity {
 
-	private static final float handicap = 0.08f;
+	private static final float handicap = 0.05f;
 
 	private HashSet<Cell> targetCells = new HashSet<Cell>();
 	
@@ -138,7 +138,7 @@ public class CorruptionEntity extends Entity {
 				for( Cell c : attackers) {
 					tEnergy += c.unit;
 				}
-				if( tEnergy >= 5.0f*attackers.length) {
+				if( tEnergy >= targets[0].unit) {
 					attack(targets[0]);
 				}
 			}
