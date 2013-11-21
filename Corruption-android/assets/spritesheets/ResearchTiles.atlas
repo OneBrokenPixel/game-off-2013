@@ -1,0 +1,47 @@
+
+ResearchTiles.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+buttonBack
+  rotate: false
+  xy: 2, 2
+  size: 343, 57
+  orig: 343, 57
+  offset: 0, 0
+  index: -1
+chemicalplant
+  rotate: false
+  xy: 391, 33
+  size: 49, 26
+  orig: 49, 26
+  offset: 0, 0
+  index: -1
+solarplant
+  rotate: false
+  xy: 347, 13
+  size: 42, 46
+  orig: 42, 46
+  offset: 0, 0
+  index: -1
+unupgraded
+  rotate: false
+  xy: 391, 13
+  size: 19, 18
+  orig: 19, 18
+  offset: 0, 0
+  index: -1
+upgrade
+  rotate: false
+  xy: 477, 41
+  size: 19, 18
+  orig: 19, 18
+  offset: 0, 0
+  index: -1
+windplant
+  rotate: false
+  xy: 442, 18
+  size: 33, 41
+  orig: 33, 41
+  offset: 0, 0
+  index: -1

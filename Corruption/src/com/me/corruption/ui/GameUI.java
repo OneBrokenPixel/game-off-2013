@@ -7,11 +7,15 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Pixmap.Format;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.ButtonGroup;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton.ImageButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -64,10 +68,13 @@ public class GameUI extends Stage {
 		this.hexmap = hexmap;
 
 		skin = new Skin(Gdx.files.internal("data/uiskin.json"));
+		skin.addRegions(new TextureAtlas(Gdx.files.internal("spritesheets/ResearchTiles.atlas")));
+		
 		pixmap = new Pixmap(1,1, Format.RGBA8888);
 		
 		addColour("black", Color.BLACK);
 		addColour("white", Color.WHITE);
+		addColour("grey", Color.GRAY);
 		addColour("lgrey", Color.LIGHT_GRAY);
 		addColour("red", Color.RED);
 		addColour("transparent", new Color(0.0f,0.0f,0.0f,0.01f));
@@ -150,10 +157,9 @@ public class GameUI extends Stage {
 		buildWin = new BuildingWindow("Building Window", skin, hexmap);
 		buildWin.setVisible(false);
 		
-		// not used right now
-		//researchWin = new ResearchWindow("Research Menu", skin, hexmap);
-		//researchWin.setPosition(300, 300);
-		//researchWin.setVisible(false);
+		researchWin = new ResearchWindow("Research Menu", skin, hexmap);
+		researchWin.setPosition(300, 100);
+		researchWin.setVisible(false);
 		
 		// modal pop up window when you win or lose
 		endWin = new EndWindow("End Game", skin, hexmap);
@@ -170,11 +176,13 @@ public class GameUI extends Stage {
 		hexmap.addScreen("pauseScreen", pauseScreen);
 		
 		this.addActor(buildWin);
-		//this.addActor(researchWin);
+		this.addActor(researchWin);
 		this.addActor(endWin);
 		
 		// start with energy shown
-		//tbEnergy.setChecked(true);
+		tbEnergy.setText("Hide Energy");
+		tbEnergy.setChecked(true);
+		hexmap.showEnergy(true);
 		
 		this.addListener(new InputListener() {
 			public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
