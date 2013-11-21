@@ -40,6 +40,7 @@ import com.badlogic.gdx.utils.Pool;
 import com.badlogic.gdx.utils.Pool.Poolable;
 import com.me.corruption.entities.Entity;
 import com.me.corruption.entities.PlayerEntity;
+import com.me.corruption.hexMap.HexMap.AnimatedSprite;
 import com.me.corruption.hexMap.HexMap.Building;
 import com.me.corruption.hexMap.HexMap.Cell;
 import com.me.corruption.hexMap.HexMap.Resource;
@@ -708,6 +709,8 @@ public class HexMapRenderer {
 			this.batch.end();
 		}
 	}
+
+	public Cell getCellFromTouchCoord(Vector3 coord) {
 		//final int layerWidth = map.getWidth();
 		//final int layerHeight = map.getHeight();
 
@@ -737,9 +740,11 @@ public class HexMapRenderer {
 
 			}
 		}
-
 		return null;
 	}
+		
+
+
 	
 
 }
