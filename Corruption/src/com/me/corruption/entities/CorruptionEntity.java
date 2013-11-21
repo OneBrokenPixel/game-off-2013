@@ -7,7 +7,11 @@ import java.util.HashSet;
 
 import com.badlogic.gdx.math.GridPoint2;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.utils.Pool;
+import com.badlogic.gdx.utils.Pool.Poolable;
 import com.me.corruption.hexMap.HexMap;
+import com.me.corruption.hexMap.HexMap.AnimatedSprite;
+import com.me.corruption.hexMap.HexMap.AnimatedSpriteCallback;
 import com.me.corruption.hexMap.HexMap.Cell;
 import com.me.corruption.hexMap.HexMap.Resource;
 
@@ -17,10 +21,12 @@ public class CorruptionEntity extends Entity {
 
 	private HashSet<Cell> targetCells = new HashSet<Cell>();
 	
+	private float sportTimmer = 0.0f;
+	
 
 	public CorruptionEntity(HexMap map) {
 		super(map, "corruption");
-		// TODO Auto-generated constructor stub
+		resetSporeTimer();
 	}
 
 	private int evalueateCell(Cell cell) {
@@ -32,6 +38,9 @@ public class CorruptionEntity extends Entity {
 		return eval;
 	}
 	
+	private void resetSporeTimer() {
+		sportTimmer = 60f + MathUtils.random(15f)-15f;
+	}
 
 	private void setTarget(Cell cell) {
 		if(cell != null && !(cell.owner instanceof CorruptionEntity)) {
@@ -62,11 +71,68 @@ public class CorruptionEntity extends Entity {
 		}
 	}
 	
+	public class SproreCallback implements AnimatedSpriteCallback, Poolable {
+		
+		private Cell target = null;
+		
+		public void setTarget( Cell target )  {
+			this.target = target;
+		}
+		
+		@Override
+		public void runCallback(AnimatedSprite sprite) {
+
+			System.out.println("attacking");
+			
+			target.unit -= 5f;
+			
+			if( target.unit <= 0.0f ) {
+				resolveAttack(target);
+			}
+
+			
+			callbackPool.free(this);
+		}
+
+		@Override
+		public void reset() {
+			target = null;
+		}
+	};
 	
+	final Pool<SproreCallback> callbackPool = new Pool<SproreCallback>() {
+		@Override
+		protected SproreCallback newObject() {
+			return new SproreCallback();
+		}
+	};	
 	
 	@Override
 	public void tick(float dt) {
 
+		sportTimmer -= dt;
+		
+		if( sportTimmer <= 0.0f ) {
+		
+			final PlayerEntity player = map.getPlayer();
+			final int playerCells = player.getOwnedCells().size();
+			
+			if( playerCells > 0) {
+				Cell targetCell = (Cell)(player.getOwnedCells().toArray()[MathUtils.random(playerCells-1)]);
+				Cell sourceCell = (Cell)(this.getOwnedCells().toArray()[MathUtils.random(this.getOwnedCells().size()-1)]);
+	
+				SproreCallback callback = callbackPool.obtain();
+				callback.setTarget(targetCell);
+				
+				//System.out.println("spore!");
+				map.createSpore(sourceCell.point, targetCell.point, 30f, callback);
+			
+			}
+			resetSporeTimer();
+			sportTimmer /= (ownedCells.size()/2);
+		}
+		
+		
 		float maxCellEnergy = Float.NEGATIVE_INFINITY;
 		float minCellEnergy = Float.POSITIVE_INFINITY;
 		float cellEnergyDefisite = 0;

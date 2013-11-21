@@ -12,14 +12,14 @@ chemical1
   index: -1
 chemical2
   rotate: false
-  xy: 275, 24
+  xy: 314, 24
   size: 21, 24
   orig: 21, 24
   offset: 0, 0
   index: -1
 chemical3
   rotate: false
-  xy: 191, 23
+  xy: 230, 23
   size: 26, 25
   orig: 26, 25
   offset: 0, 0
@@ -89,14 +89,14 @@ solar1
   index: -1
 solar2
   rotate: false
-  xy: 298, 24
+  xy: 337, 24
   size: 21, 24
   orig: 21, 24
   offset: 0, 0
   index: -1
 solar3
   rotate: false
-  xy: 219, 23
+  xy: 258, 23
   size: 26, 25
   orig: 26, 25
   offset: 0, 0
@@ -108,6 +108,13 @@ solarplant
   orig: 42, 46
   offset: 0, 0
   index: -1
+spore
+  rotate: false
+  xy: 191, 11
+  size: 37, 37
+  orig: 37, 37
+  offset: 0, 0
+  index: -1
 wind1
   rotate: false
   xy: 494, 66
@@ -117,14 +124,14 @@ wind1
   index: -1
 wind2
   rotate: false
-  xy: 321, 24
+  xy: 360, 24
   size: 21, 24
   orig: 21, 24
   offset: 0, 0
   index: -1
 wind3
   rotate: false
-  xy: 247, 23
+  xy: 286, 23
   size: 26, 25
   orig: 26, 25
   offset: 0, 0

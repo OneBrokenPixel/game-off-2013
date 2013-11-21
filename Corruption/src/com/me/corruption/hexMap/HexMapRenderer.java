@@ -668,6 +668,7 @@ public class HexMapRenderer {
 		for(int i = 0; i<activeArray.size; i++) {
 			
 			if(array[i].isActive() == false) {
+				//System.out.println("remove");
 				activeArray.removeValue(array[i], false);
 				map.spritePool.free(array[i]);
 			}

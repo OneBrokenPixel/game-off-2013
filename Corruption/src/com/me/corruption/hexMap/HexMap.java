@@ -246,6 +246,7 @@ public class HexMap implements Disposable {
 	
 
 	private static TextureRegion powerUpTexture;
+	private static TextureRegion sporeTexture;
 	
 	/**
 	 * Static initialisation for sprite from the texture atlas.
@@ -297,6 +298,8 @@ public class HexMap implements Disposable {
 		//System.out.println(buildings.getCount());
 		
 		powerUpTexture = atlas.findRegion("powerUp");
+		
+		sporeTexture = atlas.findRegion("spore");
 	}
 	
 	public HexMap() {
@@ -402,6 +405,14 @@ public class HexMap implements Disposable {
 	public void dispose() {
 	}
 
+	public interface AnimatedSpriteCallback {
+		
+		void runCallback( AnimatedSprite sprite );
+		
+	}
+	
+	private Vector2 temp = new Vector2();
+	
 	public class AnimatedSprite implements Poolable {
 
 		//private String text = "";
@@ -409,26 +420,15 @@ public class HexMap implements Disposable {
 		private Vector2 from = new Vector2();
 		private Vector2 to = new Vector2();
 		private Vector2 pos = new Vector2();
+		private float sqLength = 0.0f;
 		private boolean active = false;
 		private float alpha = 0.0f;
 		private float speed = 1.0f;
+		private AnimatedSpriteCallback callback;
 		
 		public AnimatedSprite() {
 		}		
 
-		
-		/*
-		public String getText() {
-			return text;
-		}
-
-
-
-		public void setText(String text) {
-			this.text = text;
-		}
-		*/
-		
 		public TextureRegion getTexture() {
 			return texture;
 		}
@@ -437,87 +437,74 @@ public class HexMap implements Disposable {
 			this.texture = texture;
 		}
 
-
 		public Vector2 getFrom() {
 			return from;
 		}
-
-
 
 		public void setFrom(Vector2 from) {
 			this.from = from;
 		}
 
-
-
 		public Vector2 getTo() {
 			return to;
 		}
-
-
 
 		public void setTo(Vector2 to) {
 			this.to = to;
 		}
 
-
-
 		public Vector2 getPos() {
 			return pos;
 		}
-
-
 
 		public void setPos(Vector2 pos) {
 			this.pos = pos;
 		}
 
-
-
 		public boolean isActive() {
 			return active;
 		}
-
-
 
 		public void setActive(boolean active) {
 			this.active = active;
 		}
 
-
-
 		public float getAlpha() {
 			return alpha;
 		}
-
-
 
 		public void setAlpha(float alpha) {
 			this.alpha = alpha;
 		}
 
-
-
 		public float getSpeed() {
 			return speed;
 		}
-
-
 
 		public void setSpeed(float speed) {
 			this.speed = speed;
 		}
 
-
-
 		public void update(float dt) {
 			
 			if( this.active ){
-				alpha += speed*dt;
-				pos.set(from.lerp(to, alpha));
-				if( pos.equals(to)) {
+				
+
+				//alpha += speed*dt;
+				pos.add(temp.set(to).scl(speed).scl(dt));
+
+				float len2 = temp.set(pos).sub(from).len2();
+				
+				if( sqLength <= len2) {
 					active = false;
+					if( callback != null) {
+						callback.runCallback(this);
+					}
+					this.reset();
+					//System.out.println("reset");
+					return;
 				}
+				
 			}
 		}
 		
@@ -527,12 +514,13 @@ public class HexMap implements Disposable {
 			this.from.set(0, 0);
 			this.to.set(0, 0);
 			this.active = false;
-			this.alpha = 0.0f;
+			//this.alpha = 0.0f;
 			this.speed = 1.0f;
+			this.sqLength = 0.0f;
+			this.callback = null;
 		}
 		
 	}
-	
 	
 	private final Array<AnimatedSprite> activeSprites = new Array<AnimatedSprite>();
 	
@@ -543,23 +531,8 @@ public class HexMap implements Disposable {
 			return new AnimatedSprite();
 		}
 	};	
-	/*
-	public void createAnimatedText(String text, GridPoint2 from, float tox, float toy, float speed) {
-		
-		float x = (tile_width*0.5f) * 3/2 * from.x;
-		float y = (float) ((tile_width*0.5f) * HexMapRenderer.sqrt3 * (from.y + 0.5 * (from.x&1)));
-		
-		AnimatedSprite sprite = spritePool.obtain();
-		
-		sprite.text = text;
-		sprite.from.set(x,y);
-		sprite.to.set(x+tox,y+toy);
-		sprite.speed = speed;
-		sprite.active = true;
-		
-		activeSprites.add(sprite);
-	}
-	*/
+	
+
 	
 	public void createAnimatedPowerUp(GridPoint2 from, float tox, float toy, float speed) {
 		
@@ -569,13 +542,49 @@ public class HexMap implements Disposable {
 		AnimatedSprite sprite = spritePool.obtain();
 		
 		sprite.texture = powerUpTexture;
-		sprite.from.set(x,y);
-		sprite.to.set(x+tox,y+toy);
+		sprite.pos.set(x,y);
+		sprite.from.set(x, y);
+		sprite.to.set(tox,toy);
+		
+		sprite.sqLength = sprite.to.len2();
+		sprite.to.nor();
+		
+		
 		sprite.speed = speed;
 		sprite.active = true;
 		
 		activeSprites.add(sprite);
-	}	
+	}
+	
+	public void createSpore(GridPoint2 from, GridPoint2 to, float speed, AnimatedSpriteCallback callback) {
+		float x = (tile_width*0.5f) * 3/2 * from.x;
+		float y = (float) ((tile_width*0.5f) * HexMapRenderer.sqrt3 * (from.y + 0.5 * (from.x&1)));
+		
+		float tox = (tile_width*0.5f) * 3/2 * to.x;
+		float toy = (float) ((tile_width*0.5f) * HexMapRenderer.sqrt3 * (to.y + 0.5 * (to.x&1)));
+		
+		AnimatedSprite sprite = spritePool.obtain();
+		
+		sprite.texture = sporeTexture;
+		sprite.pos.set(x,y);
+		sprite.from.set(x, y);
+		sprite.to.set(tox-x,toy-y);
+		
+		System.out.println("From: " + sprite.from + " To: " + sprite.to);
+		
+		sprite.sqLength = sprite.to.len2();
+		sprite.to=sprite.to.nor();
+		
+		
+		sprite.speed = speed;
+		sprite.active = true;
+		
+		sprite.callback = callback;
+		
+		activeSprites.add(sprite);
+
+		System.out.println("Spore!");
+	}
 	
 	public Array<AnimatedSprite> getActiveSprites() {
 		// TODO Auto-generated method stub
