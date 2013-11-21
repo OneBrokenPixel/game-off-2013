@@ -39,7 +39,7 @@ public class CorruptionEntity extends Entity {
 	}
 	
 	private void resetSporeTimer() {
-		sportTimmer = 60f + MathUtils.random(15f)-15f;
+		sportTimmer = 60f + MathUtils.random(15f)-15f - MathUtils.random(ownedCells.size());
 	}
 
 	private void setTarget(Cell cell) {
@@ -82,14 +82,15 @@ public class CorruptionEntity extends Entity {
 		@Override
 		public void runCallback(AnimatedSprite sprite) {
 
-			System.out.println("attacking");
+			//System.out.println("attacking");
 			
-			target.unit -= 5f;
-			
-			if( target.unit <= 0.0f ) {
-				resolveAttack(target);
+			if( !(target.owner instanceof CorruptionEntity) ) {
+				target.unit -= MathUtils.random(5)+5f;
+				
+				if( target.unit <= 0.0f ) {
+					resolveAttack(target);
+				}
 			}
-
 			
 			callbackPool.free(this);
 		}
@@ -129,7 +130,7 @@ public class CorruptionEntity extends Entity {
 			
 			}
 			resetSporeTimer();
-			sportTimmer /= (ownedCells.size()/2);
+			//sportTimmer /= (ownedCells.size()/2);
 		}
 		
 		
@@ -206,5 +207,6 @@ public class CorruptionEntity extends Entity {
 	public void resolveAttack(Cell cell) {
 
 		addOwnedCell(cell);
+		cell.unit += 10;
 	}
 }
