@@ -656,8 +656,12 @@ public class HexMapRenderer {
 		
 		for(int i = 0; i<activeArray.size; i++) {
 			final AnimatedSprite a = activeArray.get(i);
+			
+			float halfW = a.getTexture().getRegionWidth()/2;
+			float halfH = a.getTexture().getRegionHeight()/2;
 			a.update(dt);
-			font.draw(batch, a.getText(), a.getPos().x, a.getPos().y);
+			//font.draw(batch, a.getText(), a.getPos().x, a.getPos().y);
+			batch.draw(a.getTexture(), a.getPos().x - halfW , a.getPos().y - halfH);
 			array[i] = a;
 		}
 	

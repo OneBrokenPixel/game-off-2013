@@ -7,6 +7,7 @@ import java.util.HashSet;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.GridPoint2;
 import com.badlogic.gdx.math.MathUtils;
@@ -243,6 +244,9 @@ public class HexMap implements Disposable {
 	private NeutralEntity neutral = new NeutralEntity(this);
 	private CorruptionEntity corruption = new CorruptionEntity(this);
 	
+
+	private static TextureRegion powerUpTexture;
+	
 	/**
 	 * Static initialisation for sprite from the texture atlas.
 	 * Loads all texture assets into the map.
@@ -292,7 +296,7 @@ public class HexMap implements Disposable {
 		
 		//System.out.println(buildings.getCount());
 		
-		
+		powerUpTexture = atlas.findRegion("powerUp");
 	}
 	
 	public HexMap() {
@@ -400,8 +404,8 @@ public class HexMap implements Disposable {
 
 	public class AnimatedSprite implements Poolable {
 
-		private String text = "";
-		
+		//private String text = "";
+		private TextureRegion texture;
 		private Vector2 from = new Vector2();
 		private Vector2 to = new Vector2();
 		private Vector2 pos = new Vector2();
@@ -413,7 +417,7 @@ public class HexMap implements Disposable {
 		}		
 
 		
-	
+		/*
 		public String getText() {
 			return text;
 		}
@@ -423,7 +427,15 @@ public class HexMap implements Disposable {
 		public void setText(String text) {
 			this.text = text;
 		}
-
+		*/
+		
+		public TextureRegion getTexture() {
+			return texture;
+		}
+		
+		public void setTexture(TextureRegion texture) {
+			this.texture = texture;
+		}
 
 
 		public Vector2 getFrom() {
@@ -511,7 +523,7 @@ public class HexMap implements Disposable {
 		
 		@Override
 		public void reset() {
-			this.text = "";
+			//this.text = "";
 			this.from.set(0, 0);
 			this.to.set(0, 0);
 			this.active = false;
@@ -531,7 +543,7 @@ public class HexMap implements Disposable {
 			return new AnimatedSprite();
 		}
 	};	
-	
+	/*
 	public void createAnimatedText(String text, GridPoint2 from, float tox, float toy, float speed) {
 		
 		float x = (tile_width*0.5f) * 3/2 * from.x;
@@ -547,7 +559,24 @@ public class HexMap implements Disposable {
 		
 		activeSprites.add(sprite);
 	}
-
+	*/
+	
+	public void createAnimatedPowerUp(GridPoint2 from, float tox, float toy, float speed) {
+		
+		float x = (tile_width*0.5f) * 3/2 * from.x;
+		float y = (float) ((tile_width*0.5f) * HexMapRenderer.sqrt3 * (from.y + 0.5 * (from.x&1)));
+		
+		AnimatedSprite sprite = spritePool.obtain();
+		
+		sprite.texture = powerUpTexture;
+		sprite.from.set(x,y);
+		sprite.to.set(x+tox,y+toy);
+		sprite.speed = speed;
+		sprite.active = true;
+		
+		activeSprites.add(sprite);
+	}	
+	
 	public Array<AnimatedSprite> getActiveSprites() {
 		// TODO Auto-generated method stub
 		return activeSprites;

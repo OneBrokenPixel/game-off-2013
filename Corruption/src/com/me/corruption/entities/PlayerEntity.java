@@ -111,7 +111,7 @@ public class PlayerEntity extends Entity {
 						if( b.energyCap >= 10.0f ) {
 							b.energyCap -= 10.0f;
 							
-							map.createAnimatedText("+10", c.point, 0,50f, 0.25f);
+							map.createAnimatedPowerUp(c.point, 0,50f, 0.25f);
 							
 						}
 					}
