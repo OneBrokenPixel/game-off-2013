@@ -58,6 +58,11 @@ public abstract class Entity {
 			
 			Cell[] attakingCells = getNeighbouringCellsWithOwners(target, this.getClass());
 			
+			if( attakingCells.length == 0 ) {
+				this.attacks.removeValue(target, false);
+				continue;
+			}
+			
 			int count = 0;
 			for( Cell att : attakingCells) {
 				float thisAttack = this.attackRate* dt ;

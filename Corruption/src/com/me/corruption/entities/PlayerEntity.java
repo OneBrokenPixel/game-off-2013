@@ -21,7 +21,7 @@ public class PlayerEntity extends Entity {
 
 	public PlayerEntity(HexMap map) {
 		super(map, "player");
-		energyBank = 0.0f;
+		energyBank = 30.0f;
 	}
 
 	public float getEnergyBank() {
@@ -105,13 +105,13 @@ public class PlayerEntity extends Entity {
 					// System.out.println(r);
 					if (r != null) {
 						final float energy = (BUILDING_ENERGY[b.id] * r.getAmount() * dt);
-						this.energyBank += energy;
+						//this.energyBank += energy;
 						b.energyCap += energy;
 						
 						if( b.energyCap >= 10.0f ) {
 							b.energyCap -= 10.0f;
-							
-							map.createAnimatedPowerUp(c.point, 0,50f, 0.25f);
+							this.energyBank += 10.0f;
+							map.createAnimatedPowerUp(c.point, 0,20f, 0.5f);
 							
 						}
 					}
