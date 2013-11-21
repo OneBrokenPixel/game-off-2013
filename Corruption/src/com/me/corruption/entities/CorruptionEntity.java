@@ -25,7 +25,8 @@ public class CorruptionEntity extends Entity {
 
 	private int evalueateCell(Cell cell) {
 		int eval = (int) cell.unit + 1;
-		if( cell.owner instanceof PlayerEntity || cell.attackers.size != 0 ) {
+		
+		if( cell.owner instanceof PlayerEntity || cell.attackers.contains(map.getPlayer(), false) ) {
 			eval*=10;
 		}
 		return eval;
@@ -123,15 +124,21 @@ public class CorruptionEntity extends Entity {
 		
 		if(targets.length != 0) {
 			if( !isAttacking(targets[0])) {
-				Cell[] attackers = getNeighbouringCellsWithOwners(targets[0], this.getClass());
-				float tEnergy = 0;
-				for( Cell c : attackers) {
-					tEnergy += c.unit;
-				}
-				if( tEnergy >= targets[0].unit) {
+				//Cell[] attackers = getNeighbouringCellsWithOwners(targets[0], this.getClass());
+				//float tEnergy = 0;
+				//for( Cell c : attackers) {
+				//	tEnergy += c.unit;
+				//}
+				//if( tEnergy >= (targets[0].unit/4)) {
 					attack(targets[0]);
-				}
+				//}
 			}
 		}
+	}
+
+	@Override
+	public void resolveAttack(Cell cell) {
+
+		addOwnedCell(cell);
 	}
 }

@@ -137,4 +137,12 @@ public class PlayerEntity extends Entity {
 		// System.out.println(this.energyBank);
 
 	}
+	
+	@Override
+	public void resolveAttack(Cell cell) {
+
+		addOwnedCell(cell);
+		cell.unit = Math.min(10f, this.energyBank);
+		//cell.setRecharge(true);
+	}
 }

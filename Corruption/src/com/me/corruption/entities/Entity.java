@@ -75,7 +75,7 @@ public abstract class Entity {
 			target.unit -= this.attackRate * count * dt;
 			
 			if( target.unit <= 0.0f ) {
-				addOwnedCell(target);
+				this.resolveAttack(target);
 				for( Entity att : target.attackers) {
 					att.stopAttack(target);
 				}
@@ -85,6 +85,8 @@ public abstract class Entity {
 		
 		tick(dt);
 	}
+	
+	public abstract void resolveAttack(Cell cell);
 	
 	public abstract void tick(float dt);
 
