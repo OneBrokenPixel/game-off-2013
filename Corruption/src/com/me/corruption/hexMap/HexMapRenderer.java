@@ -645,6 +645,8 @@ public class HexMapRenderer {
 		fade += 1 * Gdx.graphics.getDeltaTime();
 	}
 	
+	private Vector2 up = new Vector2(0,1);
+	
 	private void renderPopupText() {
 		
 		final float dt = Gdx.graphics.getDeltaTime();
@@ -656,12 +658,21 @@ public class HexMapRenderer {
 		
 		for(int i = 0; i<activeArray.size; i++) {
 			final AnimatedSprite a = activeArray.get(i);
-			
 			float halfW = a.getTexture().getRegionWidth()/2;
 			float halfH = a.getTexture().getRegionHeight()/2;
+			
+			float angle = 0.0f;
+			
+			if( a.isRotate() ) {
+				angle = a.getTo().angle()-90f;
+			}
+			
 			a.update(dt);
 			//font.draw(batch, a.getText(), a.getPos().x, a.getPos().y);
-			batch.draw(a.getTexture(), a.getPos().x - halfW , a.getPos().y - halfH);
+			//batch.draw(a.getTexture(), a.getPos().x, a.getPos().y ,-halfW,-halfH,a.getTexture().getRegionWidth(), a.getTexture().getRegionHeight(),1,1,angle);
+			if( a.isReady() ) {
+				batch.draw(a.getTexture(), a.getPos().x-halfW, a.getPos().y-halfH, halfW, halfH, a.getTexture().getRegionWidth(), a.getTexture().getRegionHeight(), 1, 1, angle);
+			}
 			array[i] = a;
 		}
 	

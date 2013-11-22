@@ -12,14 +12,14 @@ chemical1
   index: -1
 chemical2
   rotate: false
-  xy: 314, 24
+  xy: 388, 24
   size: 21, 24
   orig: 21, 24
   offset: 0, 0
   index: -1
 chemical3
   rotate: false
-  xy: 230, 23
+  xy: 304, 23
   size: 26, 25
   orig: 26, 25
   offset: 0, 0
@@ -43,6 +43,13 @@ corruptionHex_Attack
   xy: 174, 50
   size: 78, 68
   orig: 78, 68
+  offset: 0, 0
+  index: -1
+corruption_attack
+  rotate: false
+  xy: 230, 29
+  size: 35, 19
+  orig: 35, 19
   offset: 0, 0
   index: -1
 neutralHex
@@ -73,6 +80,13 @@ playerHex_toggle
   orig: 90, 79
   offset: 0, 0
   index: -1
+player_attack
+  rotate: false
+  xy: 267, 29
+  size: 35, 19
+  orig: 35, 19
+  offset: 0, 0
+  index: -1
 powerUp
   rotate: false
   xy: 2, 11
@@ -89,14 +103,14 @@ solar1
   index: -1
 solar2
   rotate: false
-  xy: 337, 24
+  xy: 411, 24
   size: 21, 24
   orig: 21, 24
   offset: 0, 0
   index: -1
 solar3
   rotate: false
-  xy: 258, 23
+  xy: 332, 23
   size: 26, 25
   orig: 26, 25
   offset: 0, 0
@@ -124,14 +138,14 @@ wind1
   index: -1
 wind2
   rotate: false
-  xy: 360, 24
+  xy: 434, 24
   size: 21, 24
   orig: 21, 24
   offset: 0, 0
   index: -1
 wind3
   rotate: false
-  xy: 286, 23
+  xy: 360, 23
   size: 26, 25
   orig: 26, 25
   offset: 0, 0
@@ -157,7 +171,7 @@ oldTiles/chemicalplant (2)
   index: -1
 oldTiles/corruptionHex
   rotate: false
-  xy: 322, 50
+  xy: 402, 50
   size: 76, 66
   orig: 76, 66
   offset: 0, 0
@@ -171,56 +185,63 @@ oldTiles/corruptionHex_Attack
   index: -1
 oldTiles/neutralHex
   rotate: false
-  xy: 400, 50
+  xy: 480, 50
   size: 76, 66
   orig: 76, 66
   offset: 0, 0
   index: -1
-oldTiles/neutralHex2
+oldTiles/neutralHex (2)
   rotate: false
   xy: 82, 48
   size: 78, 68
   orig: 78, 68
   offset: 0, 0
   index: -1
-oldTiles/playerHex
-  rotate: false
-  xy: 478, 50
-  size: 76, 66
-  orig: 76, 66
-  offset: 0, 0
-  index: -1
-oldTiles/playerHex_Attack
+oldTiles/neutralHex2
   rotate: false
   xy: 162, 48
   size: 78, 68
   orig: 78, 68
   offset: 0, 0
   index: -1
-oldTiles/playerHex_toggle
+oldTiles/playerHex
   rotate: false
-  xy: 556, 50
+  xy: 558, 50
   size: 76, 66
   orig: 76, 66
   offset: 0, 0
   index: -1
-oldTiles/playerHex_toggle (2)
+oldTiles/playerHex_Attack
   rotate: false
   xy: 242, 48
   size: 78, 68
   orig: 78, 68
   offset: 0, 0
   index: -1
+oldTiles/playerHex_toggle
+  rotate: false
+  xy: 636, 50
+  size: 76, 66
+  orig: 76, 66
+  offset: 0, 0
+  index: -1
+oldTiles/playerHex_toggle (2)
+  rotate: false
+  xy: 322, 48
+  size: 78, 68
+  orig: 78, 68
+  offset: 0, 0
+  index: -1
 oldTiles/solarplant (2)
   rotate: false
-  xy: 634, 52
+  xy: 714, 52
   size: 60, 64
   orig: 60, 64
   offset: 0, 0
   index: -1
 oldTiles/windplant (2)
   rotate: false
-  xy: 696, 52
+  xy: 776, 52
   size: 55, 64
   orig: 55, 64
   offset: 0, 0

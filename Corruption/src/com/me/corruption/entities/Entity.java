@@ -4,9 +4,16 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.TreeSet;
 
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.GridPoint2;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.Pool;
+import com.badlogic.gdx.utils.Pool.Poolable;
+import com.me.corruption.entities.CorruptionEntity.SproreCallback;
 import com.me.corruption.hexMap.HexMap;
+import com.me.corruption.hexMap.HexMap.AnimatedSprite;
+import com.me.corruption.hexMap.HexMap.AnimatedSpriteCallback;
 import com.me.corruption.hexMap.HexMap.Cell;
 
 public abstract class Entity {
@@ -44,6 +51,59 @@ public abstract class Entity {
 		return owner;
 	}
 	
+	private Entity parent = this;
+
+	public class AttackCallback implements AnimatedSpriteCallback, Poolable {
+		
+		public Cell target = null;
+		public GridPoint2 start;
+		public GridPoint2 end;
+		public TextureRegion texture;
+		private Cell source;
+		
+		public void set( Cell source, Cell target,TextureRegion texture) {
+			this.texture = texture;
+			this.target = target;
+			this.source = source;
+			this.start = source.point;
+			this.end = target.point;
+		}
+		
+		@Override
+		public void runCallback(AnimatedSprite sprite) {
+			System.out.println(parent);
+			
+			boolean attacking = false;
+			for( Entity e : target.attackers) {
+				attacking |= e.equals(parent);
+			}
+			
+			if( !source.owner.equals(parent) || target.owner.equals(parent) || attacking == false) {
+				//System.out.println(target.owner);
+				callbackPool.free(this);
+				sprite.reset();
+			}
+			else {
+				sprite.getPos().set(sprite.getFrom());
+				sprite.setActive(true);
+				sprite.setCooldown(1.0f);
+			}
+		}
+
+		@Override
+		public void reset() {
+			target = null;
+			this.start = null;
+			this.end = null;
+		}
+	};
+	
+	final Pool<AttackCallback> callbackPool = new Pool<AttackCallback>() {
+		@Override
+		protected AttackCallback newObject() {
+			return new AttackCallback();
+		}
+	};		
 	
 	public void update(float dt) {
 		
@@ -96,9 +156,17 @@ public abstract class Entity {
 	}
 	
 	public void attack(Cell target) {
-		if( getNeighbouringCellsWithOwners(target, this.getClass()).length != 0 ) {
+		
+		Cell[] neighbours = getNeighbouringCellsWithOwners(target, this.getClass());
+		TextureRegion attackTexure = (this.getClass().equals(PlayerEntity.class))? HexMap.getPlayerAttack():HexMap.getCorruptionAttack();
+		if( neighbours.length != 0 ) {
 			attacks.add(target);
 			target.attackers.add(this);
+			for( Cell c : neighbours) {
+				AttackCallback callback = callbackPool.obtain();
+				callback.set(c, target, attackTexure);
+				map.attack(callback);
+			}
 		}
 	}
 	

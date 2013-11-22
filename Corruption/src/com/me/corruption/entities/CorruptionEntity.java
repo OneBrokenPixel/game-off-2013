@@ -93,6 +93,7 @@ public class CorruptionEntity extends Entity {
 			}
 			
 			callbackPool.free(this);
+			sprite.reset();
 		}
 
 		@Override
@@ -207,6 +208,8 @@ public class CorruptionEntity extends Entity {
 	public void resolveAttack(Cell cell) {
 
 		addOwnedCell(cell);
-		cell.unit += 10;
+
+		cell.unit += getNeighbouringCellsWithOwners(cell, this.getClass()).length;
+		cell.setBuilding(null);
 	}
 }

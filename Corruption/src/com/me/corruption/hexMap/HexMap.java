@@ -19,6 +19,7 @@ import com.badlogic.gdx.utils.Pool.Poolable;
 
 import com.me.corruption.entities.CorruptionEntity;
 import com.me.corruption.entities.Entity;
+import com.me.corruption.entities.Entity.AttackCallback;
 import com.me.corruption.entities.NeutralEntity;
 import com.me.corruption.entities.PlayerEntity;
 /**
@@ -247,6 +248,9 @@ public class HexMap implements Disposable {
 
 	private static TextureRegion powerUpTexture;
 	private static TextureRegion sporeTexture;
+	private static TextureRegion playerAttack;
+	private static TextureRegion corruptionAttack;
+	
 	
 	/**
 	 * Static initialisation for sprite from the texture atlas.
@@ -300,6 +304,9 @@ public class HexMap implements Disposable {
 		powerUpTexture = atlas.findRegion("powerUp");
 		
 		sporeTexture = atlas.findRegion("spore");
+		
+		playerAttack = atlas.findRegion("player_attack");
+		corruptionAttack = atlas.findRegion("corruption_attack");
 	}
 	
 	public HexMap() {
@@ -424,7 +431,9 @@ public class HexMap implements Disposable {
 		private boolean active = false;
 		private float alpha = 0.0f;
 		private float speed = 1.0f;
+		private boolean rotate = false;
 		private AnimatedSpriteCallback callback;
+		private float cooldown = 0.0f;
 		
 		public AnimatedSprite() {
 		}		
@@ -489,20 +498,30 @@ public class HexMap implements Disposable {
 			
 			if( this.active ){
 				
-
-				//alpha += speed*dt;
-				pos.add(temp.set(to).scl(speed).scl(dt));
-
-				float len2 = temp.set(pos).sub(from).len2();
-				
-				if( sqLength <= len2) {
-					active = false;
-					if( callback != null) {
-						callback.runCallback(this);
+				if( cooldown <= 0.0f )
+				{
+					//alpha += speed*dt;
+					pos.add(temp.set(to).scl(speed).scl(dt));
+	
+					float len2 = temp.set(pos).sub(from).len2();
+					
+					//System.out.println(from);
+					
+					if( sqLength <= len2) {
+						active = false;
+						if( callback != null) {
+							callback.runCallback(this);
+						}
+						else {
+							this.reset();
+						}
+						//System.out.println("reset");
+						return;
 					}
-					this.reset();
-					//System.out.println("reset");
-					return;
+				}
+				else
+				{
+					cooldown -= dt;
 				}
 				
 			}
@@ -518,6 +537,25 @@ public class HexMap implements Disposable {
 			this.speed = 1.0f;
 			this.sqLength = 0.0f;
 			this.callback = null;
+			this.rotate = false;
+			this.cooldown = 0.0f;
+		}
+
+		public boolean isRotate() {
+			return rotate;
+		}
+
+		public void setRotate(boolean rotate) {
+			this.rotate = rotate;
+		}
+
+		public boolean isReady() {
+			// TODO Auto-generated method stub
+			return cooldown <= 0.0f;
+		}
+
+		public void setCooldown(float f) {
+			this.cooldown = f;
 		}
 		
 	}
@@ -570,7 +608,7 @@ public class HexMap implements Disposable {
 		sprite.from.set(x, y);
 		sprite.to.set(tox-x,toy-y);
 		
-		System.out.println("From: " + sprite.from + " To: " + sprite.to);
+		//System.out.println("From: " + sprite.from + " To: " + sprite.to);
 		
 		sprite.sqLength = sprite.to.len2();
 		sprite.to=sprite.to.nor();
@@ -583,12 +621,50 @@ public class HexMap implements Disposable {
 		
 		activeSprites.add(sprite);
 
-		System.out.println("Spore!");
+		//System.out.println("Spore!");
 	}
+
+	public void attack(AttackCallback callback) {
+		
+		final GridPoint2 from = callback.start;
+		final GridPoint2 to = callback.end;
+		
+		float x = (tile_width*0.5f) * 3/2 * from.x;
+		float y = (float) ((tile_width*0.5f) * HexMapRenderer.sqrt3 * (from.y + 0.5 * (from.x&1)));
+		
+		float tox = (tile_width*0.5f) * 3/2 * to.x;
+		float toy = (float) ((tile_width*0.5f) * HexMapRenderer.sqrt3 * (to.y + 0.5 * (to.x&1)));
+		
+		AnimatedSprite sprite = spritePool.obtain();
+		
+		sprite.texture = callback.texture;
+		sprite.pos.set(x,y);
+		sprite.from.set(x, y);
+		sprite.to.set(tox-x,toy-y);
+		
+		sprite.sqLength = sprite.to.len2()*0.75f;
+		sprite.to=sprite.to.nor();
+		
+		
+		sprite.speed = 80f;
+		sprite.active = true;
+		sprite.rotate = true;
+		
+		sprite.callback = callback;
+		
+		activeSprites.add(sprite);
+	}		
 	
 	public Array<AnimatedSprite> getActiveSprites() {
-		// TODO Auto-generated method stub
 		return activeSprites;
+	}
+
+	public static TextureRegion getPlayerAttack() {
+		return playerAttack;
+	}
+
+	public static TextureRegion getCorruptionAttack() {
+		return corruptionAttack;
 	}
 
 }
