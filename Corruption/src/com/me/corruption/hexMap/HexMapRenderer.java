@@ -80,7 +80,7 @@ public class HexMapRenderer {
 	private boolean showResources = false;
 	private boolean showEnergy = false;
 
-	private boolean showEnergyOverride = true;
+	private boolean showEnergyOverride = false;
 
 	public boolean isShowResources() {
 		return showResources;

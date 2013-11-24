@@ -1,0 +1,12 @@
+
+UIimgs.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+sideBack
+  rotate: false
+  xy: 2, 2
+  size: 173, 590
+  orig: 173, 590
+  offset: 0, 0
+  index: -1

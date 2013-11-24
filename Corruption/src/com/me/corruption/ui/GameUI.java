@@ -69,6 +69,7 @@ public class GameUI extends Stage {
 
 		skin = new Skin(Gdx.files.internal("data/uiskin.json"));
 		skin.addRegions(new TextureAtlas(Gdx.files.internal("spritesheets/ResearchTiles.atlas")));
+		skin.addRegions(new TextureAtlas(Gdx.files.internal("spritesheets/UIimgs.atlas")));
 		
 		pixmap = new Pixmap(1,1, Format.RGBA8888);
 		
@@ -89,9 +90,10 @@ public class GameUI extends Stage {
 		this.addActor(layout);
 		
 		sidebar = new Table();
-		sidebar.setBackground(skin.newDrawable("lgrey"));
+		//sidebar.setBackground(skin.newDrawable("lgrey"));
+		sidebar.setBackground(skin.newDrawable("sideBack"));
 		layout.left().bottom();
-		layout.add(sidebar).expandY().fill();
+		layout.add(sidebar).expandY().fill().pad(10);
 
 		sidebar.top();
 		sidebar.defaults().width(120).height(40).padLeft(20).padRight(20).padBottom(4);
