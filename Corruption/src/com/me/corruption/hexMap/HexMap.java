@@ -20,6 +20,7 @@ import com.badlogic.gdx.utils.Pool.Poolable;
 import com.me.corruption.entities.CorruptionEntity;
 import com.me.corruption.entities.Entity;
 import com.me.corruption.entities.Entity.AttackCallback;
+import com.me.corruption.entities.Entity_Settings;
 import com.me.corruption.entities.NeutralEntity;
 import com.me.corruption.entities.PlayerEntity;
 /**
@@ -29,11 +30,6 @@ import com.me.corruption.entities.PlayerEntity;
  *
  */
 public class HexMap implements Disposable {
-	
-	public static final int RESOURCE_WIND		= 0;	
-	public static final int RESOURCE_SOLAR		= 1;
-	public static final int RESOURCE_CHEMICAL	= 2;
-	public static final int RESOURCE_MAX		= 3;
 	
 	
 	/**
@@ -61,7 +57,7 @@ public class HexMap implements Disposable {
 		@Override
 		public int compareTo(Resource arg0) {
 			if(arg0 != null) {
-				return this.amount - arg0.amount;
+				return arg0.amount - this.amount;
 			}
 			else {
 				return -1;
@@ -89,13 +85,13 @@ public class HexMap implements Disposable {
 				this.name.toLowerCase();
 				this.sprite = buildings.get(this.name);
 				if( this.name.contains("chemicalplant") ) {
-					this.id = RESOURCE_CHEMICAL;
+					this.id = Entity_Settings.RESOURCE_CHEMICAL;
 				}
 				else if( this.name.contains("solarplant")) {
-					this.id = RESOURCE_SOLAR;
+					this.id = Entity_Settings.RESOURCE_SOLAR;
 				}
 				else if( this.name.contains("windplant")) {
-					this.id = RESOURCE_WIND;
+					this.id = Entity_Settings.RESOURCE_WIND;
 				}
 			}
 			else {
@@ -198,7 +194,7 @@ public class HexMap implements Disposable {
 				
 			}; 
 			
-			Integer a[] = { RESOURCE_WIND, RESOURCE_SOLAR, RESOURCE_CHEMICAL};
+			Integer a[] = { Entity_Settings.RESOURCE_WIND, Entity_Settings.RESOURCE_SOLAR, Entity_Settings.RESOURCE_CHEMICAL};
 			
 			Arrays.sort(a, comp);
 			
@@ -209,14 +205,14 @@ public class HexMap implements Disposable {
 			name = name.toLowerCase();
 			////System.out.println(name);
 			if( name.contains("windplant")) {
-				return resources[RESOURCE_WIND];
+				return resources[Entity_Settings.RESOURCE_WIND];
 			}
 			else if(name.contains("solarplant")){
-				return resources[RESOURCE_SOLAR];
+				return resources[Entity_Settings.RESOURCE_SOLAR];
 			}
 			else if(name.contains("chemicalplant")){
 				//System.out.println(resources[RESOURCE_CHEMICAL]);
-				return resources[RESOURCE_CHEMICAL];
+				return resources[Entity_Settings.RESOURCE_CHEMICAL];
 			}
 			return null;
 		}

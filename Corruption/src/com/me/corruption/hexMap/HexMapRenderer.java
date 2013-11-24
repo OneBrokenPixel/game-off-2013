@@ -39,6 +39,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Pool;
 import com.badlogic.gdx.utils.Pool.Poolable;
 import com.me.corruption.entities.Entity;
+import com.me.corruption.entities.Entity_Settings;
 import com.me.corruption.entities.PlayerEntity;
 import com.me.corruption.hexMap.HexMap.AnimatedSprite;
 import com.me.corruption.hexMap.HexMap.Building;
@@ -66,12 +67,12 @@ public class HexMapRenderer {
 	 * chemical top left wind, bottom right sun, bottom left
 	 */
 
-	private static final Vector2[] IconLookup = new Vector2[HexMap.RESOURCE_MAX];
+	private static final Vector2[] IconLookup = new Vector2[Entity_Settings.RESOURCE_MAX];
 	private static final Vector2 energyLookup = new Vector2(0.15f, 0.25f);
 	static {
-		IconLookup[HexMap.RESOURCE_WIND] = new Vector2(0.65f, 0.35f);
-		IconLookup[HexMap.RESOURCE_SOLAR] = new Vector2(0.35f, 0.35f);
-		IconLookup[HexMap.RESOURCE_CHEMICAL] = new Vector2(0.35f, 0.75f);
+		IconLookup[Entity_Settings.RESOURCE_WIND] = new Vector2(0.65f, 0.35f);
+		IconLookup[Entity_Settings.RESOURCE_SOLAR] = new Vector2(0.35f, 0.35f);
+		IconLookup[Entity_Settings.RESOURCE_CHEMICAL] = new Vector2(0.35f, 0.75f);
 	}
 
 	private float[] vertices = new float[20];
@@ -273,7 +274,7 @@ public class HexMapRenderer {
 						// x += layerTileWidth * width_offset;
 						continue;
 					}
-					for (int resIndex = 0; resIndex < HexMap.RESOURCE_MAX; resIndex++) {
+					for (int resIndex = 0; resIndex < Entity_Settings.RESOURCE_MAX; resIndex++) {
 
 						final Resource res = cell.resources[resIndex];
 
@@ -345,7 +346,7 @@ public class HexMapRenderer {
 				return;
 			}
 
-			for (int resIndex = 0; resIndex < HexMap.RESOURCE_MAX; resIndex++) {
+			for (int resIndex = 0; resIndex < Entity_Settings.RESOURCE_MAX; resIndex++) {
 
 				final Resource res = cell.resources[resIndex];
 

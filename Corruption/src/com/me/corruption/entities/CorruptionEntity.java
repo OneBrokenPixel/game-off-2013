@@ -152,7 +152,7 @@ public class CorruptionEntity extends Entity {
 			
 		}		
 		
-		System.out.println(totalEnergy);
+		//System.out.println(totalEnergy);
 		
 		//float meanCellEnergy = minCellEnergy+((maxCellEnergy-minCellEnergy)*0.5f);
 
@@ -178,24 +178,27 @@ public class CorruptionEntity extends Entity {
 			c.unit += MathUtils.clamp(rechargeUnit * c.rechargeRate, 0,Entity_Settings.attackRate*dt);
 			updateTargets(c);
 		}	
-		
-		Cell[] targets = new Cell[targetCells.size()];
-		
-		targetCells.toArray(targets);
-		
-		Comparator<Cell> eveluator = new Comparator<Cell>() {
 			
-			@Override
-			public int compare(Cell o1, Cell o2) {
-				return evalueateCell(o1) - evalueateCell(o2);
-			}
-		};
-		
-		Arrays.sort(targets, eveluator);
-		if( minCellEnergy >= 10) {
-			if(targets.length != 0) {
-				if( !isAttacking(targets[0])) {
-					attack(targets[0]);
+			if( targetCells.size() !=0 ) {
+			Cell[] targets = new Cell[targetCells.size()];
+			
+			targetCells.toArray(targets);
+			
+			Comparator<Cell> eveluator = new Comparator<Cell>() {
+				
+				@Override
+				public int compare(Cell o1, Cell o2) {
+					return evalueateCell(o1) - evalueateCell(o2);
+				}
+			};
+			
+			Arrays.sort(targets, eveluator);
+	
+			if( minCellEnergy >= targets[0].unit) {
+				if(targets.length != 0) {
+					if( !isAttacking(targets[0])) {
+						attack(targets[0]);
+					}
 				}
 			}
 		}

@@ -1,5 +1,8 @@
 package com.me.corruption.hexMap;
 
+import java.util.Arrays;
+import java.util.Comparator;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.GridPoint2;
 import com.badlogic.gdx.math.MathUtils;
@@ -9,6 +12,7 @@ import com.me.corruption.entities.Entity_Settings;
 import com.me.corruption.entities.PlayerEntity;
 import com.me.corruption.hexMap.HexMap.Cell;
 import com.me.corruption.hexMap.HexMap.Resource;
+import com.me.corruption.entities.Entity_Settings.*;
 
 public class HexMapGenerator {
 
@@ -93,16 +97,17 @@ public class HexMapGenerator {
 		final int size = Math.max(width, height);
 
 		// control the rand values here.
-		Fractal wind = new Fractal(size, 1, 6);
-		Fractal solar = new Fractal(size, 1, 5);
-		Fractal chemical = new Fractal(size, 1, 4);
+		Fractal wind = new Fractal(size, 1, 3);
+		Fractal solar = new Fractal(size, 1, 3);
+		Fractal chemical = new Fractal(size, 1, 3);
 
 		for (int x = 0; x < width; x++) {
 			for (int y = 0; y < height; y++) {
 				// System.out.println(x+ " "+y);
 				Cell cell = cells[x][y];
-
+				/*
 				int max = 4;
+				
 				final int solar_value = MathUtils.clamp(solar.getData(x, y), 1, 3);
 				final int wind_value = MathUtils.clamp(wind.getData(x, y), 1, 3);
 				final int chemical_value = MathUtils.clamp(chemical.getData(x, y), 1, 3);
@@ -125,7 +130,56 @@ public class HexMapGenerator {
 							(max > chemical_value) ? chemical_value : max);
 
 					max -= chemical_value;
+				}*/
+				
+				final Resource[] resources = { new Resource("wind", MathUtils.clamp(wind.getData(x, y), 1, 3)),
+											   new Resource("solar", MathUtils.clamp(solar.getData(x, y), 1, 3)),
+											   new Resource("chemical",MathUtils.clamp(chemical.getData(x, y), 1, 3)) };
+				
+				
+				Comparator<Integer> comp = new Comparator<Integer>() {
+
+					// i think this is how it works
+					@Override
+					public int compare(Integer arg0, Integer arg1) {
+						final Resource res1 = resources[arg0];
+						final Resource res2 = resources[arg1];
+						
+						if(res1 != null) {
+							return res1.compareTo(res2);
+						}
+						else {
+							return 1;
+						}
+					}
+					
+				}; 
+				
+				Integer a[] = { Entity_Settings.RESOURCE_WIND, Entity_Settings.RESOURCE_SOLAR, Entity_Settings.RESOURCE_CHEMICAL};
+				
+				Arrays.sort(a, comp);
+				
+				//System.out.println(a);
+				
+				for( Integer i : a) {
+					System.out.println(resources[i].name + " has " + resources[i].amount);
 				}
+				
+				
+				switch( a[0] ){
+				case Entity_Settings.RESOURCE_WIND:
+					cell.resources[Entity_Settings.RESOURCE_WIND] = resources[a[0]];
+					break;
+				case Entity_Settings.RESOURCE_SOLAR:
+					cell.resources[Entity_Settings.RESOURCE_SOLAR] = resources[a[0]];
+					break;
+				case Entity_Settings.RESOURCE_CHEMICAL:
+					cell.resources[Entity_Settings.RESOURCE_CHEMICAL] = resources[a[0]];
+					break;
+				default:
+					break;
+				}
+				
 			}
 		}
 	}
@@ -174,13 +228,13 @@ public class HexMapGenerator {
 		Integer[] a = playerCell.sortResources();
 		System.out.println(a[0]);
 		switch (a[0]) {
-		case HexMap.RESOURCE_CHEMICAL:
+		case Entity_Settings.RESOURCE_CHEMICAL:
 			playerCell.setBuilding("chemicalplant");
 			break;
-		case HexMap.RESOURCE_SOLAR:
+		case Entity_Settings.RESOURCE_SOLAR:
 			playerCell.setBuilding("solarplant");
 			break;
-		case HexMap.RESOURCE_WIND:
+		case Entity_Settings.RESOURCE_WIND:
 			playerCell.setBuilding("windplant");
 			break;
 		default:
