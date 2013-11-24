@@ -16,12 +16,11 @@ public class PlayerEntity extends Entity {
 	private HashSet<Cell> visible = new HashSet<Cell>();
 	private float energyBank;
 	//private float rechargeRate = 2.0f;
-	// wind, solar, chemical
-	private static final float BUILDING_ENERGY[] = { 0.2f, 0.3f, 0.4f };
+
 
 	public PlayerEntity(HexMap map) {
 		super(map, "player");
-		energyBank = 30.0f;
+		energyBank = Entity_Settings.player_StartingEnergy;
 	}
 
 	public float getEnergyBank() {
@@ -104,7 +103,7 @@ public class PlayerEntity extends Entity {
 					final Resource r = c.getResourceForBuilding(b.name);
 					// System.out.println(r);
 					if (r != null) {
-						final float energy = (BUILDING_ENERGY[b.id] * r.getAmount() * dt);
+						final float energy = (Entity_Settings.BUILDING_ENERGY[b.id] * r.getAmount() * dt);
 						//this.energyBank += energy;
 						b.energyCap += energy;
 						
@@ -112,7 +111,6 @@ public class PlayerEntity extends Entity {
 							b.energyCap -= 10.0f;
 							this.energyBank += 10.0f;
 							map.createAnimatedPowerUp(c.point, 0,32f, 20f);
-							
 						}
 					}
 				}
@@ -126,16 +124,11 @@ public class PlayerEntity extends Entity {
 			float rechargeEnergy = this.energyBank / recharging.size();
 
 			for (Cell c : recharging) {
-
-				float capped = MathUtils.clamp(rechargeEnergy, 0, this.getAttackRate()*dt);
-
+				float capped = MathUtils.clamp(rechargeEnergy, 0, Entity_Settings.attackRate*dt);
 				c.unit += capped;
 				this.energyBank -= capped;
 			}
 		}
-
-		// System.out.println(this.energyBank);
-
 	}
 	
 	@Override

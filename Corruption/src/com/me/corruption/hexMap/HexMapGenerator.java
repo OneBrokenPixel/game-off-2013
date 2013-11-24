@@ -5,6 +5,7 @@ import com.badlogic.gdx.math.GridPoint2;
 import com.badlogic.gdx.math.MathUtils;
 import com.me.corruption.entities.CorruptionEntity;
 import com.me.corruption.entities.Entity;
+import com.me.corruption.entities.Entity_Settings;
 import com.me.corruption.entities.PlayerEntity;
 import com.me.corruption.hexMap.HexMap.Cell;
 import com.me.corruption.hexMap.HexMap.Resource;
@@ -150,18 +151,10 @@ public class HexMapGenerator {
 		}
 	}
 
-	private static Cell getRandomTile(Cell[][] cells, int min, int width, int height, GridPoint2 deadZoneCP,
-			int deadZoneSize) {
+	private static Cell getRandomTile(Cell[][] cells, int min, int width, int height) {
 
-		int x = MathUtils.random(min, width - (deadZoneSize * 2));
-		int y = MathUtils.random(min, height - (deadZoneSize * 2));
-		if (deadZoneCP != null)
-			System.out.println(deadZoneCP.x + " " + deadZoneCP.y);
-
-		if (deadZoneCP != null && x >= deadZoneCP.x - (deadZoneSize / 2))
-			x += deadZoneSize;
-		if (deadZoneCP != null && y >= deadZoneCP.y - (deadZoneSize / 2))
-			y += deadZoneSize;
+		int x = MathUtils.random(min, width);
+		int y = MathUtils.random(0, height);
 
 		return cells[x][y];
 	}
@@ -177,7 +170,7 @@ public class HexMapGenerator {
 	private static void setStartingTiles(Cell[][] cells, int width, int height, PlayerEntity player,
 			CorruptionEntity corruption) {
 
-		Cell playerCell = getRandomTile(cells, 1, width - 2, height - 2, null, 0);
+		Cell playerCell = getRandomTile(cells, 0, 2, height-1);
 		Integer[] a = playerCell.sortResources();
 		System.out.println(a[0]);
 		switch (a[0]) {
@@ -196,8 +189,8 @@ public class HexMapGenerator {
 		// playerCell.unit
 		player.addOwnedCell(playerCell);
 
-		Cell corruptionCell = getRandomTile(cells, 1, width - 2, height - 2, playerCell.point, 2);
-		corruptionCell.unit = 0;
+		Cell corruptionCell = getRandomTile(cells, width - 3, width-1, height - 1);
+		corruptionCell.unit = Entity_Settings.corruption_startingEnergy;
 		corruption.addOwnedCell(corruptionCell);
 
 	}

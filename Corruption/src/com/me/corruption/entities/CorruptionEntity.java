@@ -17,11 +17,10 @@ import com.me.corruption.hexMap.HexMap.Resource;
 
 public class CorruptionEntity extends Entity {
 
-	private static final float handicap = 0.05f;
 
 	private HashSet<Cell> targetCells = new HashSet<Cell>();
 	
-	private float sportTimmer = 0.0f;
+	private float sporeTimmer = 0.0f;
 	
 
 	public CorruptionEntity(HexMap map) {
@@ -39,7 +38,7 @@ public class CorruptionEntity extends Entity {
 	}
 	
 	private void resetSporeTimer() {
-		sportTimmer = 60f + MathUtils.random(15f)-15f - MathUtils.random(ownedCells.size());
+		sporeTimmer = Entity_Settings.corruption_sporeTime + MathUtils.random(15f)-15f - MathUtils.random(ownedCells.size());
 	}
 
 	private void setTarget(Cell cell) {
@@ -112,9 +111,9 @@ public class CorruptionEntity extends Entity {
 	@Override
 	public void tick(float dt) {
 
-		sportTimmer -= dt;
+		sporeTimmer -= dt;
 		
-		if( sportTimmer <= 0.0f ) {
+		if( sporeTimmer <= 0.0f ) {
 		
 			final PlayerEntity player = map.getPlayer();
 			final int playerCells = player.getOwnedCells().size();
@@ -137,12 +136,14 @@ public class CorruptionEntity extends Entity {
 		
 		float maxCellEnergy = Float.NEGATIVE_INFINITY;
 		float minCellEnergy = Float.POSITIVE_INFINITY;
+		float totalEnergy = 0.0f;
 		float cellEnergyDefisite = 0;
 		int resourseCount = 0;
 		
 		for( Cell c : ownedCells) {
 			maxCellEnergy = Math.max(maxCellEnergy, c.unit);
 			minCellEnergy = Math.min(minCellEnergy, c.unit);
+			totalEnergy += c.unit;
 			for(Resource r : c.resources) {
 				if(r!=null){
 					resourseCount += r.getAmount();
@@ -151,9 +152,11 @@ public class CorruptionEntity extends Entity {
 			
 		}		
 		
+		System.out.println(totalEnergy);
+		
 		//float meanCellEnergy = minCellEnergy+((maxCellEnergy-minCellEnergy)*0.5f);
 
-		float leachEnergy = resourseCount * CorruptionEntity.handicap * dt;
+		float leachEnergy = resourseCount * Entity_Settings.corruption_handicap * dt;
 
 		//System.out.println(resourseC;
 		
@@ -172,7 +175,7 @@ public class CorruptionEntity extends Entity {
 		
 		for( Cell c : ownedCells) {
 			
-			c.unit += MathUtils.clamp(rechargeUnit * c.rechargeRate, 0,this.getAttackRate()*dt);
+			c.unit += MathUtils.clamp(rechargeUnit * c.rechargeRate, 0,Entity_Settings.attackRate*dt);
 			updateTargets(c);
 		}	
 		
@@ -189,17 +192,11 @@ public class CorruptionEntity extends Entity {
 		};
 		
 		Arrays.sort(targets, eveluator);
-		
-		if(targets.length != 0) {
-			if( !isAttacking(targets[0])) {
-				//Cell[] attackers = getNeighbouringCellsWithOwners(targets[0], this.getClass());
-				//float tEnergy = 0;
-				//for( Cell c : attackers) {
-				//	tEnergy += c.unit;
-				//}
-				//if( tEnergy >= (targets[0].unit/4)) {
+		if( minCellEnergy >= 10) {
+			if(targets.length != 0) {
+				if( !isAttacking(targets[0])) {
 					attack(targets[0]);
-				//}
+				}
 			}
 		}
 	}

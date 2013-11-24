@@ -21,8 +21,6 @@ public abstract class Entity {
 	
 	private Array<Cell> attacks = new Array<Cell>();
 	
-	private float attackRate = 1.0f;
-	
 	
 	protected HashSet<Cell> ownedCells = new HashSet<Cell>();
 	protected String owner = "";
@@ -34,10 +32,11 @@ public abstract class Entity {
 		this.owner = owner;
 	}
 	
+	/*
 	public float getAttackRate() {
 		return attackRate;
 	}
-	
+	*/
 	public HashSet<Cell> getOwnedCells() {
 		return ownedCells;
 	}
@@ -71,7 +70,7 @@ public abstract class Entity {
 		
 		@Override
 		public void runCallback(AnimatedSprite sprite) {
-			System.out.println(parent);
+			//System.out.println(parent);
 			
 			boolean attacking = false;
 			for( Entity e : target.attackers) {
@@ -125,14 +124,14 @@ public abstract class Entity {
 			
 			int count = 0;
 			for( Cell att : attakingCells) {
-				float thisAttack = this.attackRate* dt ;
+				float thisAttack = Entity_Settings.attackRate* dt ;
 				if( att.unit >= thisAttack ) {
 					att.unit -= thisAttack;
 					count += 1;
 				}
 			}
 			
-			target.unit -= this.attackRate * count * dt;
+			target.unit -= Entity_Settings.attackRate * count * dt;
 			
 			if( target.unit <= 0.0f ) {
 				this.resolveAttack(target);
@@ -240,8 +239,6 @@ public abstract class Entity {
 			if( c != null) {
 				boolean isTargetOwner = true;
 				for( Class<?> targetOwner : owners) {
-					//System.out.println(c.owner.getClass());
-					//System.out.println(targetOwner);
 					isTargetOwner = isTargetOwner && (c.owner.getClass().equals(targetOwner));
 				}
 				if( isTargetOwner ) {

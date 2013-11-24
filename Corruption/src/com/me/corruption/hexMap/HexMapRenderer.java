@@ -79,7 +79,7 @@ public class HexMapRenderer {
 	private boolean showResources = false;
 	private boolean showEnergy = false;
 
-	private boolean showEnergyOverride = false;
+	private boolean showEnergyOverride = true;
 
 	public boolean isShowResources() {
 		return showResources;
@@ -482,7 +482,7 @@ public class HexMapRenderer {
 
 					final Cell cell = map.getCell(col, row);
 
-					if (cell != null && (visible.contains(cell) || cell.owner instanceof PlayerEntity)) {
+					if (cell != null && (visible.contains(cell) || cell.owner instanceof PlayerEntity) || showEnergyOverride ) {
 
 						float x = (layerTileWidth * 0.5f) * 3 / 2 * col;// +
 																		// (layerTileWidth*energyLookup.x);
@@ -496,7 +496,7 @@ public class HexMapRenderer {
 
 			final Cell cell = mouseOverCell;
 
-			if (cell != null && (visible.contains(cell) || cell.owner instanceof PlayerEntity)) {
+			if (cell != null && (visible.contains(cell) || cell.owner instanceof PlayerEntity) || showEnergyOverride ) {
 				float x = (layerTileWidth * 0.5f) * 3 / 2 * cell.point.x;
 				float y = (float) ((layerTileWidth * 0.5f) * sqrt3 * (cell.point.y + 0.5 * (cell.point.x & 1)) + (layerTileHeight * energyLookup.y));
 
