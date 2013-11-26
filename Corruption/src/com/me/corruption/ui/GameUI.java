@@ -50,11 +50,11 @@ public class GameUI extends Stage {
 	private ImageButton energyBtn;
 	private TextButton tbResearch;
 	
-	private TextButton tbMute;   // change mute and pause to icons
-	private TextButton tbPause;
-	private ImageButton tbQuit;
+	private ImageButton muteBtn;   // change mute and pause to icons
+	private ImageButton pauseBtn;
+	private ImageButton quitBtn;
 	
-	private ImageButton tbHelp;
+	private ImageButton helpBtn;
 
 	private BuildingWindow buildWin;
 	private ResearchWindow researchWin;
@@ -144,18 +144,18 @@ public class GameUI extends Stage {
 		Table rowTable = new Table();
 		sidebar.add(rowTable).expandX().fillX().pad(2);
 		
-		tbMute = new TextButton("Mute", skin, "toggle");
-		tbPause = new TextButton("Pause", skin, "toggle");
-		tbHelp = new ImageButton(skin.newDrawable("help"), skin.newDrawable("helpdown"));
-		tbQuit = new ImageButton(skin.newDrawable("quit"), skin.newDrawable("quitdown"));
+		muteBtn = new ImageButton(skin.newDrawable("sound"), skin.newDrawable("mute"), skin.newDrawable("mute"));
+		pauseBtn = new ImageButton(skin.newDrawable("pause"), skin.newDrawable("play"), skin.newDrawable("play"));
+		helpBtn = new ImageButton(skin.newDrawable("help"), skin.newDrawable("helpdown"));
+		quitBtn = new ImageButton(skin.newDrawable("quit"), skin.newDrawable("quitdown"));
 
 		
-		rowTable.add(tbMute).pad(2).height(45);
-		rowTable.add(tbPause).pad(2).height(45);
+		rowTable.add(muteBtn).pad(2);//.height(45);
+		rowTable.add(pauseBtn).pad(2);//.height(45);
 		sidebar.row();
-		sidebar.add(tbQuit).padTop(2);
+		sidebar.add(quitBtn).padTop(2);
 		sidebar.row();
-		sidebar.add(tbHelp);
+		sidebar.add(helpBtn);
 
 		// uncomment these if you want table lines to show
 		//layout.debug();
@@ -196,6 +196,10 @@ public class GameUI extends Stage {
 		
 		this.addListener(new InputListener() {
 			public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+				
+				if (pauseBtn.isChecked()) {
+					pauseBtn.setChecked(true);
+				}
 				
 				if (buildWin.isVisible()) {
 					buildWin.setVisible(false);
@@ -283,9 +287,9 @@ public class GameUI extends Stage {
 		});
 		*/
 		
-		tbMute.addListener(new InputListener() {
+		muteBtn.addListener(new InputListener() {
 			public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-				if (!tbMute.isChecked())
+				if (!muteBtn.isChecked())
 					hexmap.mute(true);
 				else
 					hexmap.mute(false);
@@ -293,9 +297,9 @@ public class GameUI extends Stage {
 			}
 		});
 		
-		tbPause.addListener(new InputListener() {
+		pauseBtn.addListener(new InputListener() {
 			public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-				if (!tbPause.isChecked())
+				if (!pauseBtn.isChecked())
 					hexmap.pause(true);
 				else
 					hexmap.pause(false);
@@ -303,7 +307,7 @@ public class GameUI extends Stage {
 			}
 		});
 				
-		tbQuit.addListener(new InputListener() {
+		quitBtn.addListener(new InputListener() {
 			public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
 				// TODO are you sure you want to quit?
 				System.out.println(getWidth());
@@ -312,7 +316,7 @@ public class GameUI extends Stage {
 			}
 		});
 		
-		tbHelp.addListener(new InputListener() {
+		helpBtn.addListener(new InputListener() {
 			public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
 				//helpWin.setVisible(true);
 				hexmap.setScreen("helpScreen");
@@ -354,6 +358,10 @@ public class GameUI extends Stage {
 		endWin.populate(win);
 		endWin.setVisible(true);
 		endWin.setModal(true);
+	}
+	
+	public void unpause() {
+		pauseBtn.setChecked(false);
 	}
 	
 }

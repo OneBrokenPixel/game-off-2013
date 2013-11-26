@@ -118,7 +118,7 @@ public class HexMapInterface {
 			setScreen(screen);
 		}
 		else {
-			//System.out.println("Can't find screen: " + name);
+			System.out.println("Can't find screen: " + name);
 		}
 	}
 	

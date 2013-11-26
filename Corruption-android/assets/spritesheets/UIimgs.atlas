@@ -59,6 +59,27 @@ hideresources
   orig: 114, 57
   offset: 0, 0
   index: -1
+mute
+  rotate: false
+  xy: 179, 952
+  size: 44, 37
+  orig: 44, 37
+  offset: 0, 0
+  index: -1
+pause
+  rotate: false
+  xy: 179, 913
+  size: 44, 37
+  orig: 44, 37
+  offset: 0, 0
+  index: -1
+play
+  rotate: false
+  xy: 179, 874
+  size: 44, 37
+  orig: 44, 37
+  offset: 0, 0
+  index: -1
 quitdown
   rotate: false
   xy: 2, 2
@@ -85,5 +106,12 @@ sideBack
   xy: 2, 403
   size: 175, 586
   orig: 175, 586
+  offset: 0, 0
+  index: -1
+sound
+  rotate: false
+  xy: 179, 835
+  size: 44, 37
+  orig: 44, 37
   offset: 0, 0
   index: -1
