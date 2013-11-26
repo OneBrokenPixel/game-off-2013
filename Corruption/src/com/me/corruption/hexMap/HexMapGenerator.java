@@ -105,7 +105,7 @@ public class HexMapGenerator {
 			for (int y = 0; y < height; y++) {
 				// System.out.println(x+ " "+y);
 				Cell cell = cells[x][y];
-				/*
+
 				int max = 4;
 				
 				final int solar_value = MathUtils.clamp(solar.getData(x, y), 1, 3);
@@ -113,31 +113,31 @@ public class HexMapGenerator {
 				final int chemical_value = MathUtils.clamp(chemical.getData(x, y), 1, 3);
 				if (max > 0 && solar_value >= chemical_value && solar_value >= wind_value) {
 
-					cell.resources[HexMap.RESOURCE_SOLAR] = new Resource("solar", (max > solar_value) ? solar_value
+					cell.resources[Entity_Settings.RESOURCE_SOLAR] = new Resource("solar", (max > solar_value) ? solar_value
 							: max);
 					max -= solar_value;
 				}
 
 				if (max > 0 && wind_value >= chemical_value && wind_value >= solar_value) {
 
-					cell.resources[HexMap.RESOURCE_WIND] = new Resource("wind", (max > wind_value) ? wind_value : max);
+					cell.resources[Entity_Settings.RESOURCE_WIND] = new Resource("wind", (max > wind_value) ? wind_value : max);
 					max -= wind_value;
 				}
 
 				if (max > 0 && chemical_value >= wind_value && chemical_value >= solar_value) {
 
-					cell.resources[HexMap.RESOURCE_CHEMICAL] = new Resource("chemical",
+					cell.resources[Entity_Settings.RESOURCE_CHEMICAL] = new Resource("chemical",
 							(max > chemical_value) ? chemical_value : max);
 
 					max -= chemical_value;
-				}*/
-				
+				}
+				/*
 				final Resource[] resources = { new Resource("wind", MathUtils.clamp(wind.getData(x, y), 1, 3)),
 											   new Resource("solar", MathUtils.clamp(solar.getData(x, y), 1, 3)),
 											   new Resource("chemical",MathUtils.clamp(chemical.getData(x, y), 1, 3)) };
 				
 				cell.resources = resources;
-				/*
+				
 				Comparator<Integer> comp = new Comparator<Integer>() {
 
 					// i think this is how it works
