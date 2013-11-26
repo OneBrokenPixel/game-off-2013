@@ -270,7 +270,7 @@ public class CorruptionEntity extends Entity {
 
 		addOwnedCell(cell);
 
-		cell.unit += getNeighbouringCellsWithOwners(cell, this.getClass()).length;
+		//cell.unit += getNeighbouringCellsWithOwners(cell, this.getClass()).length;
 		cell.setBuilding(null);
 	}
 }

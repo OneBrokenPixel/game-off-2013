@@ -97,9 +97,9 @@ public class HexMapGenerator {
 		final int size = Math.max(width, height);
 
 		// control the rand values here.
-		Fractal wind = new Fractal(size, 0, 4);
-		Fractal solar = new Fractal(size, 0, 4);
-		Fractal chemical = new Fractal(size, 0, 4);
+		Fractal wind = new Fractal(size, -4, 6);
+		Fractal solar = new Fractal(size, -4, 6);
+		Fractal chemical = new Fractal(size, -4, 4);
 
 		for (int x = 0; x < width; x++) {
 			for (int y = 0; y < height; y++) {
@@ -108,23 +108,23 @@ public class HexMapGenerator {
 
 				int max = 4;
 				
-				final int solar_value = MathUtils.clamp(solar.getData(x, y), 1, 3);
-				final int wind_value = MathUtils.clamp(wind.getData(x, y), 1, 3);
-				final int chemical_value = MathUtils.clamp(chemical.getData(x, y), 1, 3);
-				if (max > 0 && solar_value >= chemical_value && solar_value >= wind_value) {
+				final int solar_value = MathUtils.clamp(solar.getData(x, y), 0, 3);
+				final int wind_value = MathUtils.clamp(wind.getData(x, y), 0, 3);
+				final int chemical_value = MathUtils.clamp(chemical.getData(x, y), 0, 3);
+				if ( solar_value!= 0 && max > 0 && solar_value >= chemical_value && solar_value >= wind_value) {
 
 					cell.resources[Entity_Settings.RESOURCE_SOLAR] = new Resource("solar", (max > solar_value) ? solar_value
 							: max);
 					max -= solar_value;
 				}
 
-				if (max > 0 && wind_value >= chemical_value && wind_value >= solar_value) {
+				if ( wind_value!= 0 && max > 0 && wind_value >= chemical_value && wind_value >= solar_value) {
 
 					cell.resources[Entity_Settings.RESOURCE_WIND] = new Resource("wind", (max > wind_value) ? wind_value : max);
 					max -= wind_value;
 				}
 
-				if (max > 0 && chemical_value >= wind_value && chemical_value >= solar_value) {
+				if ( chemical_value!= 0 && max > 0 && chemical_value >= wind_value && chemical_value >= solar_value) {
 
 					cell.resources[Entity_Settings.RESOURCE_CHEMICAL] = new Resource("chemical",
 							(max > chemical_value) ? chemical_value : max);
@@ -226,6 +226,12 @@ public class HexMapGenerator {
 			CorruptionEntity corruption) {
 
 		Cell playerCell = getRandomTile(cells, 0, 2, height-1);
+		
+		playerCell.resources[Entity_Settings.RESOURCE_CHEMICAL] = null;
+		playerCell.resources[Entity_Settings.RESOURCE_SOLAR] = null;
+		playerCell.resources[Entity_Settings.RESOURCE_WIND] = new Resource("wind", 3);
+		playerCell.setBuilding("windplant");
+		/*
 		Integer[] a = playerCell.sortResources();
 		System.out.println(a[0]);
 		switch (a[0]) {
@@ -241,6 +247,7 @@ public class HexMapGenerator {
 		default:
 			break;
 		}
+		*/
 		// playerCell.unit
 		player.addOwnedCell(playerCell);
 
