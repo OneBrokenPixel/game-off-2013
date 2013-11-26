@@ -162,7 +162,7 @@ public class HexMapInterface {
 		windCost = (int) (windInitalCost * Math.pow(1+rateOfIncrese, windCount));
 		
 		//windCost = windInitalCost + windCount*3;
-		System.out.println(windCost);
+		//System.out.println(windCost);
 		boolean bought = buyBuilding(windCost);
 		if (bought){
 			windCount++;
