@@ -43,24 +43,24 @@ public class GameUI extends Stage {
 	
 	private LabelStyle lstyle;
 	private Label energyDisp;
+	//private ImageButton energyDisp;
 	private int energy; // for ui testing purposes only
-	
-	private ButtonGroup renderGroup;
-	
-	private TextButton tbResources;
-	private TextButton tbEnergy;
+
+	private ImageButton resourcesBtn;
+	private ImageButton energyBtn;
 	private TextButton tbResearch;
 	
 	private TextButton tbMute;   // change mute and pause to icons
 	private TextButton tbPause;
-	private TextButton tbQuit;
+	private ImageButton tbQuit;
 	
-	private TextButton tbHelp;
+	private ImageButton tbHelp;
 
 	private BuildingWindow buildWin;
 	private ResearchWindow researchWin;
 	private EndWindow endWin;
 	private PauseScreen pauseScreen;
+	
 	
 	public GameUI(final HexMapInterface hexmap) {
 
@@ -95,16 +95,24 @@ public class GameUI extends Stage {
 		layout.left().bottom();
 		layout.add(sidebar).expandY().fill().pad(10);
 
-		sidebar.top();
-		sidebar.defaults().width(120).height(40).padLeft(20).padRight(20).padBottom(4);
+		sidebar.left().top();
+		//sidebar.defaults().width(120).height(40).padLeft(20).padRight(20).padBottom(4);
+		//sidebar.defaults().padLeft(20).padRight(20).padBottom(4);
+		sidebar.defaults().padBottom(4).padLeft(-13f);
 		sidebar.row();
 		
-		lstyle = new LabelStyle();
-		lstyle.font = skin.getFont("bitmapFont");
-		lstyle.fontColor = Color.BLACK; // <--- why does this look fuzzy???
 		
+		lstyle = new LabelStyle();
+		//lstyle.background = skin.newDrawable("energyback");
+		lstyle.font = skin.getFont("default-font");
+		lstyle.fontColor = Color.WHITE;
 		energyDisp = new Label("Energy: 0", lstyle);
-		sidebar.add(energyDisp).padLeft(10).padTop(20).padBottom(30);
+		//energyDisp.setFontScale(1.2f);
+		//energyDisp.setSize(163f, 48f);
+		
+		 
+		//energyDisp = new ImageButton(skin.newDrawable("energyback"));
+		sidebar.add(energyDisp).padTop(45).padBottom(30);
 		sidebar.row();
 		
 		TextButtonStyle tbStyle = new TextButtonStyle();
@@ -120,26 +128,27 @@ public class GameUI extends Stage {
 		skin.add("toggle", toggleStyle);
 		
 		final TextButton addEnergy = new TextButton("Cheat!", tbStyle);  // this will be deleted later
-		tbResources = new TextButton("Show Resources", skin, "toggle");
-		tbEnergy = new TextButton("Show Energy", skin, "toggle");
-		tbResearch = new TextButton("Research", skin);
 
-		sidebar.add(addEnergy);
+		resourcesBtn = new ImageButton(skin.newDrawable("showresources"), skin.newDrawable("hideresources"), skin.newDrawable("hideresources"));
+		energyBtn = new ImageButton(skin.newDrawable("showenergy"), skin.newDrawable("hideenergy"), skin.newDrawable("hideenergy"));
+
+		//sidebar.add(addEnergy);
+		//sidebar.row();
+		sidebar.add(resourcesBtn);
 		sidebar.row();
-		sidebar.add(tbResources);
+		sidebar.add(energyBtn).padBottom(150);
 		sidebar.row();
-		sidebar.add(tbEnergy);
-		sidebar.row();
-		sidebar.add(tbResearch).padBottom(150);
-		sidebar.row();
+		//sidebar.add(tbResearch).padBottom(150);
+		//sidebar.row();
 		
 		Table rowTable = new Table();
 		sidebar.add(rowTable).expandX().fillX().pad(2);
 		
 		tbMute = new TextButton("Mute", skin, "toggle");
 		tbPause = new TextButton("Pause", skin, "toggle");
-		tbQuit = new TextButton("Quit", skin);
-		tbHelp = new TextButton("Help", skin);
+		tbHelp = new ImageButton(skin.newDrawable("help"), skin.newDrawable("helpdown"));
+		tbQuit = new ImageButton(skin.newDrawable("quit"), skin.newDrawable("quitdown"));
+
 		
 		rowTable.add(tbMute).pad(2).height(45);
 		rowTable.add(tbPause).pad(2).height(45);
@@ -178,12 +187,11 @@ public class GameUI extends Stage {
 		hexmap.addScreen("pauseScreen", pauseScreen);
 		
 		this.addActor(buildWin);
-		this.addActor(researchWin);
+		//this.addActor(researchWin);
 		this.addActor(endWin);
 		
 		// start with energy shown
-		tbEnergy.setText("Hide Energy");
-		tbEnergy.setChecked(true);
+		energyBtn.setChecked(true);
 		hexmap.showEnergy(true);
 		
 		this.addListener(new InputListener() {
@@ -247,50 +255,21 @@ public class GameUI extends Stage {
 			}
 		});
 		
-		tbResources.addListener(new InputListener() {
+		resourcesBtn.addListener(new InputListener() {
 			public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+				hexmap.showResourceIcons(!resourcesBtn.isChecked());
+				return true;
+			}
+		});
+		
+		energyBtn.addListener(new InputListener() {
+			public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+				hexmap.showEnergy(!energyBtn.isChecked());
+				return true;
+			}
+		});
 
-				if (!tbResources.isChecked()) {
-					tbResources.setText("Hide Resources");
-					hexmap.showResourceIcons(true);
-				}
-				else {
-					tbResources.setText("Show Resources");
-					hexmap.showResourceIcons(false);
-				}
-				return true;
-			}
-		});
-		
-		tbEnergy.addListener(new InputListener() {
-			public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-				//resetRenderGroup();
-				if (!tbEnergy.isChecked()) {
-					tbEnergy.setText("Hide Energy");
-					hexmap.showEnergy(true);
-				}
-				else {
-					tbEnergy.setText("Show Energy");
-					hexmap.showEnergy(false);
-				}
-				return true;
-			}
-		});
-		
 		/*
-		tbShields.addListener(new InputListener() {
-			public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-				if (!tbShields.isChecked()) {
-					hexmap.addEnergyMode(true);
-				}
-				else {
-					hexmap.addEnergyMode(false);
-				}
-				return true;
-			}
-		});
-		 */
-		
 		tbResearch.addListener(new InputListener() {
 			public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
 				if (!researchWin.isVisible()) {
@@ -302,6 +281,7 @@ public class GameUI extends Stage {
 				return true;
 			}
 		});
+		*/
 		
 		tbMute.addListener(new InputListener() {
 			public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
@@ -349,19 +329,6 @@ public class GameUI extends Stage {
 			}
 		});
 		*/
-	}
-
-	private void resetRenderGroup() {
-		//renderGroup.uncheckAll();
-		tbResources.setText("Show Resources");
-		tbEnergy.setText("Show Energy");
-		
-	}
-	
-	private void toggleRenderGroup(Button button) {
-		if (renderGroup.getButtons().contains(button, false)) {
-
-		}
 	}
 	
 	

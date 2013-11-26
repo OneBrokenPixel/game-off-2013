@@ -20,9 +20,17 @@ public class HexMapInterface {
 	private CorruptionGdxGame game;
 	private HashMap<String, Screen> screens;
 	
-	private int windCost = 10;
-	private int solarCost = 30;
-	private int chemicalCost = 90;
+	private int windInitalCost = 10;
+	private int solarInitalCost = 30;
+	private int chemicalInitalCost = 90;
+	
+	private int windCount = 0;
+	private int solarCount = 0;
+	private int chemicalCount = 0;
+	
+	private int windCost = windInitalCost;
+	private int solarCost = solarInitalCost;
+	private int chemicalCost = chemicalInitalCost;
 	
 	public HexMapInterface(CorruptionGdxGame game, HexMapRenderer renderer) {
 		
@@ -148,22 +156,36 @@ public class HexMapInterface {
 	}
 	
 	public void buildWind() {
-		boolean bought = buyBuilding(windCost);
-		if (bought)
-			build("windplant");
 		
+		windCost = windInitalCost + windCount*3;
+		System.out.println(windCost);
+		boolean bought = buyBuilding(windCost);
+		if (bought){
+			windCount++;
+			build("windplant");
+		}
 	}
 	
 	public void buildSolar() {
+		
+		solarCost = solarInitalCost + solarCount*3;
+		
 		boolean bought = buyBuilding(solarCost);
-		if (bought)
+		if (bought){
+			solarCount++;
 			build("solarplant");
+		}
 	}
 	
 	public void buildChemical() {
+		
+		chemicalCost = chemicalInitalCost + chemicalCount*3;
+		
 		boolean bought = buyBuilding(chemicalCost);
-		if (bought)
+		if (bought) {
+			chemicalCount++;
 			build("chemicalplant");
+		}
 	}
 
 

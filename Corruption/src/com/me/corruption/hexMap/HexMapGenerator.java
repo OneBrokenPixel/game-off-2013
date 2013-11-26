@@ -97,9 +97,9 @@ public class HexMapGenerator {
 		final int size = Math.max(width, height);
 
 		// control the rand values here.
-		Fractal wind = new Fractal(size, 1, 3);
-		Fractal solar = new Fractal(size, 1, 3);
-		Fractal chemical = new Fractal(size, 1, 3);
+		Fractal wind = new Fractal(size, 0, 4);
+		Fractal solar = new Fractal(size, 0, 4);
+		Fractal chemical = new Fractal(size, 0, 4);
 
 		for (int x = 0; x < width; x++) {
 			for (int y = 0; y < height; y++) {
@@ -136,7 +136,8 @@ public class HexMapGenerator {
 											   new Resource("solar", MathUtils.clamp(solar.getData(x, y), 1, 3)),
 											   new Resource("chemical",MathUtils.clamp(chemical.getData(x, y), 1, 3)) };
 				
-				
+				cell.resources = resources;
+				/*
 				Comparator<Integer> comp = new Comparator<Integer>() {
 
 					// i think this is how it works
@@ -154,9 +155,9 @@ public class HexMapGenerator {
 					}
 					
 				}; 
-				
+
+				/*
 				Integer a[] = { Entity_Settings.RESOURCE_WIND, Entity_Settings.RESOURCE_SOLAR, Entity_Settings.RESOURCE_CHEMICAL};
-				
 				Arrays.sort(a, comp);
 				
 				//System.out.println(a);
@@ -179,7 +180,7 @@ public class HexMapGenerator {
 				default:
 					break;
 				}
-				
+				*/
 			}
 		}
 	}

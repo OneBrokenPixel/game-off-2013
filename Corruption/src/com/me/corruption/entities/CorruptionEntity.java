@@ -21,6 +21,7 @@ public class CorruptionEntity extends Entity {
 	private HashSet<Cell> targetCells = new HashSet<Cell>();
 	
 	private float sporeTimmer = 0.0f;
+	private float attackTimmer = 0.0f;
 	
 
 	public CorruptionEntity(HexMap map) {
@@ -34,11 +35,22 @@ public class CorruptionEntity extends Entity {
 		if( cell.owner instanceof PlayerEntity || cell.attackers.contains(map.getPlayer(), false) ) {
 			eval*=10;
 		}
+		
+		Cell[] neighbours = getNeighbouringCellsWithOwners(cell, this.getClass());
+		
+		for( Cell c : neighbours) {
+			eval+=(int)(cell.unit - c.unit);
+		}
+		
 		return eval;
 	}
 	
 	private void resetSporeTimer() {
 		sporeTimmer = Entity_Settings.corruption_sporeTime + MathUtils.random(15f)-15f - MathUtils.random(ownedCells.size());
+	}
+	
+	private void resetAttackTimmer() {
+		attackTimmer = Entity_Settings.corruption_attackTime + MathUtils.random(Entity_Settings.corruption_attackTime);
 	}
 
 	private void setTarget(Cell cell) {
@@ -87,6 +99,7 @@ public class CorruptionEntity extends Entity {
 				target.unit -= MathUtils.random(5)+5f;
 				
 				if( target.unit <= 0.0f ) {
+					target.unit = 0f;
 					resolveAttack(target);
 				}
 			}
@@ -112,7 +125,9 @@ public class CorruptionEntity extends Entity {
 	public void tick(float dt) {
 
 		sporeTimmer -= dt;
+		attackTimmer-= dt;
 		
+		// fire spores
 		if( sporeTimmer <= 0.0f ) {
 		
 			final PlayerEntity player = map.getPlayer();
@@ -133,17 +148,18 @@ public class CorruptionEntity extends Entity {
 			//sportTimmer /= (ownedCells.size()/2);
 		}
 		
-		
+		// energy calculation
 		float maxCellEnergy = Float.NEGATIVE_INFINITY;
 		float minCellEnergy = Float.POSITIVE_INFINITY;
-		float totalEnergy = 0.0f;
+		//float totalEnergy = 0.0f;
 		float cellEnergyDefisite = 0;
 		int resourseCount = 0;
 		
+		// work out what energy we have, min/max and total
 		for( Cell c : ownedCells) {
 			maxCellEnergy = Math.max(maxCellEnergy, c.unit);
 			minCellEnergy = Math.min(minCellEnergy, c.unit);
-			totalEnergy += c.unit;
+			//totalEnergy += c.unit;
 			for(Resource r : c.resources) {
 				if(r!=null){
 					resourseCount += r.getAmount();
@@ -156,10 +172,14 @@ public class CorruptionEntity extends Entity {
 		
 		//float meanCellEnergy = minCellEnergy+((maxCellEnergy-minCellEnergy)*0.5f);
 
+		
+		// Calculate total energy generation for this time step
 		float leachEnergy = resourseCount * Entity_Settings.corruption_handicap * dt;
 
 		//System.out.println(resourseC;
 		
+		// 
+		// this works out how much energy this cell needs to be equal to the current Max+1
 		for( Cell c : ownedCells) {
 			
 			c.rechargeRate = (maxCellEnergy+1-c.unit)*dt;
@@ -168,22 +188,25 @@ public class CorruptionEntity extends Entity {
 			
 		}	
 		
+		// unit of energy to apply to each cell.
 		float rechargeUnit = leachEnergy / cellEnergyDefisite;
 		
 
 		targetCells.clear();
 		
+		// apply generate energy per cell
 		for( Cell c : ownedCells) {
 			
-			c.unit += MathUtils.clamp(rechargeUnit * c.rechargeRate, 0,Entity_Settings.attackRate*dt);
+			c.unit += (rechargeUnit * c.rechargeRate);
 			updateTargets(c);
 		}	
 			
-			if( targetCells.size() !=0 ) {
+		if( targetCells.size() !=0 ) {
 			Cell[] targets = new Cell[targetCells.size()];
 			
 			targetCells.toArray(targets);
 			
+			// Comparator for evaluating the attackable cells.
 			Comparator<Cell> eveluator = new Comparator<Cell>() {
 				
 				@Override
@@ -194,10 +217,17 @@ public class CorruptionEntity extends Entity {
 			
 			Arrays.sort(targets, eveluator);
 	
-			if( minCellEnergy >= targets[0].unit) {
-				if(targets.length != 0) {
-					if( !isAttacking(targets[0])) {
-						attack(targets[0]);
+			// C attack new cells.
+			// always the weakest cell
+			// right no its only attacks that cell if the min energy is > the cells,
+			// this is what slows downt he attack rate.
+			if( attackTimmer <= 0.0f) {
+				if( minCellEnergy >= targets[0].unit/4) {
+					if(targets.length != 0) {
+						if( !isAttacking(targets[0])) {
+							attack(targets[0]);
+							resetAttackTimmer();
+						}
 					}
 				}
 			}

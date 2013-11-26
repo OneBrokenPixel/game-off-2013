@@ -107,9 +107,9 @@ public class PlayerEntity extends Entity {
 						//this.energyBank += energy;
 						b.energyCap += energy;
 						
-						if( b.energyCap >= 10.0f ) {
-							b.energyCap -= 10.0f;
-							this.energyBank += 10.0f;
+						if( b.energyCap >= Entity_Settings.energyCapasity ) {
+							b.energyCap -= Entity_Settings.energyCapasity;
+							this.energyBank += Entity_Settings.energyCapasity;
 							map.createAnimatedPowerUp(c.point, 0,32f, 20f);
 						}
 					}
@@ -135,7 +135,12 @@ public class PlayerEntity extends Entity {
 	public void resolveAttack(Cell cell) {
 
 		addOwnedCell(cell);
-		cell.unit = Math.min(10f, this.energyBank);
+		int neighbours = getNeighbouringCellsWithOwners(cell, this.getClass()).length*2;
+		int energyCost = (int) Math.min(neighbours, this.energyBank);
+		cell.unit = energyCost;
+		energyBank -= energyCost;
+		
+		
 		//cell.setRecharge(true);
 	}
 }

@@ -72,6 +72,10 @@ public class BuildingWindow extends Window {
 		
 		this.clear();
 		
+		wind.setText("Build Wind Farm ("+ hexmap.getWindCost() +" energy)");
+		chemical.setText("Build Chemical Plant ("+ hexmap.getChemicalCost() +" energy)");
+		solar.setText("Build Solar Energy Farm ("+ hexmap.getSolarCost() +" energy)");
+		
 		this.add(new Label("Some explainaton text goes here\n", skin));
 		this.row();
 		
