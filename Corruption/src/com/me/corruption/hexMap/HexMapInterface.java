@@ -21,8 +21,8 @@ public class HexMapInterface {
 	private HashMap<String, Screen> screens;
 	
 	private int windInitalCost = 10;
-	private int solarInitalCost = 30;
-	private int chemicalInitalCost = 90;
+	private int solarInitalCost = 40;
+	private int chemicalInitalCost = 120;
 	
 	private int windCount = 0;
 	private int solarCount = 0;
@@ -31,6 +31,8 @@ public class HexMapInterface {
 	private int windCost = windInitalCost;
 	private int solarCost = solarInitalCost;
 	private int chemicalCost = chemicalInitalCost;
+	
+	private float rateOfIncrese = 0.25f;
 	
 	public HexMapInterface(CorruptionGdxGame game, HexMapRenderer renderer) {
 		
@@ -45,19 +47,19 @@ public class HexMapInterface {
 
 	
 	public int getWindCost() {
-		return windCost;
+		return (int) (windInitalCost * Math.pow(1+rateOfIncrese, windCount));
 	}
 
 
 
 	public int getSolarCost() {
-		return solarCost;
+		return (int) (solarInitalCost * Math.pow(1+rateOfIncrese, solarCount));
 	}
 
 
 
 	public int getChemicalCost() {
-		return chemicalCost;
+		return (int) (chemicalInitalCost * Math.pow(1+rateOfIncrese, chemicalCount));
 	}
 
 
@@ -157,8 +159,10 @@ public class HexMapInterface {
 	
 	public void buildWind() {
 		
-		windCost = windInitalCost + windCount*3;
-		System.out.println(windCost);
+		windCost = (int) (windInitalCost * Math.pow(1+rateOfIncrese, windCount));
+		
+		//windCost = windInitalCost + windCount*3;
+		//System.out.println(windCost);
 		boolean bought = buyBuilding(windCost);
 		if (bought){
 			windCount++;
@@ -168,7 +172,8 @@ public class HexMapInterface {
 	
 	public void buildSolar() {
 		
-		solarCost = solarInitalCost + solarCount*3;
+		solarCost = (int) (solarInitalCost * Math.pow(1+rateOfIncrese, solarCount));
+		//solarCost = solarInitalCost + solarCount*3;
 		
 		boolean bought = buyBuilding(solarCost);
 		if (bought){
@@ -179,7 +184,8 @@ public class HexMapInterface {
 	
 	public void buildChemical() {
 		
-		chemicalCost = chemicalInitalCost + chemicalCount*3;
+		chemicalCost = (int) (chemicalInitalCost * Math.pow(1+rateOfIncrese, chemicalCount));
+		//chemicalCost = chemicalInitalCost + chemicalCount*3;
 		
 		boolean bought = buyBuilding(chemicalCost);
 		if (bought) {

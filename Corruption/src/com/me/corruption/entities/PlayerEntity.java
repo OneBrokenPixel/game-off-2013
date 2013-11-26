@@ -135,10 +135,10 @@ public class PlayerEntity extends Entity {
 	public void resolveAttack(Cell cell) {
 
 		addOwnedCell(cell);
-		int neighbours = getNeighbouringCellsWithOwners(cell, this.getClass()).length*2;
-		int energyCost = (int) Math.min(neighbours, this.energyBank);
-		cell.unit = energyCost;
-		energyBank -= energyCost;
+		//int neighbours = getNeighbouringCellsWithOwners(cell, this.getClass()).length*2;
+		//int energyCost = (int) Math.min(neighbours, this.energyBank);
+		//cell.unit = energyCost;
+		//energyBank -= energyCost;
 		
 		
 		//cell.setRecharge(true);

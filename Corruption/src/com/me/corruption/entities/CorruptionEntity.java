@@ -7,6 +7,8 @@ import java.util.HashSet;
 
 import com.badlogic.gdx.math.GridPoint2;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.ArrayMap;
 import com.badlogic.gdx.utils.Pool;
 import com.badlogic.gdx.utils.Pool.Poolable;
 import com.me.corruption.hexMap.HexMap;
@@ -121,6 +123,8 @@ public class CorruptionEntity extends Entity {
 		}
 	};	
 	
+	private ArrayMap<Cell, Float> energyDemand = new ArrayMap<Cell, Float>();
+	
 	@Override
 	public void tick(float dt) {
 
@@ -222,14 +226,41 @@ public class CorruptionEntity extends Entity {
 			// right no its only attacks that cell if the min energy is > the cells,
 			// this is what slows downt he attack rate.
 			if( attackTimmer <= 0.0f) {
-				if( minCellEnergy >= targets[0].unit/4) {
-					if(targets.length != 0) {
-						if( !isAttacking(targets[0])) {
-							attack(targets[0]);
-							resetAttackTimmer();
+				
+				final int max = MathUtils.random(targets.length);
+				energyDemand.clear();
+				
+				for( int i = 0; i < max; i++ ) {
+					final Cell t = targets[i];
+					if( !isAttacking(t)) {
+						for( Cell a : getNeighbouringCellsWithOwners(t, this.getClass())) {
+							energyDemand.put(a, a.unit);
 						}
 					}
 				}
+				
+				for( int i = 0; i < max; i++ ) {
+					final Cell t = targets[i];
+					if( !isAttacking(t)) {
+				
+						Cell[] attackers = getNeighbouringCellsWithOwners(t, this.getClass());
+						float energy = 0.0f;
+						for( Cell a : attackers) {
+							energy += energyDemand.get(a);
+						}
+						
+						if( energy >= t.unit) {
+							attack(t);
+							float cost = t.unit/attackers.length;
+							for( Cell a : attackers) {
+								float e = energyDemand.get(a);
+								energyDemand.put(a, e-cost);
+							}
+						}
+					}
+				}
+				
+				resetAttackTimmer();
 			}
 		}
 	}
@@ -239,7 +270,7 @@ public class CorruptionEntity extends Entity {
 
 		addOwnedCell(cell);
 
-		cell.unit += getNeighbouringCellsWithOwners(cell, this.getClass()).length;
+		//cell.unit += getNeighbouringCellsWithOwners(cell, this.getClass()).length;
 		cell.setBuilding(null);
 	}
 }
