@@ -5,6 +5,7 @@ import java.util.HashMap;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.utils.Disposable;
 import com.me.corruption.CorruptionGdxGame;
@@ -46,13 +47,16 @@ public class HexMapInterface implements Disposable {
 	
 	private static boolean mute = false;
 	
+	private static Music gameMusic;
+	
 	static {
 		buttonClickOn = Gdx.audio.newSound(Gdx.files.internal("audio/Button Click On-SoundBible.com-459633989.mp3"));
 		buttonClickOff = Gdx.audio.newSound(Gdx.files.internal("audio/Button Click Off-SoundBible.com-1730098776.mp3"));
 		
-		
-		
 		sporeLaunch = Gdx.audio.newSound(Gdx.files.internal("audio/Squishy 2-SoundBible.com-1775292371.mp3"));
+		
+		gameMusic = Gdx.audio.newMusic(Gdx.files.internal("audio/07 How Long Can You Remember A Voice.mp3"));
+		gameMusic.play();
 	}
 	
 	public HexMapInterface(CorruptionGdxGame game, HexMapRenderer renderer) {
@@ -67,6 +71,11 @@ public class HexMapInterface implements Disposable {
 	
 	public static void setMute(boolean value) {
 		mute = value;
+		if(mute){
+			gameMusic.pause();
+		} else {
+			gameMusic.play();
+		}
 	}
 
 	public static void playButtonClickOn() {
@@ -264,6 +273,6 @@ public class HexMapInterface implements Disposable {
 		buttonClickOff.dispose();
 		sporeLaunch.dispose();
 		
-		
+		gameMusic.dispose();
 	}
 }
