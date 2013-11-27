@@ -251,10 +251,18 @@ public class HexMapGenerator {
 		// playerCell.unit
 		player.addOwnedCell(playerCell);
 
-		Cell corruptionCell = getRandomTile(cells, width - 3, width-1, height - 1);
-		corruptionCell.unit = Entity_Settings.corruption_startingEnergy;
-		corruption.addOwnedCell(corruptionCell);
+		Cell corruptionCell1 = getRandomTile(cells, width - 3, width-1, height - 1);
+		corruptionCell1.unit = Entity_Settings.corruption_startingEnergy;
+		corruption.addOwnedCell(corruptionCell1);
+		
+		Cell corruptionCell2 = null;
+		do {
+			corruptionCell2 = getRandomTile(cells, width - 3, width-1, height - 1);
+		}
+		while( corruptionCell1.equals(corruptionCell2) );
 
+		corruptionCell2.unit = Entity_Settings.corruption_startingEnergy;
+		corruption.addOwnedCell(corruptionCell2);
 	}
 
 	/**
