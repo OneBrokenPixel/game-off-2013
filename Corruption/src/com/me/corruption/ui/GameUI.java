@@ -44,8 +44,7 @@ public class GameUI extends Stage {
 	
 	private LabelStyle lstyle;
 	private Label energyDisp;
-	//private ImageButton energyDisp;
-	private int energy; // for ui testing purposes only
+	//private int energy; // for ui testing purposes only
 
 	public ImageButton resourcesBtn;
 	public ImageButton energyBtn;
@@ -62,7 +61,7 @@ public class GameUI extends Stage {
 	private ResearchWindow researchWin;
 	private EndWindow endWin;
 	private PauseScreen pauseScreen;
-	
+	private StartMenu startMenu;
 	
 	public GameUI(final HexMapInterface ui_if) {
 
@@ -121,7 +120,7 @@ public class GameUI extends Stage {
 		toggleStyle.checked = skin.newDrawable("red");
 		skin.add("toggle", toggleStyle);
 		
-		final TextButton addEnergy = new TextButton("Cheat!", tbStyle);  // this will be deleted later
+		//final TextButton addEnergy = new TextButton("Cheat!", tbStyle);  // this will be deleted later
 
 		resourcesBtn = new ImageButton(skin.newDrawable("showresources"), skin.newDrawable("hideresources"), skin.newDrawable("hideresources"));
 		energyBtn = new ImageButton(skin.newDrawable("showenergy"), skin.newDrawable("hideenergy"), skin.newDrawable("hideenergy"));
@@ -156,6 +155,12 @@ public class GameUI extends Stage {
 		
 		//hexmap.addScreen("helpScreen", new HelpScreen(hexmap));
 
+		// start menu
+		startMenu = new StartMenu("Start", skin, hexmap);
+		//hexmap.pause(true);
+		startMenu.setVisible(true);
+		startMenu.setPosition(500, 200);
+		
 		// pop up window with plant building/demolish options 
 		buildWin = new BuildingWindow("Building Window", skin, hexmap);
 		buildWin.setVisible(false);
@@ -172,6 +177,7 @@ public class GameUI extends Stage {
 		pauseScreen = new PauseScreen(hexmap);
 		hexmap.addScreen("pauseScreen", pauseScreen);
 		
+		this.addActor(startMenu);
 		this.addActor(buildWin);
 		//this.addActor(researchWin);
 		this.addActor(endWin);
@@ -239,6 +245,7 @@ public class GameUI extends Stage {
 			
 		});
 		
+		/*
 		addEnergy.addListener(new InputListener() {
 			public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
 				energy += 1;
@@ -247,6 +254,7 @@ public class GameUI extends Stage {
 				return true;
 			}
 		});
+		*/
 		
 		resourcesBtn.addListener(new ChangeListener() {
 			@Override
@@ -305,12 +313,12 @@ public class GameUI extends Stage {
 		musicBtn.addListener(new InputListener() {
 			public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
 				if (!musicBtn.isChecked()) {
-					hexmap.setMuteMusic(true);
-					HexMapInterface.setMuteMusic(true);
+					hexmap.muteMusic(true);
+					HexMapInterface.muteMusic(true);
 				}
 				else{
-					HexMapInterface.setMuteMusic(false);
-					hexmap.setMuteMusic(false);
+					HexMapInterface.muteMusic(false);
+					hexmap.muteMusic(false);
 				}
 				return true;
 			}
@@ -338,9 +346,10 @@ public class GameUI extends Stage {
 		quitBtn.addListener(new InputListener() {
 			public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
 				// TODO are you sure you want to quit?
-				System.out.println(getWidth());
-				HexMapInterface.playButtonClickOn();
+				//System.out.println(getWidth());
+				//HexMapInterface.playButtonClickOn();
 				hexmap.quit();
+				startMenu.setVisible(true);
 				return true;
 			}
 		});
@@ -394,6 +403,10 @@ public class GameUI extends Stage {
 	
 	public void unpause() {
 		//pauseBtn.setChecked(false);
+	}
+	
+	public void start() {
+		startMenu.setVisible(false);
 	}
 	
 }

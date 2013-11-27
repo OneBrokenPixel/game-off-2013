@@ -76,26 +76,27 @@ public class BuildingWindow extends Window {
 		chemical.setText("Build Chemical Plant ("+ hexmap.getChemicalCost() +" energy)");
 		solar.setText("Build Solar Energy Farm ("+ hexmap.getSolarCost() +" energy)");
 		
-		this.add(new Label("Some explainaton text goes here\n", skin));
+		
+		this.add(new Label("Choose an energy plant to build", skin));
 		this.row();
 		
 		if (hasWind) {
-			this.add(wind).expandX().fillX();
+			this.add(wind).expandX().fillX().height(30);
 			this.row();
 		}
 		if (hasSolar) {
-			this.add(solar).expandX().fillX();
+			this.add(solar).expandX().fillX().height(30);
 			this.row();
 		}
 		if (hasChemical) {
-			this.add(chemical).expandX().fillX();
+			this.add(chemical).expandX().fillX().height(30);
 			this.row();
 		}
 		if (hasDemolish) {
-			this.add(demolish).expandX().fillX();
+			this.add(demolish).expandX().fillX().height(30);
 			this.row();
 		}
-		this.add(nothing).expandX().fillX();
+		this.add(nothing).expandX().fillX().height(30);
 		this.pack();
 	}
 	
