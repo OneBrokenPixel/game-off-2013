@@ -485,7 +485,7 @@ public class HexMapRenderer {
 
 					if (cell != null && (visible.contains(cell) || cell.owner instanceof PlayerEntity) || showEnergyOverride ) {
 
-						float x = (layerTileWidth * 0.5f) * 3 / 2 * col;// +
+						float x = (layerTileWidth * 0.5f) * 3 / 2 * col + (layerTileHeight * energyLookup.x);
 																		// (layerTileWidth*energyLookup.x);
 						float y = (float) ((layerTileWidth * 0.5f) * sqrt3 * (row + 0.5 * (col & 1)) + (layerTileHeight * energyLookup.y));
 
@@ -498,7 +498,7 @@ public class HexMapRenderer {
 			final Cell cell = mouseOverCell;
 
 			if (cell != null && (visible.contains(cell) || cell.owner instanceof PlayerEntity) || showEnergyOverride ) {
-				float x = (layerTileWidth * 0.5f) * 3 / 2 * cell.point.x;
+				float x = (layerTileWidth * 0.5f) * 3 / 2 * cell.point.x + (layerTileHeight * energyLookup.x);
 				float y = (float) ((layerTileWidth * 0.5f) * sqrt3 * (cell.point.y + 0.5 * (cell.point.x & 1)) + (layerTileHeight * energyLookup.y));
 
 				font.draw(batch, "" + ((int) cell.unit), x, y);
