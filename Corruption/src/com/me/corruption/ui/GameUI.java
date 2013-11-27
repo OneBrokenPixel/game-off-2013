@@ -261,6 +261,11 @@ public class GameUI extends Stage {
 		
 		resourcesBtn.addListener(new InputListener() {
 			public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+				if( !resourcesBtn.isChecked()) {
+					HexMapInterface.playButtonClickOn();
+				} else {
+					HexMapInterface.playButtonClickOff();
+				}
 				hexmap.showResourceIcons(!resourcesBtn.isChecked());
 				return true;
 			}
@@ -268,6 +273,11 @@ public class GameUI extends Stage {
 		
 		energyBtn.addListener(new InputListener() {
 			public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+				if( !energyBtn.isChecked()) {
+					HexMapInterface.playButtonClickOn();
+				} else {
+					HexMapInterface.playButtonClickOff();
+				}
 				hexmap.showEnergy(!energyBtn.isChecked());
 				return true;
 			}
@@ -289,20 +299,28 @@ public class GameUI extends Stage {
 		
 		muteBtn.addListener(new InputListener() {
 			public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-				if (!muteBtn.isChecked())
+				if (!muteBtn.isChecked()) {
+					HexMapInterface.playButtonClickOn();
 					hexmap.mute(true);
-				else
+				}
+				else{
 					hexmap.mute(false);
+					HexMapInterface.playButtonClickOff();
+				}
 				return true;
 			}
 		});
 		
 		pauseBtn.addListener(new InputListener() {
 			public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-				if (!pauseBtn.isChecked())
+				if (!pauseBtn.isChecked()) {
+					HexMapInterface.playButtonClickOn();
 					hexmap.pause(true);
-				else
+				}
+				else {
+					HexMapInterface.playButtonClickOff();
 					hexmap.pause(false);
+				}
 				return true;
 			}
 		});
@@ -311,6 +329,7 @@ public class GameUI extends Stage {
 			public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
 				// TODO are you sure you want to quit?
 				System.out.println(getWidth());
+				HexMapInterface.playButtonClickOn();
 				hexmap.quit();
 				return true;
 			}
@@ -319,6 +338,7 @@ public class GameUI extends Stage {
 		helpBtn.addListener(new InputListener() {
 			public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
 				//helpWin.setVisible(true);
+				HexMapInterface.playButtonClickOn();
 				hexmap.setScreen("helpScreen");
 				return true;
 			}

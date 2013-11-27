@@ -2,8 +2,11 @@ package com.me.corruption.hexMap;
 
 import java.util.HashMap;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.utils.Disposable;
 import com.me.corruption.CorruptionGdxGame;
 import com.me.corruption.entities.PlayerEntity;
 import com.me.corruption.hexMap.HexMap.Cell;
@@ -13,7 +16,7 @@ import com.me.corruption.ui.GameUI;
  * @author Marie
  *
  */
-public class HexMapInterface {
+public class HexMapInterface implements Disposable {
 	private HexMapRenderer renderer;
 	private HexMap map;
 	private PlayerEntity player;
@@ -34,6 +37,14 @@ public class HexMapInterface {
 	
 	private float rateOfIncrese = 0.25f;
 	
+	private static Sound buttonClickOn;
+	private static Sound buttonClickOff;
+	
+	static {
+		buttonClickOn = Gdx.audio.newSound(Gdx.files.internal("audio/Button Click On-SoundBible.com-459633989.mp3"));
+		buttonClickOff = Gdx.audio.newSound(Gdx.files.internal("audio/Button Click Off-SoundBible.com-1730098776.mp3"));
+	}
+	
 	public HexMapInterface(CorruptionGdxGame game, HexMapRenderer renderer) {
 		
 		this.map = renderer.getMap();
@@ -45,6 +56,14 @@ public class HexMapInterface {
 	}
 	
 
+	public static void playButtonClickOn() {
+		buttonClickOn.play();
+	}
+	
+	public static void playButtonClickOff() {
+		buttonClickOff.play();
+	}
+	
 	
 	public int getWindCost() {
 		return (int) (windInitalCost * Math.pow(1+rateOfIncrese, windCount));
@@ -213,6 +232,14 @@ public class HexMapInterface {
 			this.game.resume();
 			this.setScreen("gameScreen");
 		}
+		
+	}
+
+
+
+	@Override
+	public void dispose() {
+		// TODO Auto-generated method stub
 		
 	}
 }

@@ -65,6 +65,7 @@ public class CorruptionGdxGame extends Game {
 					Cell cell = renderer.getMouseOverCell();
 					if (cell != null) {
 						if (button == Buttons.LEFT) {
+							
 							if (cell.owner instanceof PlayerEntity) {
 								cell.setRecharge(!cell.recharge);
 							}
@@ -75,7 +76,7 @@ public class CorruptionGdxGame extends Game {
 								map.getPlayer().attack(cell);
 							}
 						}
-						
+						/*
 						if (button == Buttons.MIDDLE){
 							if (cell.owner instanceof PlayerEntity) {
 								map.getPlayer().removeCell(cell);
@@ -83,6 +84,7 @@ public class CorruptionGdxGame extends Game {
 							map.getCorruption().addOwnedCell(cell);
 						
 						}
+						*/
 					}
 					
 				
@@ -162,6 +164,8 @@ public class CorruptionGdxGame extends Game {
 
 			// all update is here! 
 
+			//HexMapInterface.playButtonClickOn();
+			
 			this.map.getPlayer().update(delta);
 			this.map.getCorruption().update(delta);
 
@@ -235,6 +239,7 @@ public class CorruptionGdxGame extends Game {
 		@Override
 		public void dispose() {
 			batch.dispose();
+			ui_if.dispose();
 		}
 
 	}
