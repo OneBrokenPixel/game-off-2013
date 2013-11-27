@@ -51,7 +51,8 @@ public class GameUI extends Stage {
 	public ImageButton energyBtn;
 	private TextButton tbResearch;
 	
-	private ImageButton muteBtn;
+	private ImageButton soundBtn;
+	private ImageButton musicBtn;
 	private ImageButton pauseBtn;
 	private ImageButton quitBtn;
 	
@@ -133,13 +134,15 @@ public class GameUI extends Stage {
 		Table rowTable = new Table();
 		sidebar.add(rowTable).expandX().fillX().pad(2);
 		
-		muteBtn = new ImageButton(skin.newDrawable("sound"), skin.newDrawable("mute"), skin.newDrawable("mute"));
+		soundBtn = new ImageButton(skin.newDrawable("sound"), skin.newDrawable("mute"), skin.newDrawable("mute"));
+		musicBtn = new ImageButton(skin.newDrawable("musicon"), skin.newDrawable("musicoff"), skin.newDrawable("musicoff"));
 		pauseBtn = new ImageButton(skin.newDrawable("pause"));
 		helpBtn = new ImageButton(skin.newDrawable("help"), skin.newDrawable("helpdown"));
 		quitBtn = new ImageButton(skin.newDrawable("quit"), skin.newDrawable("quitdown"));
 
 		
-		rowTable.add(muteBtn).pad(2);//.height(45);
+		rowTable.add(soundBtn).pad(2).padLeft(-2);//.height(45);
+		rowTable.add(musicBtn).pad(2);
 		rowTable.add(pauseBtn).pad(2);//.height(45);
 		sidebar.row();
 		sidebar.add(quitBtn).padTop(2);
@@ -283,9 +286,9 @@ public class GameUI extends Stage {
 		});
 		*/
 		
-		muteBtn.addListener(new InputListener() {
+		soundBtn.addListener(new InputListener() {
 			public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-				if (!muteBtn.isChecked()) {
+				if (!soundBtn.isChecked()) {
 					HexMapInterface.playButtonClickOn();
 					hexmap.mute(true);
 					HexMapInterface.setMute(true);
@@ -299,6 +302,19 @@ public class GameUI extends Stage {
 			}
 		});
 		
+		musicBtn.addListener(new InputListener() {
+			public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+				if (!musicBtn.isChecked()) {
+					hexmap.muteMusic(true);
+					HexMapInterface.setMuteMusic(true);
+				}
+				else{
+					HexMapInterface.setMuteMusic(false);
+					hexmap.muteMusic(false);
+				}
+				return true;
+			}
+		});
 		pauseBtn.addListener(new InputListener() {
 			public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
 				if (!pauseBtn.isChecked()) {
@@ -369,9 +385,11 @@ public class GameUI extends Stage {
 	}
 	
 	public void endGame(boolean win) {
-		endWin.populate(win);
-		endWin.setVisible(true);
-		endWin.setModal(true);
+		if (!endWin.isVisible()) {
+			endWin.populate(win);
+			endWin.setVisible(true);
+			endWin.setModal(true);
+		}
 	}
 	
 	public void unpause() {

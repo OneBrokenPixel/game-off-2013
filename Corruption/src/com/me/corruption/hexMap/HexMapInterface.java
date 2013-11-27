@@ -275,4 +275,14 @@ public class HexMapInterface implements Disposable {
 		
 		gameMusic.dispose();
 	}
+
+	public void muteMusic(boolean b) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public static void setMuteMusic(boolean b) {
+		// TODO Auto-generated method stub
+		
+	}
 }

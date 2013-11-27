@@ -59,23 +59,37 @@ hideresources
   orig: 114, 57
   offset: 0, 0
   index: -1
-mute
+musicoff
   rotate: false
   xy: 179, 952
   size: 44, 37
   orig: 44, 37
   offset: 0, 0
   index: -1
-pause
+musicon
   rotate: false
   xy: 179, 913
   size: 44, 37
   orig: 44, 37
   offset: 0, 0
   index: -1
-play
+mute
   rotate: false
   xy: 179, 874
+  size: 44, 37
+  orig: 44, 37
+  offset: 0, 0
+  index: -1
+pause
+  rotate: false
+  xy: 179, 835
+  size: 44, 37
+  orig: 44, 37
+  offset: 0, 0
+  index: -1
+play
+  rotate: false
+  xy: 179, 796
   size: 44, 37
   orig: 44, 37
   offset: 0, 0
@@ -110,7 +124,7 @@ sideBack
   index: -1
 sound
   rotate: false
-  xy: 179, 835
+  xy: 179, 757
   size: 44, 37
   orig: 44, 37
   offset: 0, 0
