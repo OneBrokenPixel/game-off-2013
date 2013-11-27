@@ -68,11 +68,11 @@ public class HexMapRenderer {
 	 */
 
 	private static final Vector2[] IconLookup = new Vector2[Entity_Settings.RESOURCE_MAX];
-	private static final Vector2 energyLookup = new Vector2(0.15f, 0.25f);
+	private static final Vector2 energyLookup = new Vector2(0.25f, 0.22f);
 	static {
-		IconLookup[Entity_Settings.RESOURCE_WIND] = new Vector2(0.35f, 0.75f);
-		IconLookup[Entity_Settings.RESOURCE_SOLAR] = new Vector2(0.35f, 0.35f);
-		IconLookup[Entity_Settings.RESOURCE_CHEMICAL] = new Vector2(0.65f, 0.35f);
+		IconLookup[Entity_Settings.RESOURCE_WIND] = new Vector2(0.35f, 0.67f);
+		IconLookup[Entity_Settings.RESOURCE_SOLAR] = new Vector2(0.42f, 0.35f);
+		IconLookup[Entity_Settings.RESOURCE_CHEMICAL] = new Vector2(0.69f, 0.44f);
 	}
 
 	private float[] vertices = new float[20];
