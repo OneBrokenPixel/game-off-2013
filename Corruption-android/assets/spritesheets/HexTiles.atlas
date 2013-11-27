@@ -5,23 +5,23 @@ filter: Nearest,Nearest
 repeat: none
 chemical1
   rotate: false
-  xy: 494, 85
-  size: 10, 20
-  orig: 10, 20
+  xy: 494, 94
+  size: 16, 32
+  orig: 16, 32
   offset: 0, 0
   index: -1
 chemical2
   rotate: false
-  xy: 291, 36
-  size: 18, 20
-  orig: 18, 20
+  xy: 238, 28
+  size: 25, 28
+  orig: 25, 28
   offset: 0, 0
   index: -1
 chemical3
   rotate: false
-  xy: 214, 9
-  size: 18, 27
-  orig: 18, 27
+  xy: 214, 23
+  size: 22, 33
+  orig: 22, 33
   offset: 0, 0
   index: -1
 chemicalplant
@@ -89,30 +89,30 @@ player_attack
   index: -1
 powerUp
   rotate: false
-  xy: 214, 38
+  xy: 320, 38
   size: 28, 18
   orig: 28, 18
   offset: 0, 0
   index: -1
 solar1
   rotate: false
-  xy: 2, 6
-  size: 19, 11
-  orig: 19, 11
+  xy: 2, 3
+  size: 23, 14
+  orig: 23, 14
   offset: 0, 0
   index: -1
 solar2
   rotate: false
-  xy: 311, 38
-  size: 18, 18
-  orig: 18, 18
+  xy: 350, 35
+  size: 22, 21
+  orig: 22, 21
   offset: 0, 0
   index: -1
 solar3
   rotate: false
-  xy: 331, 39
-  size: 17, 17
-  orig: 17, 17
+  xy: 374, 35
+  size: 21, 21
+  orig: 21, 21
   offset: 0, 0
   index: -1
 solarplant
@@ -131,23 +131,23 @@ spore
   index: -1
 wind1
   rotate: false
-  xy: 494, 107
-  size: 16, 19
-  orig: 16, 19
+  xy: 397, 33
+  size: 19, 23
+  orig: 19, 23
   offset: 0, 0
   index: -1
 wind2
   rotate: false
-  xy: 269, 37
-  size: 20, 19
-  orig: 20, 19
+  xy: 294, 33
+  size: 24, 23
+  orig: 24, 23
   offset: 0, 0
   index: -1
 wind3
   rotate: false
-  xy: 244, 36
-  size: 23, 20
-  orig: 23, 20
+  xy: 265, 33
+  size: 27, 23
+  orig: 27, 23
   offset: 0, 0
   index: -1
 windplant
