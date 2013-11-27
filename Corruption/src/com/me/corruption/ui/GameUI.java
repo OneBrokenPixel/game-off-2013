@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -25,6 +26,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Window.WindowStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.me.corruption.entities.PlayerEntity;
 import com.me.corruption.hexMap.HexMap.Cell;
 import com.me.corruption.hexMap.HexMap.Resource;
@@ -32,8 +34,7 @@ import com.me.corruption.hexMap.HexMapInterface;
 import com.me.corruption.hexMap.HexMapRenderer;
 
 public class GameUI extends Stage {
-	//final private HexMapRenderer renderer;
-	final private HexMapInterface hexmap;
+	private HexMapInterface hexmap;
 	
 	private Pixmap pixmap;
 	public static Skin skin;
@@ -46,8 +47,8 @@ public class GameUI extends Stage {
 	//private ImageButton energyDisp;
 	private int energy; // for ui testing purposes only
 
-	private ImageButton resourcesBtn;
-	private ImageButton energyBtn;
+	public ImageButton resourcesBtn;
+	public ImageButton energyBtn;
 	private TextButton tbResearch;
 	
 	private ImageButton muteBtn;
@@ -62,10 +63,10 @@ public class GameUI extends Stage {
 	private PauseScreen pauseScreen;
 	
 	
-	public GameUI(final HexMapInterface hexmap) {
+	public GameUI(final HexMapInterface ui_if) {
 
 		// interaction with the rest of the game (mainly hexmap)
-		this.hexmap = hexmap;
+		this.hexmap = ui_if;
 
 		skin = new Skin(Gdx.files.internal("data/uiskin.json"));
 		skin.addRegions(new TextureAtlas(Gdx.files.internal("spritesheets/ResearchTiles.atlas")));
@@ -244,27 +245,27 @@ public class GameUI extends Stage {
 			}
 		});
 		
-		resourcesBtn.addListener(new InputListener() {
-			public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-				if( !resourcesBtn.isChecked()) {
+		resourcesBtn.addListener(new ChangeListener() {
+			@Override
+			public void changed(ChangeEvent event, Actor actor) {
+				if(resourcesBtn.isChecked()) {
 					HexMapInterface.playButtonClickOn();
 				} else {
 					HexMapInterface.playButtonClickOff();
 				}
-				hexmap.showResourceIcons(!resourcesBtn.isChecked());
-				return true;
+				hexmap.showResourceIcons(resourcesBtn.isChecked());
 			}
 		});
 		
-		energyBtn.addListener(new InputListener() {
-			public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-				if( !energyBtn.isChecked()) {
+		energyBtn.addListener(new ChangeListener() {
+			@Override
+			public void changed(ChangeEvent event, Actor actor) {
+				if(energyBtn.isChecked()) {
 					HexMapInterface.playButtonClickOn();
 				} else {
 					HexMapInterface.playButtonClickOff();
 				}
-				hexmap.showEnergy(!energyBtn.isChecked());
-				return true;
+				hexmap.showEnergy(energyBtn.isChecked());
 			}
 		});
 

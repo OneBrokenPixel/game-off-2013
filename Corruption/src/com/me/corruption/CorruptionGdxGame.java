@@ -129,7 +129,14 @@ public class CorruptionGdxGame extends Game {
 
 			@Override
 			public boolean keyDown(int keycode) {
-				// TODO Auto-generated method stub
+				if (keycode == 29 || keycode == 45) {  // A, Q
+					//System.out.println("toggle resources");
+					stage.resourcesBtn.toggle();
+				}
+				if (keycode == 47 || keycode == 46 || keycode == 43) { // S,R,O
+					//System.out.println("toggle energy");
+					stage.energyBtn.toggle();
+				}
 				return false;
 			}
 		};
