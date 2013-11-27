@@ -46,6 +46,7 @@ public class HexMapInterface implements Disposable {
 	private static Sound sporeLaunch;
 	
 	private static boolean mute = false;
+	private static boolean muteMusic = false;
 	
 	private static Music gameMusic;
 	
@@ -71,13 +72,23 @@ public class HexMapInterface implements Disposable {
 	
 	public static void setMute(boolean value) {
 		mute = value;
-		if(mute){
+		if(mute || muteMusic){
 			gameMusic.pause();
 		} else {
 			gameMusic.play();
 		}
 	}
 
+	public static void setMuteMusic(boolean value) {
+		
+		muteMusic = value;
+		if( mute || muteMusic){
+			gameMusic.pause();
+		} else {
+			gameMusic.play();
+		}
+	}
+	
 	public static void playButtonClickOn() {
 		if(!mute)
 			buttonClickOn.play(uiVolume);
@@ -274,15 +285,5 @@ public class HexMapInterface implements Disposable {
 		sporeLaunch.dispose();
 		
 		gameMusic.dispose();
-	}
-
-	public void muteMusic(boolean b) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public static void setMuteMusic(boolean b) {
-		// TODO Auto-generated method stub
-		
 	}
 }
