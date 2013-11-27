@@ -40,6 +40,8 @@ public class HexMapInterface implements Disposable {
 	private static Sound buttonClickOn;
 	private static Sound buttonClickOff;
 	
+	private static boolean mute = false;
+	
 	static {
 		buttonClickOn = Gdx.audio.newSound(Gdx.files.internal("audio/Button Click On-SoundBible.com-459633989.mp3"));
 		buttonClickOff = Gdx.audio.newSound(Gdx.files.internal("audio/Button Click Off-SoundBible.com-1730098776.mp3"));
@@ -55,13 +57,18 @@ public class HexMapInterface implements Disposable {
 		screens = new HashMap<String, Screen>();
 	}
 	
+	public static void setMute(boolean value) {
+		mute = value;
+	}
 
 	public static void playButtonClickOn() {
-		buttonClickOn.play();
+		if(!mute)
+			buttonClickOn.play();
 	}
 	
 	public static void playButtonClickOff() {
-		buttonClickOff.play();
+		if(!mute)
+			buttonClickOff.play();
 	}
 	
 	
