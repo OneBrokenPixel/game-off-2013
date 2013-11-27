@@ -39,6 +39,9 @@ public class HexMapInterface implements Disposable {
 	
 	private static Sound buttonClickOn;
 	private static Sound buttonClickOff;
+	
+	private static final float uiVolume = 0.4f;
+	
 	private static Sound sporeLaunch;
 	
 	private static boolean mute = false;
@@ -68,12 +71,12 @@ public class HexMapInterface implements Disposable {
 
 	public static void playButtonClickOn() {
 		if(!mute)
-			buttonClickOn.play();
+			buttonClickOn.play(uiVolume);
 	}
 	
 	public static void playButtonClickOff() {
 		if(!mute)
-			buttonClickOff.play();
+			buttonClickOff.play(uiVolume);
 	}
 	
 	public static void playSporeLaunch() {
