@@ -16,6 +16,7 @@ import com.me.corruption.hexMap.HexMap.AnimatedSprite;
 import com.me.corruption.hexMap.HexMap.AnimatedSpriteCallback;
 import com.me.corruption.hexMap.HexMap.Cell;
 import com.me.corruption.hexMap.HexMap.Resource;
+import com.me.corruption.hexMap.HexMapInterface;
 
 public class CorruptionEntity extends Entity {
 
@@ -146,6 +147,7 @@ public class CorruptionEntity extends Entity {
 				
 				//System.out.println("spore!");
 				map.createSpore(sourceCell.point, targetCell.point, 30f, callback);
+				HexMapInterface.playSporeLaunch();
 			
 			}
 			resetSporeTimer();
