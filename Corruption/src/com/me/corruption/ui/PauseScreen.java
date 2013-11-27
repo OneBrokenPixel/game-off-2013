@@ -50,6 +50,7 @@ public class PauseScreen implements Screen {
 		stage.addListener(new InputListener() {
 			public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
 				//hexmap.setScreen("gameScreen");
+				//return super.touchDown(event, x, y, pointer, button);
 				return true;
 			}
 			public void touchUp (InputEvent event, float x, float y, int pointer, int button) {

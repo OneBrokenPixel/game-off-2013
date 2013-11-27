@@ -50,7 +50,7 @@ public class GameUI extends Stage {
 	private ImageButton energyBtn;
 	private TextButton tbResearch;
 	
-	private ImageButton muteBtn;   // change mute and pause to icons
+	private ImageButton muteBtn;
 	private ImageButton pauseBtn;
 	private ImageButton quitBtn;
 	
@@ -90,28 +90,20 @@ public class GameUI extends Stage {
 		this.addActor(layout);
 		
 		sidebar = new Table();
-		//sidebar.setBackground(skin.newDrawable("lgrey"));
 		sidebar.setBackground(skin.newDrawable("sideBack"));
 		layout.left().bottom();
 		layout.add(sidebar).expandY().fill().pad(10);
 
 		sidebar.left().top();
-		//sidebar.defaults().width(120).height(40).padLeft(20).padRight(20).padBottom(4);
-		//sidebar.defaults().padLeft(20).padRight(20).padBottom(4);
 		sidebar.defaults().padBottom(4).padLeft(-13f);
 		sidebar.row();
 		
 		
 		lstyle = new LabelStyle();
-		//lstyle.background = skin.newDrawable("energyback");
 		lstyle.font = skin.getFont("default-font");
 		lstyle.fontColor = Color.WHITE;
 		energyDisp = new Label("Energy: 0", lstyle);
-		//energyDisp.setFontScale(1.2f);
-		//energyDisp.setSize(163f, 48f);
 		
-		 
-		//energyDisp = new ImageButton(skin.newDrawable("energyback"));
 		sidebar.add(energyDisp).padTop(45).padBottom(30);
 		sidebar.row();
 		
@@ -132,20 +124,16 @@ public class GameUI extends Stage {
 		resourcesBtn = new ImageButton(skin.newDrawable("showresources"), skin.newDrawable("hideresources"), skin.newDrawable("hideresources"));
 		energyBtn = new ImageButton(skin.newDrawable("showenergy"), skin.newDrawable("hideenergy"), skin.newDrawable("hideenergy"));
 
-		//sidebar.add(addEnergy);
-		//sidebar.row();
 		sidebar.add(resourcesBtn);
 		sidebar.row();
 		sidebar.add(energyBtn).padBottom(150);
 		sidebar.row();
-		//sidebar.add(tbResearch).padBottom(150);
-		//sidebar.row();
 		
 		Table rowTable = new Table();
 		sidebar.add(rowTable).expandX().fillX().pad(2);
 		
 		muteBtn = new ImageButton(skin.newDrawable("sound"), skin.newDrawable("mute"), skin.newDrawable("mute"));
-		pauseBtn = new ImageButton(skin.newDrawable("pause"), skin.newDrawable("play"), skin.newDrawable("play"));
+		pauseBtn = new ImageButton(skin.newDrawable("pause"));
 		helpBtn = new ImageButton(skin.newDrawable("help"), skin.newDrawable("helpdown"));
 		quitBtn = new ImageButton(skin.newDrawable("quit"), skin.newDrawable("quitdown"));
 
@@ -176,13 +164,7 @@ public class GameUI extends Stage {
 		endWin = new EndWindow("End Game", skin, hexmap);
 		endWin.setPosition(500,300);
 		endWin.setVisible(false);
-		
-		// show pause screen when game is paused
-		ImageButtonStyle pauseStyle = new ImageButtonStyle();
-		pauseStyle.up = skin.newDrawable("pauseUp");
-		pauseStyle.down = skin.newDrawable("pauseDown");
-		skin.add("pauseStyle", pauseStyle);
-		
+
 		pauseScreen = new PauseScreen(hexmap);
 		hexmap.addScreen("pauseScreen", pauseScreen);
 		
@@ -197,9 +179,12 @@ public class GameUI extends Stage {
 		this.addListener(new InputListener() {
 			public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
 				
+				/*
 				if (pauseBtn.isChecked()) {
-					pauseBtn.setChecked(true);
+					pauseBtn.setChecked(false);
+					return true;
 				}
+				*/
 				
 				if (buildWin.isVisible()) {
 					buildWin.setVisible(false);
@@ -316,14 +301,20 @@ public class GameUI extends Stage {
 		pauseBtn.addListener(new InputListener() {
 			public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
 				if (!pauseBtn.isChecked()) {
+					pauseBtn.setBackground(skin.newDrawable("play"));
+					//pauseBtn.setChecked(true);
 					HexMapInterface.playButtonClickOn();
-					hexmap.pause(true);
 				}
 				else {
 					HexMapInterface.playButtonClickOff();
 					hexmap.pause(false);
 				}
 				return true;
+			}
+			
+			public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
+				pauseBtn.setBackground(skin.newDrawable("play"));
+				hexmap.pause(true);
 			}
 		});
 				
@@ -383,7 +374,7 @@ public class GameUI extends Stage {
 	}
 	
 	public void unpause() {
-		pauseBtn.setChecked(false);
+		//pauseBtn.setChecked(false);
 	}
 	
 }
