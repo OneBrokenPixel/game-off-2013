@@ -1,0 +1,117 @@
+
+UIimgs.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+energyback
+  rotate: false
+  xy: 2, 356
+  size: 139, 45
+  orig: 139, 45
+  offset: 0, 0
+  index: -1
+g4969
+  rotate: false
+  xy: 2, 297
+  size: 114, 57
+  orig: 114, 57
+  offset: 0, 0
+  index: -1
+quit
+  rotate: false
+  xy: 2, 297
+  size: 114, 57
+  orig: 114, 57
+  offset: 0, 0
+  index: -1
+g4979
+  rotate: false
+  xy: 2, 238
+  size: 114, 57
+  orig: 114, 57
+  offset: 0, 0
+  index: -1
+help
+  rotate: false
+  xy: 2, 238
+  size: 114, 57
+  orig: 114, 57
+  offset: 0, 0
+  index: -1
+helpdown
+  rotate: false
+  xy: 2, 179
+  size: 114, 57
+  orig: 114, 57
+  offset: 0, 0
+  index: -1
+hideenergy
+  rotate: false
+  xy: 2, 120
+  size: 114, 57
+  orig: 114, 57
+  offset: 0, 0
+  index: -1
+hideresources
+  rotate: false
+  xy: 2, 61
+  size: 114, 57
+  orig: 114, 57
+  offset: 0, 0
+  index: -1
+mute
+  rotate: false
+  xy: 179, 952
+  size: 44, 37
+  orig: 44, 37
+  offset: 0, 0
+  index: -1
+pause
+  rotate: false
+  xy: 179, 913
+  size: 44, 37
+  orig: 44, 37
+  offset: 0, 0
+  index: -1
+play
+  rotate: false
+  xy: 179, 874
+  size: 44, 37
+  orig: 44, 37
+  offset: 0, 0
+  index: -1
+quitdown
+  rotate: false
+  xy: 2, 2
+  size: 114, 57
+  orig: 114, 57
+  offset: 0, 0
+  index: -1
+showenergy
+  rotate: false
+  xy: 118, 297
+  size: 114, 57
+  orig: 114, 57
+  offset: 0, 0
+  index: -1
+showresources
+  rotate: false
+  xy: 118, 238
+  size: 114, 57
+  orig: 114, 57
+  offset: 0, 0
+  index: -1
+sideBack
+  rotate: false
+  xy: 2, 403
+  size: 175, 586
+  orig: 175, 586
+  offset: 0, 0
+  index: -1
+sound
+  rotate: false
+  xy: 179, 835
+  size: 44, 37
+  orig: 44, 37
+  offset: 0, 0
+  index: -1

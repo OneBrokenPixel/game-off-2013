@@ -1,14 +1,31 @@
 d:war/:0:application/unknown
+d:audio:0:application/unknown
+a:audio/07 How Long Can You Remember A Voice.mp3:26384774:application/unknown
+a:audio/Button Click Off-SoundBible.com-1730098776.mp3:13080:application/unknown
+a:audio/Button Click On-SoundBible.com-459633989.mp3:13886:application/unknown
+a:audio/Click Button 2-SoundBible.com-911295385.mp3:13990:application/unknown
+a:audio/Squelchy-SoundBible.com-492737469.mp3:26184:application/unknown
+a:audio/Squish 1-SoundBible.com-662226724.mp3:20156:application/unknown
+a:audio/Squishing-SoundBible.com-1238380389.mp3:35302:application/unknown
+a:audio/Squishy 2-SoundBible.com-1775292371.mp3:27727:application/unknown
 d:data:0:application/unknown
 t:data/default.fnt:11527:application/unknown
 i:data/libgdx.png:54931:image/png
-t:data/uiskin.atlas:2894:application/unknown
-t:data/uiskin.json:2850:application/unknown
-i:data/uiskin.png:22779:image/png
+t:data/uiskin.atlas:2895:application/unknown
+t:data/uiskin.json:2918:application/unknown
+i:data/uiskin.png:25658:image/png
 d:spritesheets:0:application/unknown
-t:spritesheets/HexTiles.atlas:4370:application/unknown
-i:spritesheets/HexTiles.png:70549:image/png
-i:spritesheets/HexTiles2.png:49374:image/png
+t:spritesheets/HexTiles.atlas:4670:application/unknown
+i:spritesheets/HexTiles.png:60574:image/png
+i:spritesheets/HexTiles2.png:38729:image/png
+i:spritesheets/HexTiles3.png:68792:image/png
+i:spritesheets/pauseDown.png:2772:image/png
+i:spritesheets/pauseSplash.png:9713:image/png
+i:spritesheets/pauseUp.png:2885:image/png
+t:spritesheets/ResearchTiles.atlas:659:application/unknown
+i:spritesheets/ResearchTiles.png:9201:image/png
+t:spritesheets/UIimgs.atlas:1609:application/unknown
+i:spritesheets/UIimgs.png:47496:image/png
 t:com/badlogic/gdx/graphics/g3d/shaders/default.fragment.glsl:5043:application/unknown
 t:com/badlogic/gdx/graphics/g3d/shaders/default.vertex.glsl:8755:application/unknown
 t:com/badlogic/gdx/graphics/g3d/shaders/depth.fragment.glsl:549:application/unknown

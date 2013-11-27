@@ -39,12 +39,17 @@ public class HexMapInterface implements Disposable {
 	
 	private static Sound buttonClickOn;
 	private static Sound buttonClickOff;
+	private static Sound sporeLaunch;
 	
 	private static boolean mute = false;
 	
 	static {
 		buttonClickOn = Gdx.audio.newSound(Gdx.files.internal("audio/Button Click On-SoundBible.com-459633989.mp3"));
 		buttonClickOff = Gdx.audio.newSound(Gdx.files.internal("audio/Button Click Off-SoundBible.com-1730098776.mp3"));
+		
+		
+		
+		sporeLaunch = Gdx.audio.newSound(Gdx.files.internal("audio/Squishy 2-SoundBible.com-1775292371.mp3"));
 	}
 	
 	public HexMapInterface(CorruptionGdxGame game, HexMapRenderer renderer) {
@@ -69,6 +74,11 @@ public class HexMapInterface implements Disposable {
 	public static void playButtonClickOff() {
 		if(!mute)
 			buttonClickOff.play();
+	}
+	
+	public static void playSporeLaunch() {
+		if(!mute)
+			sporeLaunch.play();
 	}
 	
 	
@@ -247,6 +257,10 @@ public class HexMapInterface implements Disposable {
 	@Override
 	public void dispose() {
 		// TODO Auto-generated method stub
+		buttonClickOn.dispose();
+		buttonClickOff.dispose();
+		sporeLaunch.dispose();
+		
 		
 	}
 }
