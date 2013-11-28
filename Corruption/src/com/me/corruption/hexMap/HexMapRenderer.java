@@ -27,7 +27,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
@@ -36,8 +35,6 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.Pool;
-import com.badlogic.gdx.utils.Pool.Poolable;
 import com.me.corruption.entities.Entity;
 import com.me.corruption.entities.Entity_Settings;
 import com.me.corruption.entities.PlayerEntity;
@@ -136,7 +133,7 @@ public class HexMapRenderer {
 	}
 
 	public int getMapPixelHeight() {
-		return (int) (map.getHeight() * map.getTile_height());
+		return map.getHeight() * map.getTile_height();
 	}
 
 	/**
@@ -516,7 +513,7 @@ public class HexMapRenderer {
 	}
 
 	private float fade = 0f;
-	private float corruptionFadeOffset = (float) Math.PI / 2;
+	//private float corruptionFadeOffset = (float) Math.PI / 2;
 
 	private void renderAttacks(final int rowFrom, final int rowTo, final int colFrom, final int colTo,
 			final float layerTileWidth, final float layerTileHeight, final Color color) {
@@ -646,7 +643,7 @@ public class HexMapRenderer {
 		fade += 1 * Gdx.graphics.getDeltaTime();
 	}
 	
-	private Vector2 up = new Vector2(0,1);
+	//private Vector2 up = new Vector2(0,1);
 	
 	private void renderPopupText() {
 		

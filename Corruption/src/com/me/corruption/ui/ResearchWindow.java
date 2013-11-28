@@ -6,7 +6,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
-import com.me.corruption.hexMap.HexMap;
 import com.me.corruption.hexMap.HexMapInterface;
 
 public class ResearchWindow extends Window {
@@ -43,6 +42,7 @@ public class ResearchWindow extends Window {
 		//this.pack();
 		
 		wind.addListener(new InputListener() {
+			@Override
 			public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
 				System.out.println("research wind");
 				return true;
@@ -50,6 +50,7 @@ public class ResearchWindow extends Window {
 		});
 		
 		chemical.addListener(new InputListener() {
+			@Override
 			public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
 				System.out.println("research chemical");
 				return true;
@@ -57,6 +58,7 @@ public class ResearchWindow extends Window {
 		});
 		
 		solar.addListener(new InputListener() {
+			@Override
 			public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
 				System.out.println("research solar");
 				return true;
@@ -64,6 +66,7 @@ public class ResearchWindow extends Window {
 		});
 		
 		close.addListener(new InputListener() {
+			@Override
 			public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
 
 				return false;

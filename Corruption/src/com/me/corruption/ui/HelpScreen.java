@@ -32,6 +32,7 @@ public class HelpScreen implements Screen {
 			layout.add(button).expandX().fillX();
 			
 			button.addListener(new InputListener() {
+				@Override
 				public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
 					System.out.println("quit out of help");
 					hexmap.setScreen("gameScreen");

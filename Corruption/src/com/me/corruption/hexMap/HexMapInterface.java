@@ -4,10 +4,8 @@ import java.util.HashMap;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Disposable;
 import com.me.corruption.CorruptionGdxGame;
 import com.me.corruption.entities.Entity_Settings;
@@ -315,7 +313,7 @@ public class HexMapInterface implements Disposable {
 	public void startMuted() {
 		start();
 		this.mute(true);
-		this.muteMusic(true);
+		HexMapInterface.muteMusic(true);
 	}
 	
 	public static boolean getGameStarted() {
@@ -323,9 +321,6 @@ public class HexMapInterface implements Disposable {
 	}
 
 	public void repairBuilding() {
-		
-
-		
 
 		if( clickedOn != null) {
 			final Building b = clickedOn.getBuilding();

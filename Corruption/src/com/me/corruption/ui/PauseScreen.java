@@ -2,7 +2,6 @@ package com.me.corruption.ui;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -12,7 +11,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.me.corruption.hexMap.HexMapInterface;
 
 
@@ -48,11 +46,13 @@ public class PauseScreen implements Screen {
 		stage.addActor(layout);
 		
 		stage.addListener(new InputListener() {
+			@Override
 			public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
 				//hexmap.setScreen("gameScreen");
 				//return super.touchDown(event, x, y, pointer, button);
 				return true;
 			}
+			@Override
 			public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
 				hexmap.pause(false);
 			}

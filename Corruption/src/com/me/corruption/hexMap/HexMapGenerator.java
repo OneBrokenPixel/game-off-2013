@@ -1,18 +1,12 @@
 package com.me.corruption.hexMap;
 
-import java.util.Arrays;
-import java.util.Comparator;
-
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.GridPoint2;
 import com.badlogic.gdx.math.MathUtils;
 import com.me.corruption.entities.CorruptionEntity;
-import com.me.corruption.entities.Entity;
 import com.me.corruption.entities.Entity_Settings;
 import com.me.corruption.entities.PlayerEntity;
 import com.me.corruption.hexMap.HexMap.Cell;
 import com.me.corruption.hexMap.HexMap.Resource;
-import com.me.corruption.entities.Entity_Settings.*;
 
 public class HexMapGenerator {
 

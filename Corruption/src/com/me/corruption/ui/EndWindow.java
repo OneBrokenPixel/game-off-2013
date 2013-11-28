@@ -39,6 +39,7 @@ public class EndWindow extends Window {
 		this.pack();
 		
 		ok.addListener(new InputListener() {
+			@Override
 			public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
 				System.out.println("I don't know what sys.exit(0) does in javascript, let's find out");
 				System.out.println("In other words, sort out a damned start screen");

@@ -8,30 +8,21 @@ import com.badlogic.gdx.graphics.Pixmap.Format;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Button;
-import com.badlogic.gdx.scenes.scene2d.ui.ButtonGroup;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
-import com.badlogic.gdx.scenes.scene2d.ui.ImageButton.ImageButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
-import com.badlogic.gdx.scenes.scene2d.ui.Window.WindowStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
-import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.me.corruption.entities.PlayerEntity;
 import com.me.corruption.hexMap.HexMap.Cell;
-import com.me.corruption.hexMap.HexMap.Resource;
 import com.me.corruption.hexMap.HexMapInterface;
-import com.me.corruption.hexMap.HexMapRenderer;
 
 public class GameUI extends Stage {
 	private HexMapInterface hexmap;
@@ -187,6 +178,7 @@ public class GameUI extends Stage {
 		hexmap.showEnergy(true);
 		
 		this.addListener(new InputListener() {
+			@Override
 			public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
 				
 				/*
@@ -300,6 +292,7 @@ public class GameUI extends Stage {
 		*/
 		
 		soundBtn.addListener(new InputListener() {
+			@Override
 			public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
 				if (!soundBtn.isChecked()) {
 					HexMapInterface.playButtonClickOn();
@@ -316,19 +309,21 @@ public class GameUI extends Stage {
 		});
 		
 		musicBtn.addListener(new InputListener() {
+			@Override
 			public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
 				if (!musicBtn.isChecked()) {
-					hexmap.muteMusic(true);
+					HexMapInterface.muteMusic(true);
 					HexMapInterface.muteMusic(true);
 				}
 				else{
 					HexMapInterface.muteMusic(false);
-					hexmap.muteMusic(false);
+					HexMapInterface.muteMusic(false);
 				}
 				return true;
 			}
 		});
 		pauseBtn.addListener(new InputListener() {
+			@Override
 			public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
 				if (!pauseBtn.isChecked()) {
 					pauseBtn.setBackground(skin.newDrawable("play"));
@@ -342,6 +337,7 @@ public class GameUI extends Stage {
 				return true;
 			}
 			
+			@Override
 			public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
 				pauseBtn.setBackground(skin.newDrawable("play"));
 				hexmap.pause(true);
@@ -349,6 +345,7 @@ public class GameUI extends Stage {
 		});
 				
 		quitBtn.addListener(new InputListener() {
+			@Override
 			public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
 				// TODO are you sure you want to quit?
 				//System.out.println(getWidth());
@@ -360,6 +357,7 @@ public class GameUI extends Stage {
 		});
 		
 		helpBtn.addListener(new InputListener() {
+			@Override
 			public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
 				//helpWin.setVisible(true);
 				HexMapInterface.playButtonClickOn();

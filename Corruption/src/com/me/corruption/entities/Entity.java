@@ -1,16 +1,12 @@
 package com.me.corruption.entities;
 
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.TreeSet;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.GridPoint2;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Pool;
 import com.badlogic.gdx.utils.Pool.Poolable;
-import com.me.corruption.entities.CorruptionEntity.SproreCallback;
 import com.me.corruption.hexMap.HexMap;
 import com.me.corruption.hexMap.HexMap.AnimatedSprite;
 import com.me.corruption.hexMap.HexMap.AnimatedSpriteCallback;
