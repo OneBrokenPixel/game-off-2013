@@ -5,312 +5,183 @@ filter: Nearest,Nearest
 repeat: none
 chemical1
   rotate: false
-  xy: 494, 94
+  xy: 494, 93
   size: 16, 32
   orig: 16, 32
   offset: 0, 0
   index: -1
 chemical2
   rotate: false
-  xy: 238, 28
+  xy: 424, 27
   size: 25, 28
   orig: 25, 28
   offset: 0, 0
   index: -1
 chemical3
   rotate: false
-  xy: 214, 23
+  xy: 451, 22
   size: 22, 33
   orig: 22, 33
   offset: 0, 0
   index: -1
 chemicalplant
   rotate: false
-  xy: 2, 19
+  xy: 2, 18
   size: 49, 26
   orig: 49, 26
   offset: 0, 0
   index: -1
+chemicalplant_half
+  rotate: false
+  xy: 300, 34
+  size: 48, 21
+  orig: 48, 21
+  offset: 0, 0
+  index: -1
 corruptionHex
   rotate: false
-  xy: 94, 58
+  xy: 94, 57
   size: 78, 68
   orig: 78, 68
   offset: 0, 0
   index: -1
 corruptionHex_Attack
   rotate: false
-  xy: 174, 58
+  xy: 174, 57
   size: 78, 68
   orig: 78, 68
   offset: 0, 0
   index: -1
 corruption_attack
   rotate: false
-  xy: 177, 30
+  xy: 350, 29
   size: 35, 26
   orig: 35, 26
   offset: 0, 0
   index: -1
 neutralHex
   rotate: false
-  xy: 254, 58
+  xy: 254, 57
   size: 78, 68
   orig: 78, 68
   offset: 0, 0
   index: -1
 playerHex
   rotate: false
-  xy: 334, 58
+  xy: 334, 57
   size: 78, 68
   orig: 78, 68
   offset: 0, 0
   index: -1
 playerHex_Attack
   rotate: false
-  xy: 414, 58
+  xy: 414, 57
   size: 78, 68
   orig: 78, 68
   offset: 0, 0
   index: -1
 playerHex_toggle
   rotate: false
-  xy: 2, 47
+  xy: 2, 46
   size: 90, 79
   orig: 90, 79
   offset: 0, 0
   index: -1
 player_attack
   rotate: false
-  xy: 177, 2
+  xy: 387, 29
   size: 35, 26
   orig: 35, 26
   offset: 0, 0
   index: -1
 powerUp
   rotate: false
-  xy: 320, 38
+  xy: 300, 14
   size: 28, 18
   orig: 28, 18
   offset: 0, 0
   index: -1
+rubble
+  rotate: false
+  xy: 53, 18
+  size: 47, 26
+  orig: 47, 26
+  offset: 0, 0
+  index: -1
 solar1
   rotate: false
-  xy: 2, 3
+  xy: 2, 2
   size: 23, 14
   orig: 23, 14
   offset: 0, 0
   index: -1
 solar2
   rotate: false
-  xy: 350, 35
+  xy: 475, 9
   size: 22, 21
   orig: 22, 21
   offset: 0, 0
   index: -1
 solar3
   rotate: false
-  xy: 374, 35
+  xy: 385, 6
   size: 21, 21
   orig: 21, 21
   offset: 0, 0
   index: -1
 solarplant
   rotate: false
-  xy: 94, 10
+  xy: 102, 9
   size: 42, 46
   orig: 42, 46
   offset: 0, 0
   index: -1
+solarplant_half
+  rotate: false
+  xy: 146, 8
+  size: 38, 47
+  orig: 38, 47
+  offset: 0, 0
+  index: -1
 spore
   rotate: false
-  xy: 53, 8
+  xy: 261, 18
   size: 37, 37
   orig: 37, 37
   offset: 0, 0
   index: -1
 wind1
   rotate: false
-  xy: 397, 33
+  xy: 475, 32
   size: 19, 23
   orig: 19, 23
   offset: 0, 0
   index: -1
 wind2
   rotate: false
-  xy: 294, 33
+  xy: 359, 4
   size: 24, 23
   orig: 24, 23
   offset: 0, 0
   index: -1
 wind3
   rotate: false
-  xy: 265, 33
+  xy: 330, 4
   size: 27, 23
   orig: 27, 23
   offset: 0, 0
   index: -1
 windplant
   rotate: false
-  xy: 138, 10
+  xy: 186, 9
   size: 37, 46
   orig: 37, 46
   offset: 0, 0
   index: -1
-
-HexTiles2.png
-format: RGBA8888
-filter: Nearest,Nearest
-repeat: none
-New folder/corruptionHex
+windplant_half
   rotate: false
-  xy: 94, 13
-  size: 78, 68
-  orig: 78, 68
-  offset: 0, 0
-  index: -1
-New folder/corruptionHex_Attack
-  rotate: false
-  xy: 174, 13
-  size: 78, 68
-  orig: 78, 68
-  offset: 0, 0
-  index: -1
-New folder/neutralHex
-  rotate: false
-  xy: 254, 13
-  size: 78, 68
-  orig: 78, 68
-  offset: 0, 0
-  index: -1
-New folder/playerHex
-  rotate: false
-  xy: 334, 13
-  size: 78, 68
-  orig: 78, 68
-  offset: 0, 0
-  index: -1
-New folder/playerHex_Attack
-  rotate: false
-  xy: 414, 13
-  size: 78, 68
-  orig: 78, 68
-  offset: 0, 0
-  index: -1
-New folder/playerHex_toggle
-  rotate: false
-  xy: 2, 2
-  size: 90, 79
-  orig: 90, 79
-  offset: 0, 0
-  index: -1
-
-HexTiles3.png
-format: RGBA8888
-filter: Nearest,Nearest
-repeat: none
-oldTiles/chemical1
-  rotate: false
-  xy: 833, 73
-  size: 16, 16
-  orig: 16, 16
-  offset: 0, 0
-  index: -1
-oldTiles/chemical2
-  rotate: false
-  xy: 71, 22
-  size: 21, 24
-  orig: 21, 24
-  offset: 0, 0
-  index: -1
-oldTiles/chemical3
-  rotate: false
-  xy: 833, 91
-  size: 26, 25
-  orig: 26, 25
-  offset: 0, 0
-  index: -1
-oldTiles/chemicalplant (2)
-  rotate: false
-  xy: 2, 2
-  size: 67, 44
-  orig: 67, 44
-  offset: 0, 0
-  index: -1
-oldTiles/corruptionHex
-  rotate: false
-  xy: 402, 50
-  size: 76, 66
-  orig: 76, 66
-  offset: 0, 0
-  index: -1
-oldTiles/corruptionHex_Attack
-  rotate: false
-  xy: 2, 48
-  size: 78, 68
-  orig: 78, 68
-  offset: 0, 0
-  index: -1
-oldTiles/neutralHex
-  rotate: false
-  xy: 480, 50
-  size: 76, 66
-  orig: 76, 66
-  offset: 0, 0
-  index: -1
-oldTiles/neutralHex (2)
-  rotate: false
-  xy: 82, 48
-  size: 78, 68
-  orig: 78, 68
-  offset: 0, 0
-  index: -1
-oldTiles/neutralHex2
-  rotate: false
-  xy: 162, 48
-  size: 78, 68
-  orig: 78, 68
-  offset: 0, 0
-  index: -1
-oldTiles/playerHex
-  rotate: false
-  xy: 558, 50
-  size: 76, 66
-  orig: 76, 66
-  offset: 0, 0
-  index: -1
-oldTiles/playerHex_Attack
-  rotate: false
-  xy: 242, 48
-  size: 78, 68
-  orig: 78, 68
-  offset: 0, 0
-  index: -1
-oldTiles/playerHex_toggle
-  rotate: false
-  xy: 636, 50
-  size: 76, 66
-  orig: 76, 66
-  offset: 0, 0
-  index: -1
-oldTiles/playerHex_toggle (2)
-  rotate: false
-  xy: 322, 48
-  size: 78, 68
-  orig: 78, 68
-  offset: 0, 0
-  index: -1
-oldTiles/solarplant (2)
-  rotate: false
-  xy: 714, 52
-  size: 60, 64
-  orig: 60, 64
-  offset: 0, 0
-  index: -1
-oldTiles/windplant (2)
-  rotate: false
-  xy: 776, 52
-  size: 55, 64
-  orig: 55, 64
+  xy: 225, 10
+  size: 34, 45
+  orig: 34, 45
   offset: 0, 0
   index: -1

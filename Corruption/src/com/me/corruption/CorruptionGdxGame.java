@@ -33,7 +33,7 @@ public class CorruptionGdxGame extends Game {
 		private OrthographicCamera camera;
 		private SpriteBatch batch;
 
-		private HexMap map;
+		public HexMap map;
 		private HexMapRenderer renderer;
 		private HexMapInterface ui_if;
 
@@ -254,7 +254,7 @@ public class CorruptionGdxGame extends Game {
 
 	}
 
-	GameScreen game = null;
+	public GameScreen game = null;
 
 	@Override
 	public void create() {

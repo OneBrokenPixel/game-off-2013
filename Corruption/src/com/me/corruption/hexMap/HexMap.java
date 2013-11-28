@@ -79,6 +79,8 @@ public class HexMap implements Disposable {
 		
 		public float energyCap = 0;
 		
+		public float lifeTime = 0f;
+		
 		public void set(String name) {
 			this.name = name;// can be null
 			if(this.name != null) {
@@ -86,12 +88,22 @@ public class HexMap implements Disposable {
 				this.sprite = buildings.get(this.name);
 				if( this.name.contains("chemicalplant") ) {
 					this.id = Entity_Settings.RESOURCE_CHEMICAL;
+					if(!this.name.contains("_half"))
+						this.lifeTime = Entity_Settings.BUILDING_LIFE[this.id];
 				}
 				else if( this.name.contains("solarplant")) {
 					this.id = Entity_Settings.RESOURCE_SOLAR;
+					if(!this.name.contains("_half"))
+						this.lifeTime = Entity_Settings.BUILDING_LIFE[this.id];
 				}
 				else if( this.name.contains("windplant")) {
 					this.id = Entity_Settings.RESOURCE_WIND;
+					if(!this.name.contains("_half"))
+						this.lifeTime = Entity_Settings.BUILDING_LIFE[this.id];
+				}
+				else {
+					this.id = -1;
+					this.lifeTime = 0f;
 				}
 			}
 			else {
@@ -216,6 +228,20 @@ public class HexMap implements Disposable {
 			}
 			return null;
 		}
+
+		public boolean getRepair() {
+			if(this.building != null) {
+				return this.building.lifeTime > 0f && this.building.lifeTime < (Entity_Settings.BUILDING_LIFE[this.building.id]*0.5f);
+			}
+			return false;
+		}
+
+		public boolean getClear() {
+			if(this.building != null) {
+				return this.building.id == -1;
+			}
+			return false;
+		}
 	}
 	
 	private int width;
@@ -291,9 +317,13 @@ public class HexMap implements Disposable {
 		
 		buildings = new HexMapSpriteList();
 		
-		buildings.add(new HexMapSpriteObject("chemicalplant", atlas),
+		buildings.add(new HexMapSpriteObject("rubble", atlas),
+					  new HexMapSpriteObject("chemicalplant", atlas),
+			  	  	  new HexMapSpriteObject("chemicalplant_half", atlas),
 				  	  new HexMapSpriteObject("solarplant", atlas),
-				  	  new HexMapSpriteObject("windplant", atlas));
+			  	  	  new HexMapSpriteObject("solarplant_half", atlas),
+				  	  new HexMapSpriteObject("windplant", atlas),
+	  	  			  new HexMapSpriteObject("windplant_half", atlas));
 		
 		//System.out.println(buildings.getCount());
 		
@@ -664,10 +694,14 @@ public class HexMap implements Disposable {
 	}
 
 	public void generateNewMap() {
-		HexMap map = HexMapGenerator.generateTestMap(14, 8);
+		HexMap map = HexMapGenerator.generateTestMap(this.width, this.height);
 		this.cells = map.cells;
 		this.corruption = map.corruption;
 		this.player = map.player;
+		this.neutral = map.neutral;
+		this.width = map.width;
+		this.height = map.height;
+		//this.activeSprites = map.activeSprites;
 	}
 
 }

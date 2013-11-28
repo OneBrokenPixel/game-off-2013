@@ -10,7 +10,9 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Disposable;
 import com.me.corruption.CorruptionGdxGame;
+import com.me.corruption.entities.Entity_Settings;
 import com.me.corruption.entities.PlayerEntity;
+import com.me.corruption.hexMap.HexMap.Building;
 import com.me.corruption.hexMap.HexMap.Cell;
 import com.me.corruption.ui.GameUI;
 
@@ -27,6 +29,8 @@ public class HexMapInterface implements Disposable {
 	private HashMap<String, Screen> screens;
 	private GameUI gameUI;
 
+	private Cell clickedOn = null;
+	
 	private int windInitalCost = 10;
 	private int solarInitalCost = 40;
 	private int chemicalInitalCost = 120;
@@ -39,8 +43,12 @@ public class HexMapInterface implements Disposable {
 	private int solarCost = solarInitalCost;
 	private int chemicalCost = chemicalInitalCost;
 
-	private float rateOfIncrese = 0.25f;
+	//private float rateOfIncrese = Entity_Settings.costRateIncrese;
 
+	//private float ra
+	
+	private int repareCount = 0;
+	
 	private static Sound buttonClickOn;
 	private static Sound buttonClickOff;
 
@@ -110,15 +118,19 @@ public class HexMapInterface implements Disposable {
 	}
 
 	public int getWindCost() {
-		return (int) (windInitalCost * Math.pow(1 + rateOfIncrese, windCount));
+		return (int) (windInitalCost * Math.pow(1 + Entity_Settings.costRateIncrese, windCount));
 	}
 
 	public int getSolarCost() {
-		return (int) (solarInitalCost * Math.pow(1 + rateOfIncrese, solarCount));
+		return (int) (solarInitalCost * Math.pow(1 + Entity_Settings.costRateIncrese, solarCount));
 	}
 
 	public int getChemicalCost() {
-		return (int) (chemicalInitalCost * Math.pow(1 + rateOfIncrese, chemicalCount));
+		return (int) (chemicalInitalCost * Math.pow(1 + Entity_Settings.costRateIncrese, chemicalCount));
+	}
+	
+	public int getRepareCost() {
+		return (int) ( Entity_Settings.initRepareCost * Math.pow(1 + Entity_Settings.repareRateIncrese, repareCount));
 	}
 
 	/**
@@ -198,8 +210,6 @@ public class HexMapInterface implements Disposable {
 		return renderer.getMouseOverCell();
 	}
 
-	private Cell clickedOn = null;
-
 	public void setClickedOn(Cell cell) {
 		clickedOn = cell;
 	}
@@ -218,7 +228,7 @@ public class HexMapInterface implements Disposable {
 
 	public void buildWind() {
 
-		windCost = (int) (windInitalCost * Math.pow(1 + rateOfIncrese, windCount));
+		windCost = getWindCost();
 
 		// windCost = windInitalCost + windCount*3;
 		// System.out.println(windCost);
@@ -231,7 +241,7 @@ public class HexMapInterface implements Disposable {
 
 	public void buildSolar() {
 
-		solarCost = (int) (solarInitalCost * Math.pow(1 + rateOfIncrese, solarCount));
+		solarCost = getSolarCost();
 		// solarCost = solarInitalCost + solarCount*3;
 
 		boolean bought = buyBuilding(solarCost);
@@ -243,7 +253,7 @@ public class HexMapInterface implements Disposable {
 
 	public void buildChemical() {
 
-		chemicalCost = (int) (chemicalInitalCost * Math.pow(1 + rateOfIncrese, chemicalCount));
+		chemicalCost = getChemicalCost();
 		// chemicalCost = chemicalInitalCost + chemicalCount*3;
 
 		boolean bought = buyBuilding(chemicalCost);
@@ -291,6 +301,14 @@ public class HexMapInterface implements Disposable {
 		gameStarted = true;
 		gameMusic.play();
 		map.generateNewMap();
+		
+		game.game.map = map = HexMapGenerator.generateTestMap(14, 8);
+		
+		renderer.setMap(map);
+		
+		player = map.getPlayer();
+		
+		
 		this.gameUI.start();
 	}
 
@@ -302,5 +320,33 @@ public class HexMapInterface implements Disposable {
 	
 	public static boolean getGameStarted() {
 		return gameStarted;
+	}
+
+	public void repairBuilding() {
+		
+
+		
+
+		if( clickedOn != null) {
+			final Building b = clickedOn.getBuilding();
+			if( b != null) {
+				int cost = getRepareCost();
+				if(player.getEnergyBank() >= cost) {
+					repareCount++;
+					player.removeEnergy(cost);
+					b.set(b.name.substring(0, b.name.length()-5));
+				}
+			}
+		}	
+	}
+
+	public void clearTile() {
+		if( clickedOn != null) {
+			int cost = getRepareCost();
+			if(player.getEnergyBank() >= cost) {
+				player.removeEnergy(cost);
+				clickedOn.setBuilding(null);
+			}
+		}
 	}
 }

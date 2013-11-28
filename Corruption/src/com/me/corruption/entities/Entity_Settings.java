@@ -3,9 +3,15 @@ package com.me.corruption.entities;
 public class Entity_Settings {
 
 	public static final float player_StartingEnergy = 30.0f;
-	public static final float BUILDING_ENERGY[] = { 0.3f, 0.5f, 0.7f };
+	public static final float BUILDING_ENERGY[] = { 0.3f, 0.6f, 1.0f };
+	public static final float BUILDING_LIFE[] = { 120f, 150f, 180f };
 	public static final float energyCapasity = 5.0f;
 	public static final float attackRate = 1.0f;
+	public static final float costRateIncrese = 0.1f;
+	public static final float repareRateIncrese = 0.05f;
+	public static final float initRepareCost = 2.0f;
+	public static final float clearCost = 10.0f;
+	
 
 	public static final float corruption_handicap = 0.05f;
 	public static final float corruption_startingEnergy = 10.0f;
@@ -15,5 +21,6 @@ public class Entity_Settings {
 	public static final int RESOURCE_WIND		= 0;	
 	public static final int RESOURCE_SOLAR		= 1;
 	public static final int RESOURCE_CHEMICAL	= 2;
-	public static final int RESOURCE_MAX		= 3;	
+	public static final int RESOURCE_MAX		= 3;
+	
 }

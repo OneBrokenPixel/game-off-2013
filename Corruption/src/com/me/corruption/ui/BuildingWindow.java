@@ -18,6 +18,8 @@ public class BuildingWindow extends Window {
 	private TextButton solar;
 	private TextButton nothing;
 	private TextButton demolish;
+	private TextButton repair;
+	private TextButton clear;
 	
 	public BuildingWindow(String title, Skin skin, final HexMapInterface hexmap) {
 		super(title, skin);
@@ -29,7 +31,9 @@ public class BuildingWindow extends Window {
 		solar = new TextButton("Build Solar Energy Farm ("+ hexmap.getSolarCost() +" energy)", skin);
 		demolish = new TextButton("Demolish Building", skin);
 		nothing = new TextButton("Close Menu", skin);
-
+		repair = new TextButton("Repair Building ("+hexmap.getRepareCost()+" energy)", skin);
+		clear = new TextButton("Clear Tile", skin);
+		
 		this.defaults().pad(2);
 		
 		wind.addListener(new InputListener() {
@@ -61,20 +65,33 @@ public class BuildingWindow extends Window {
 		});
 		
 		nothing.addListener(new InputListener() {
-			public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-				
+			public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {			
 				return false;
 			}
 		});
+		
+		repair.addListener(new InputListener() {
+			public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {	
+				hexmap.repairBuilding();
+				return true;
+			}
+		});
+		
+		clear.addListener(new InputListener() {
+			public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {	
+				hexmap.clearTile();
+				return true;
+			}
+		});
 	}
-	
-	public void populate(boolean hasWind, boolean hasChemical, boolean hasSolar, boolean hasDemolish) {
+	public void populate(boolean hasWind, boolean hasChemical, boolean hasSolar, boolean hasDemolish, boolean hasRepair, boolean clearHex) {
 		
 		this.clear();
 		
 		wind.setText("Build Wind Farm ("+ hexmap.getWindCost() +" energy)");
 		chemical.setText("Build Chemical Plant ("+ hexmap.getChemicalCost() +" energy)");
 		solar.setText("Build Solar Energy Farm ("+ hexmap.getSolarCost() +" energy)");
+		repair.setText("Repair Building ("+hexmap.getRepareCost()+" energy)");
 		
 		
 		this.add(new Label("Choose an energy plant to build", skin));
@@ -92,6 +109,14 @@ public class BuildingWindow extends Window {
 			this.add(chemical).expandX().fillX().height(30);
 			this.row();
 		}
+		if (hasRepair) {
+			this.add(repair).expandX().fillX().height(30);
+			this.row();
+		}
+		if (clearHex) {
+			this.add(clear).expandX().fillX().height(30);
+			this.row();
+		}
 		if (hasDemolish) {
 			this.add(demolish).expandX().fillX().height(30);
 			this.row();
@@ -100,5 +125,5 @@ public class BuildingWindow extends Window {
 		this.pack();
 	}
 	
-	
 }
+

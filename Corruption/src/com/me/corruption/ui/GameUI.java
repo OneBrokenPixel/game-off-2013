@@ -211,16 +211,21 @@ public class GameUI extends Stage {
 						boolean chemical = cell.getResourceForBuilding("chemicalplant") != null;
 						boolean solar = cell.getResourceForBuilding("solarplant") != null;
 						boolean demolish = cell.getBuilding() != null;
+						boolean repair = cell.getRepair();
+						boolean clear = cell.getClear();
 						
 						buildWin.setX(x);
 						buildWin.setY(y);
 						buildWin.setVisible(true);
 						
-						if (demolish) {
-							buildWin.populate(false, false, false, true);
+						if (clear) {
+							buildWin.populate(false, false, false, false, false, clear);
+						}
+						else if (demolish) {
+							buildWin.populate(false, false, false, demolish, repair, false);
 						}
 						else {
-							buildWin.populate(wind,chemical,solar,false);
+							buildWin.populate(wind,chemical,solar,false, false, false);
 						}
 
 						

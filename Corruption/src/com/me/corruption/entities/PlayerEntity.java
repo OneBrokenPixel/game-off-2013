@@ -112,6 +112,16 @@ public class PlayerEntity extends Entity {
 							this.energyBank += Entity_Settings.energyCapasity;
 							map.createAnimatedPowerUp(c.point, 0,32f, 20f);
 						}
+						
+						
+						if( b.lifeTime <= 0.0f ) {
+							c.setBuilding("rubble");
+						}
+						else if ( !b.name.contains("_half") && b.lifeTime <= Entity_Settings.BUILDING_LIFE[b.id]*0.5f ) {
+							c.setBuilding(b.name+"_half");
+						}
+						//System.out.println(b.lifeTime);
+						b.lifeTime -=dt;
 					}
 				}
 			}
