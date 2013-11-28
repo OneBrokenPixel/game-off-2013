@@ -663,4 +663,11 @@ public class HexMap implements Disposable {
 		return corruptionAttack;
 	}
 
+	public void generateNewMap() {
+		HexMap map = HexMapGenerator.generateTestMap(14, 8);
+		this.cells = map.cells;
+		this.corruption = map.corruption;
+		this.player = map.player;
+	}
+
 }
