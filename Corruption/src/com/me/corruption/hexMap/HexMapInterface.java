@@ -50,8 +50,11 @@ public class HexMapInterface implements Disposable {
 
 	private static boolean mute = false;
 	private static boolean muteMusic = false;
-
+	
 	private static Music gameMusic;
+	
+	
+	private static boolean gameStarted = false;
 
 	static {
 		buttonClickOn = Gdx.audio.newSound(Gdx.files.internal("audio/Button Click On-SoundBible.com-459633989.mp3"));
@@ -72,7 +75,7 @@ public class HexMapInterface implements Disposable {
 
 		screens = new HashMap<String, Screen>();
 	}
-
+	
 	public static void setMute(boolean value) {
 		mute = value;
 		if (mute || muteMusic) {
@@ -286,12 +289,18 @@ public class HexMapInterface implements Disposable {
 	}
 
 	public void start() {
+		gameStarted = true;
 		this.gameUI.start();
 	}
 
 	public void startMuted() {
+		gameStarted = true;
 		this.mute(true);
 		this.muteMusic(true);
 		this.gameUI.start();
+	}
+	
+	public static boolean getGameStarted() {
+		return gameStarted;
 	}
 }

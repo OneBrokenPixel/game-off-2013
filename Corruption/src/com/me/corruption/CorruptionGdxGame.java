@@ -175,9 +175,10 @@ public class CorruptionGdxGame extends Game {
 
 			//HexMapInterface.playButtonClickOn();
 			
-			this.map.getPlayer().update(delta);
-			this.map.getCorruption().update(delta);
-
+			if( HexMapInterface.getGameStarted() ) {
+				this.map.getPlayer().update(delta);
+				this.map.getCorruption().update(delta);
+			}
 			stage.setEnergy(ui_if.getEnergyBank());
 
 			if (this.map.getPlayer().ownedAmount() <= 0) {
