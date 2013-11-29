@@ -44,6 +44,16 @@ public class CorruptionEntity extends Entity {
 			eval+=(int)(cell.unit - c.unit);
 		}
 		
+		int count = 0;
+		for( Resource res : cell.resources) {
+			if(res == null)
+				continue;
+			
+			count -= res.getAmount();
+		}
+		
+		eval += count*10;
+		
 		return eval;
 	}
 	
