@@ -68,7 +68,7 @@ public class HexMapInterface implements Disposable {
 
 		sporeLaunch = Gdx.audio.newSound(Gdx.files.internal("audio/Squishy 2-SoundBible.com-1775292371.mp3"));
 
-		gameMusic = Gdx.audio.newMusic(Gdx.files.internal("audio/07 How Long Can You Remember A Voice.mp3"));
+		gameMusic = Gdx.audio.newMusic(Gdx.files.internal("audio/8_bit3.mp3"));
 	}
 
 	public HexMapInterface(CorruptionGdxGame game, HexMapRenderer renderer) {
