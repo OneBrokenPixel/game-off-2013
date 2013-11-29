@@ -296,12 +296,12 @@ public class GameUI extends Stage {
 			public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
 				if (!soundBtn.isChecked()) {
 					HexMapInterface.playButtonClickOn();
-					hexmap.mute(true);
+					//hexmap.mute(true);
 					HexMapInterface.setMute(true);
 				}
 				else{
 					HexMapInterface.setMute(false);
-					hexmap.mute(false);
+					//hexmap.mute(false);
 					HexMapInterface.playButtonClickOff();
 				}
 				return true;

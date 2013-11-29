@@ -168,10 +168,6 @@ public class HexMapInterface implements Disposable {
 	public void addEnergyMode(boolean on) {
 	}
 
-	public void mute(boolean b) {
-
-	}
-
 	public void addScreen(String name, Screen screen) {
 		screens.put(name, screen);
 	}
@@ -312,7 +308,7 @@ public class HexMapInterface implements Disposable {
 
 	public void startMuted() {
 		start();
-		this.mute(true);
+		HexMapInterface.setMute(true);
 		HexMapInterface.muteMusic(true);
 	}
 	
