@@ -40,7 +40,7 @@ public class PauseScreen implements Screen {
 		//resume = new ImageButton(skin, "pauseStyle");
 		
 		layout.setFillParent(true);
-		layout.setBackground(skin.newDrawable("transparent"));
+		//layout.setBackground(skin.newDrawable("transparent"));
 		layout.add(image);
 		//layout.add(resume);//.expandX().fillX();
 		stage.addActor(layout);

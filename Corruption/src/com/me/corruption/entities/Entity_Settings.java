@@ -13,7 +13,7 @@ public class Entity_Settings {
 	public static final float clearCost = 10.0f;
 	
 
-	public static final float corruption_handicap = 0.06f;
+	public static final float corruption_handicap = 0.1f;
 	public static final float corruption_startingEnergy = 10.0f;
 	public static final float corruption_sporeTime = 60.0f;
 	public static final float corruption_attackTime = 8.0f;

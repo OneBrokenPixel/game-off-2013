@@ -351,6 +351,7 @@ public class GameUI extends Stage {
 				//System.out.println(getWidth());
 				//HexMapInterface.playButtonClickOn();
 				hexmap.quit();
+				hexmap.startMuted();
 				startMenu.setVisible(true);
 				return true;
 			}
@@ -361,7 +362,9 @@ public class GameUI extends Stage {
 			public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
 				//helpWin.setVisible(true);
 				HexMapInterface.playButtonClickOn();
-				hexmap.setScreen("helpScreen");
+				//hexmap.setScreen("helpScreen");
+				hexmap.pause(true);
+				Gdx.net.openURI("http://darkhexxa.github.io/corruption/help.html");
 				return true;
 			}
 		});

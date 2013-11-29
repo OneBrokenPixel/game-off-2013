@@ -69,6 +69,7 @@ public class HexMapInterface implements Disposable {
 		sporeLaunch = Gdx.audio.newSound(Gdx.files.internal("audio/Squishy 2-SoundBible.com-1775292371.mp3"));
 
 		gameMusic = Gdx.audio.newMusic(Gdx.files.internal("audio/8_bit3.mp3"));
+		gameMusic.setVolume(0.4f);
 	}
 
 	public HexMapInterface(CorruptionGdxGame game, HexMapRenderer renderer) {
@@ -84,7 +85,7 @@ public class HexMapInterface implements Disposable {
 	public static void setMute(boolean value) {
 		mute = value;
 		if (mute || muteMusic) {
-			gameMusic.pause();
+			gameMusic.stop();
 		} else {
 			gameMusic.play();
 		}
@@ -94,7 +95,7 @@ public class HexMapInterface implements Disposable {
 
 		muteMusic = value;
 		if (mute || muteMusic) {
-			gameMusic.pause();
+			gameMusic.stop();
 		} else {
 			gameMusic.play();
 		}
@@ -302,6 +303,11 @@ public class HexMapInterface implements Disposable {
 		
 		player = map.getPlayer();
 		
+		this.windCount = 0;
+		this.solarCount = 0;
+		this.chemicalCount = 0;
+		
+		this.repareCount = 0;
 		
 		this.gameUI.start();
 	}
