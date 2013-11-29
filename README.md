@@ -17,7 +17,7 @@ This game was developed using:
  * Google App Engine
  * GWT
 
-Speciel Thanks to [Spiff Tune](https://soundcloud.com/spifftune) for allowing the use of his music.
+Special Thanks to [Spiff Tune](https://soundcloud.com/spifftune) for allowing the use of his music.
 
 
-![GitHub Game Off Game Jam](darkhexxa.github.io/misc/corruption_screenshot.png)
+![GitHub Game Off Game Jam](http://darkhexxa.github.io/misc/corruption_screenshot.png)
