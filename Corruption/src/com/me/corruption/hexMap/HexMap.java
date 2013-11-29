@@ -234,7 +234,7 @@ public class HexMap implements Disposable {
 
 		public boolean getClear() {
 			if(this.building != null) {
-				return this.building.id == -1;
+				return this.building.name.contains("_rubble");
 			}
 			return false;
 		}
@@ -313,13 +313,15 @@ public class HexMap implements Disposable {
 		
 		buildings = new HexMapSpriteList();
 		
-		buildings.add(new HexMapSpriteObject("rubble", atlas),
-					  new HexMapSpriteObject("chemicalplant", atlas),
+		buildings.add(new HexMapSpriteObject("chemicalplant", atlas),
 			  	  	  new HexMapSpriteObject("chemicalplant_half", atlas),
-				  	  new HexMapSpriteObject("solarplant", atlas),
+			  	  	  new HexMapSpriteObject("chemicalplant_rubble", atlas),
+			  	  	  new HexMapSpriteObject("solarplant", atlas),
 			  	  	  new HexMapSpriteObject("solarplant_half", atlas),
+			  	  	  new HexMapSpriteObject("solarplant_rubble", atlas),
 				  	  new HexMapSpriteObject("windplant", atlas),
-	  	  			  new HexMapSpriteObject("windplant_half", atlas));
+	  	  			  new HexMapSpriteObject("windplant_half", atlas),
+	  	  			  new HexMapSpriteObject("windplant_rubble", atlas));
 		
 		//System.out.println(buildings.getCount());
 		

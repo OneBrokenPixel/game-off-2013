@@ -77,7 +77,7 @@ public class HexMapRenderer {
 	private boolean showResources = false;
 	private boolean showEnergy = false;
 
-	private boolean showEnergyOverride = true;
+	private boolean showEnergyOverride = false;
 
 	public boolean isShowResources() {
 		return showResources;
@@ -425,6 +425,10 @@ public class HexMapRenderer {
 
 				final HexMapSpriteObject sprite = res.sprite;
 
+				if(sprite == null) {
+					continue;
+				}
+				
 				TextureRegion region = sprite.getTexture();
 
 				float x1 = (int) ((x) - (region.getRegionWidth() * unitScale * 0.5f));

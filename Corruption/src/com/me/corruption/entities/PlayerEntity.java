@@ -113,7 +113,7 @@ public class PlayerEntity extends Entity {
 						
 						
 						if( b.lifeTime <= 0.0f ) {
-							c.setBuilding("rubble");
+							c.setBuilding(b.name.substring(0, b.name.length()-5)+"_rubble");
 						}
 						else if ( !b.name.contains("_half") && b.lifeTime <= Entity_Settings.BUILDING_LIFE[b.id]*0.5f ) {
 							c.setBuilding(b.name+"_half");
