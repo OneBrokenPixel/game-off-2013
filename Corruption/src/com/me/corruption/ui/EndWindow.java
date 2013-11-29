@@ -15,11 +15,13 @@ public class EndWindow extends Window {
 	
 	private Label label;
 	private TextButton ok;
+	private GameUI p;
 	
-	public EndWindow(String title, Skin skin, final HexMapInterface hexmap) {
+	public EndWindow(GameUI parent, String title, Skin skin, final HexMapInterface hexmap) {
 		super(title,skin);
 		this.skin = skin;
 		this.hexmap = hexmap;
+		this.p = parent;
 	}
 	
 	public void populate(boolean win) {
@@ -41,9 +43,12 @@ public class EndWindow extends Window {
 		ok.addListener(new InputListener() {
 			@Override
 			public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-				System.out.println("I don't know what sys.exit(0) does in javascript, let's find out");
-				System.out.println("In other words, sort out a damned start screen");
-				System.exit(0);
+				//System.out.println("I don't know what sys.exit(0) does in javascript, let's find out");
+				//System.out.println("In other words, sort out a damned start screen");
+				//System.exit(0);
+				hexmap.startMuted();
+				setVisible(false);
+				p.openStartWindow();
 				return true;
 			}
 		});

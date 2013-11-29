@@ -13,6 +13,7 @@ import com.badlogic.gdx.utils.Pool.Poolable;
 import com.me.corruption.hexMap.HexMap;
 import com.me.corruption.hexMap.HexMap.AnimatedSprite;
 import com.me.corruption.hexMap.HexMap.AnimatedSpriteCallback;
+import com.me.corruption.hexMap.HexMap.Building;
 import com.me.corruption.hexMap.HexMap.Cell;
 import com.me.corruption.hexMap.HexMap.Resource;
 import com.me.corruption.hexMap.HexMapInterface;
@@ -282,7 +283,17 @@ public class CorruptionEntity extends Entity {
 		addOwnedCell(cell);
 
 		//cell.unit += getNeighbouringCellsWithOwners(cell, this.getClass()).length;
-		cell.setBuilding(null);
+		//cell.setBuilding(null);
+		final Building b =  cell.getBuilding();
+		if( b != null ) {
+			if ( b.name.contains("_half") ) {
+				cell.setBuilding(b.name.substring(0, b.name.length()-5) + "_rubble");
+			}
+			else if( !b.name.contains("_rubble") ) {
+				cell.setBuilding(b.name + "_rubble");
+			}
+		}
+		
 		cell.recharge = false;
 	}
 }

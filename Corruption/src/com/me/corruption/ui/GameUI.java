@@ -161,7 +161,7 @@ public class GameUI extends Stage {
 		researchWin.setVisible(false);
 		
 		// modal pop up window when you win or lose
-		endWin = new EndWindow("End Game", skin, hexmap);
+		endWin = new EndWindow(this, "End Game", skin, hexmap);
 		endWin.setPosition(500,300);
 		endWin.setVisible(false);
 
@@ -406,6 +406,10 @@ public class GameUI extends Stage {
 	
 	public void unpause() {
 		//pauseBtn.setChecked(false);
+	}
+	
+	public void openStartWindow() {
+		startMenu.setVisible(true);
 	}
 	
 	public void start() {

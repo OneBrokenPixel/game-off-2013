@@ -101,16 +101,17 @@ public class PlayerEntity extends Entity {
 					final Resource r = c.getResourceForBuilding(b.name);
 					// System.out.println(r);
 					if (r != null) {
-						final float energy = (Entity_Settings.BUILDING_ENERGY[b.id] * r.getAmount() * dt);
-						//this.energyBank += energy;
-						b.energyCap += energy;
-						
-						if( b.energyCap >= Entity_Settings.energyCapasity ) {
-							b.energyCap -= Entity_Settings.energyCapasity;
-							this.energyBank += Entity_Settings.energyCapasity;
-							map.createAnimatedPowerUp(c.point, 0,32f, 20f);
+						if( !b.name.contains("_rubble") ) {
+							final float energy = (Entity_Settings.BUILDING_ENERGY[b.id] * r.getAmount() * dt);
+							//this.energyBank += energy;
+							b.energyCap += energy;
+							
+							if( b.energyCap >= Entity_Settings.energyCapasity ) {
+								b.energyCap -= Entity_Settings.energyCapasity;
+								this.energyBank += Entity_Settings.energyCapasity;
+								map.createAnimatedPowerUp(c.point, 0,32f, 20f);
+							}
 						}
-						
 						
 						if( b.lifeTime <= 0.0f ) {
 							c.setBuilding(b.name.substring(0, b.name.length()-5)+"_rubble");
