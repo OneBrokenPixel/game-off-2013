@@ -11,7 +11,7 @@ t:data/uiskin.atlas:2895:application/unknown
 t:data/uiskin.json:2918:application/unknown
 i:data/uiskin.png:25658:image/png
 d:spritesheets:0:application/unknown
-t:spritesheets/HexTiles.atlas:2939:application/unknown
+t:spritesheets/HexTiles.atlas:3147:application/unknown
 i:spritesheets/HexTiles.png:86124:image/png
 i:spritesheets/pauseDown.png:2772:image/png
 i:spritesheets/pauseSplash.png:9713:image/png

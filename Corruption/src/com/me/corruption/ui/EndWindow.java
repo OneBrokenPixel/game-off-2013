@@ -25,6 +25,7 @@ public class EndWindow extends Window {
 	}
 	
 	public void populate(boolean win) {
+		this.clear();
 		if (win) {
 			label = new Label("Congratulations, you win!", skin);
 		}
@@ -46,8 +47,9 @@ public class EndWindow extends Window {
 				//System.out.println("I don't know what sys.exit(0) does in javascript, let's find out");
 				//System.out.println("In other words, sort out a damned start screen");
 				//System.exit(0);
-				hexmap.startMuted();
+				//hexmap.startMuted();
 				setVisible(false);
+				hexmap.quit();
 				p.openStartWindow();
 				return true;
 			}

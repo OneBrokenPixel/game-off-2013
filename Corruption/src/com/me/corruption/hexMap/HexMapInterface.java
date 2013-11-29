@@ -45,7 +45,7 @@ public class HexMapInterface implements Disposable {
 
 	//private float ra
 	
-	private int repareCount = 0;
+	private int repairCount = 0;
 	
 	private static Sound buttonClickOn;
 	private static Sound buttonClickOff;
@@ -128,8 +128,8 @@ public class HexMapInterface implements Disposable {
 		return (int) (chemicalInitalCost * Math.pow(1 + Entity_Settings.costRateIncrese, chemicalCount));
 	}
 	
-	public int getRepareCost() {
-		return (int) ( Entity_Settings.initRepareCost * Math.pow(1 + Entity_Settings.repareRateIncrese, repareCount));
+	public int getRepairCost() {
+		return (int) ( Entity_Settings.initRepareCost * Math.pow(1 + Entity_Settings.repareRateIncrese, repairCount));
 	}
 
 	/**
@@ -174,7 +174,8 @@ public class HexMapInterface implements Disposable {
 	}
 
 	public void quit() {
-		// TODO Auto-generated method stub
+		startMuted();
+		gameStarted = false;
 
 	}
 
@@ -307,7 +308,7 @@ public class HexMapInterface implements Disposable {
 		this.solarCount = 0;
 		this.chemicalCount = 0;
 		
-		this.repareCount = 0;
+		this.repairCount = 0;
 		
 		this.gameUI.start();
 	}
@@ -327,9 +328,9 @@ public class HexMapInterface implements Disposable {
 		if( clickedOn != null) {
 			final Building b = clickedOn.getBuilding();
 			if( b != null) {
-				int cost = getRepareCost();
+				int cost = getRepairCost();
 				if(player.getEnergyBank() >= cost) {
-					repareCount++;
+					repairCount++;
 					player.removeEnergy(cost);
 					b.set(b.name.substring(0, b.name.length()-5));
 				}
@@ -339,7 +340,7 @@ public class HexMapInterface implements Disposable {
 
 	public void clearTile() {
 		if( clickedOn != null) {
-			int cost = getRepareCost();
+			int cost = getRepairCost();
 			if(player.getEnergyBank() >= cost) {
 				player.removeEnergy(cost);
 				clickedOn.setBuilding(null);

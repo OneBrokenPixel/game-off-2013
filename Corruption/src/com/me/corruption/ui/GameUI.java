@@ -347,11 +347,10 @@ public class GameUI extends Stage {
 		quitBtn.addListener(new InputListener() {
 			@Override
 			public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-				// TODO are you sure you want to quit?
-				//System.out.println(getWidth());
+
 				//HexMapInterface.playButtonClickOn();
 				hexmap.quit();
-				hexmap.startMuted();
+				//hexmap.pause(true);
 				startMenu.setVisible(true);
 				return true;
 			}

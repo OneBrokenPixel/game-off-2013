@@ -31,7 +31,7 @@ public class BuildingWindow extends Window {
 		solar = new TextButton("Build Solar Energy Farm ("+ hexmap.getSolarCost() +" energy)", skin);
 		demolish = new TextButton("Demolish Building", skin);
 		nothing = new TextButton("Close Menu", skin);
-		repair = new TextButton("Repair Building ("+hexmap.getRepareCost()+" energy)", skin);
+		repair = new TextButton("Repair Building ("+hexmap.getRepairCost()+" energy)", skin);
 		clear = new TextButton("Clear Tile", skin);
 		
 		this.defaults().pad(2);
@@ -91,7 +91,7 @@ public class BuildingWindow extends Window {
 		wind.setText("Build Wind Farm ("+ hexmap.getWindCost() +" energy)");
 		chemical.setText("Build Chemical Plant ("+ hexmap.getChemicalCost() +" energy)");
 		solar.setText("Build Solar Energy Farm ("+ hexmap.getSolarCost() +" energy)");
-		repair.setText("Repair Building ("+hexmap.getRepareCost()+" energy)");
+		repair.setText("Repair Building ("+hexmap.getRepairCost()+" energy)");
 		
 		
 		this.add(new Label("Choose an energy plant to build", skin));
