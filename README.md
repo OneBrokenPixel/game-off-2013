@@ -9,7 +9,7 @@ Left-click neutral or corrupted tiles to attack. You can only attack a tile if i
 
 [help](http://darkhexxa.github.io/corruption/help.html)
 
-[creadits](http://darkhexxa.github.io/corruption/credits.html)
+[credits](http://darkhexxa.github.io/corruption/credits.html)
 
 
 This game was developed using:
