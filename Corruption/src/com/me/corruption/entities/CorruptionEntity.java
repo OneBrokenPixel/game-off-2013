@@ -283,5 +283,6 @@ public class CorruptionEntity extends Entity {
 
 		//cell.unit += getNeighbouringCellsWithOwners(cell, this.getClass()).length;
 		cell.setBuilding(null);
+		cell.recharge = false;
 	}
 }
